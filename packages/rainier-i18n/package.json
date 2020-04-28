@@ -1,0 +1,14 @@
+{
+  "name": "@rainier/i18n",
+  "version": "0.0.1",
+  "description": "Common types and utilities for handling localization",
+  "author": "Mark Stevens <mdstevens94@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["ESNext", "dom"],
+    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "packages",
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "paths": {
+      "@rainier/event": ["rainier-event/src"],
+      "@rainier/logger": ["rainier-logger/src"],
+      "@rainier/util": ["rainier-util/src"],
+      "@rainier/view": ["rainier-view/src"],
+      "@rainier/controller": ["rainier-controller/src"],
+      "@rainier/i18n": ["rainier-i18n/src"],
+      "@rainier/store": ["rainier-store/src"],
+      "@rainier/client": ["rainier-client/src"],
+      "@rainier/components": ["rainier-components/src"],
+      "@rainier/rc": ["rainier-rc/src"]
+    }
+  }
+}

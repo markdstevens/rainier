@@ -1,0 +1,17 @@
+{
+  "name": "@rainier/logger",
+  "version": "0.0.1",
+  "description": "A common logging wrapper for encapsulating application logs",
+  "author": "Mark Stevens <mdstevens94@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+  },
+  "dependencies": {
+    "@rainier/event": "file:../rainier-event"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@rainier/util",
+  "version": "0.0.1",
+  "description": "A collection of utility functions for the rainier SVC framework",
+  "author": "Mark Stevens <mdstevens94@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.1.5"
+  },
+  "dependencies": {
+    "react-router-dom": "^5.1.2"
+  }
+}

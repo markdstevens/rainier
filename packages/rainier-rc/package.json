@@ -1,0 +1,21 @@
+{
+  "name": "@rainier/rc",
+  "version": "0.0.1",
+  "description": "Parses configuration for rainier framework",
+  "author": "Mark Stevens <mdstevens94@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "./dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+  },
+  "dependencies": {
+    "@rainier/logger": "file:../rainier-logger"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "chalk": "^4.0.0"
+  }
+}

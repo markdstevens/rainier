@@ -1,0 +1,28 @@
+{
+  "name": "@rainier/view",
+  "version": "0.0.1",
+  "description": "The core code for supporting the 'V' - view - in the SVC framework",
+  "author": "Mark Stevens <mdstevens94@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+  },
+  "devDependencies": {
+    "@loadable/component": "^5.12.0",
+    "@types/loadable__component": "^5.10.0"
+  },
+  "dependencies": {
+    "@rainier/event": "file:../rainier-event",
+    "@rainier/logger": "file:../rainier-logger",
+    "@rainier/controller": "file:../rainier-controller",
+    "@rainier/store": "file:../rainier-store",
+    "react-router-dom": "^5.1.2"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  }
+}

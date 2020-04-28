@@ -1,0 +1,27 @@
+{
+  "name": "@rainier/cli",
+  "version": "0.0.1",
+  "description": "The official CLI for the rainier SVC framework",
+  "author": "Mark Stevens <mdstevens94@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "bin": {
+    "rainier": "./dist/rainier.js"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@types/clear": "^0.1.0",
+    "@types/figlet": "^1.2.0",
+    "chalk": "^4.0.0",
+    "clear": "^0.1.0",
+    "commander": "^5.1.0",
+    "figlet": "^1.4.0"
+  },
+  "dependencies": {
+    "@rainier/rc": "file:../rainier-rc"
+  }
+}

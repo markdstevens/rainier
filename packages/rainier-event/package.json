@@ -1,0 +1,14 @@
+{
+  "name": "@rainier/event",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "description": "The core code for supporting the 'C' - controller - in the SVC framework",
+  "author": "Mark Stevens <mdstevens94@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "clean": "rimraf dist",
+    "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+  }
+}
