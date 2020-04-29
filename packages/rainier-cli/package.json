@@ -1,5 +1,5 @@
 {
-  "name": "rainier-cli",
+  "name": "@rainier/cli",
   "version": "0.0.1",
   "description": "The official CLI for the rainier SVC framework",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
