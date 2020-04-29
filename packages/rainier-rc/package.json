@@ -6,16 +6,20 @@
   "license": "MIT",
   "private": true,
   "main": "./dist/index.js",
+  "keywords": [
+    "react",
+    "SVC",
+    "rainier"
+  ],
+  "contributors": [
+    "Mark Stevens <mdstevens94@gmail.com>"
+  ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf yarn-error.log",
     "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
     "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
   },
   "dependencies": {
-    "@rainier/logger": "file:../rainier-logger"
-  },
-  "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "chalk": "^4.0.0"
+    "@rainier/logger": "^0.0.1"
   }
 }

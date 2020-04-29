@@ -1,28 +1,33 @@
 {
   "name": "@rainier/client",
   "version": "0.0.1",
-  "main": "dist/index.js",
   "description": "The client-specific modules needed for SSR, store-hydration, etc",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
   "private": true,
+  "main": "./dist/index.js",
+  "keywords": [
+    "react",
+    "SVC",
+    "rainier"
+  ],
+  "contributors": [
+    "Mark Stevens <mdstevens94@gmail.com>"
+  ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf yarn-error.log",
     "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
-    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts,.tsx && yarn generateTypes"
+  },
+  "dependencies": {
+    "@loadable/component": "^5.12.0",
+    "@rainier/components": "^0.0.1",
+    "@rainier/controller": "^0.0.1",
+    "@rainier/store": "^0.0.1",
+    "react-router-dom": "^5.1.2"
   },
   "peerDependencies": {
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
-  },
-  "devDependencies": {
-    "@types/react-dom": "^16.9.7"
-  },
-  "dependencies": {
-    "@loadable/component": "^5.12.0",
-    "react-router-dom": "^5.1.2",
-    "@rainier/controller": "file:../rainier-controller",
-    "@rainier/store": "file:../rainier-store",
-    "@rainier/components": "file:../rainier-components"
   }
 }

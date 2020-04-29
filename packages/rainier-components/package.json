@@ -1,23 +1,31 @@
 {
   "name": "@rainier/components",
   "version": "0.0.1",
-  "main": "dist/index.js",
   "description": "A collection of common components to support the rainier framework",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
   "private": true,
+  "main": "./dist/index.js",
+  "keywords": [
+    "react",
+    "SVC",
+    "rainier"
+  ],
+  "contributors": [
+    "Mark Stevens <mdstevens94@gmail.com>"
+  ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf yarn-error.log",
     "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
-    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
-  },
-  "peerDependencies": {
-    "react": "^16.8.0"
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts,.tsx && yarn generateTypes"
   },
   "dependencies": {
     "react-router-dom": "^5.1.2",
-    "@rainier/controller": "file:../rainier-controller",
-    "@rainier/util": "file:../rainier-util",
-    "@rainier/store": "file:../rainier-store"
+    "@rainier/controller": "^0.0.1",
+    "@rainier/util": "^0.0.1",
+    "@rainier/store": "^0.0.1"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
   }
 }

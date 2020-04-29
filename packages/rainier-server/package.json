@@ -5,11 +5,19 @@
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
   "private": true,
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "keywords": [
+    "react",
+    "SVC",
+    "rainier"
+  ],
+  "contributors": [
+    "Mark Stevens <mdstevens94@gmail.com>"
+  ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf yarn-error.log",
     "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
-    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts,.tsx && yarn generateTypes"
   },
   "dependencies": {
     "@loadable/server": "^5.12.0",
@@ -22,10 +30,6 @@
     "express": "^4.17.1",
     "express-locale": "^2.0.0",
     "react-dom": "^16.13.1"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.6",
-    "@types/loadable__server": "^5.12.1"
   },
   "peerDependencies": {
     "react": "^16.8.0"

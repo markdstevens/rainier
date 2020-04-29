@@ -5,22 +5,29 @@
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
   "private": true,
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "keywords": [
+    "react",
+    "SVC",
+    "rainier"
+  ],
+  "contributors": [
+    "Mark Stevens <mdstevens94@gmail.com>"
+  ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf yarn-error.log",
     "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
-    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
-  },
-  "devDependencies": {
-    "@loadable/component": "^5.12.0",
-    "@types/loadable__component": "^5.10.0"
+    "build": "yarn clean && babel src --out-dir dist --extensions .ts,.tsx && yarn generateTypes"
   },
   "dependencies": {
-    "@rainier/event": "file:../rainier-event",
-    "@rainier/logger": "file:../rainier-logger",
-    "@rainier/controller": "file:../rainier-controller",
-    "@rainier/store": "file:../rainier-store",
+    "@rainier/event": "^0.0.1",
+    "@rainier/logger": "^0.0.1",
+    "@rainier/controller": "^0.0.1",
+    "@rainier/store": "^0.0.1",
     "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "@loadable/component": "^5.12.0"
   },
   "peerDependencies": {
     "react": "^16.8.0"

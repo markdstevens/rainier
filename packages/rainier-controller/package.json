@@ -1,24 +1,31 @@
 {
   "name": "@rainier/controller",
   "version": "0.0.1",
-  "main": "dist/index.js",
   "description": "The core code for supporting the 'C' - controller - in the SVC framework",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
   "private": true,
+  "main": "./dist/index.js",
+  "keywords": [
+    "react",
+    "SVC",
+    "rainier"
+  ],
+  "contributors": [
+    "Mark Stevens <mdstevens94@gmail.com>"
+  ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf yarn-error.log",
     "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
     "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
   },
   "dependencies": {
-    "@rainier/util": "file:../rainier-util",
-    "@rainier/view": "file:../rainier-view",
-    "@rainier/store": "file:../rainier-store",
+    "@rainier/util": "^0.0.1",
+    "@rainier/view": "^0.0.1",
+    "@rainier/store": "^0.0.1",
     "auto-bind": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@loadable/component": "^5.12.0"
   }
 }

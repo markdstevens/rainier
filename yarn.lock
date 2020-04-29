@@ -1883,56 +1883,39 @@
 "@rainier/components@file:packages/rainier-components":
   version "0.0.1"
   dependencies:
-    "@rainier/controller" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-components-0.0.1-d20af0b0-e969-4418-8a2c-af13c65cc8a3-1588050360290/node_modules/@rainier/rainier-controller"
-    "@rainier/store" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-components-0.0.1-d20af0b0-e969-4418-8a2c-af13c65cc8a3-1588050360290/node_modules/@rainier/rainier-store"
-    "@rainier/util" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-components-0.0.1-d20af0b0-e969-4418-8a2c-af13c65cc8a3-1588050360290/node_modules/@rainier/rainier-util"
+    "@rainier/controller" "^0.0.1"
+    "@rainier/store" "^0.0.1"
+    "@rainier/util" "^0.0.1"
     react-router-dom "^5.1.2"
 
 "@rainier/controller@file:packages/rainier-controller":
   version "0.0.1"
   dependencies:
-    "@rainier/store" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-controller-0.0.1-41623e47-51a0-4b3e-84de-5724bd710b40-1588050360286/node_modules/@rainier/rainier-store"
-    "@rainier/util" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-controller-0.0.1-41623e47-51a0-4b3e-84de-5724bd710b40-1588050360286/node_modules/@rainier/rainier-util"
-    "@rainier/view" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-controller-0.0.1-41623e47-51a0-4b3e-84de-5724bd710b40-1588050360286/node_modules/@rainier/rainier-view"
+    "@rainier/store" "^0.0.1"
+    "@rainier/util" "^0.0.1"
+    "@rainier/view" "^0.0.1"
     auto-bind "^4.0.0"
 
 "@rainier/event@file:packages/rainier-event":
   version "0.0.1"
 
-"@rainier/i18n@file:packages/rainier-i18n":
-  version "0.0.1"
-
 "@rainier/logger@file:packages/rainier-logger":
   version "0.0.1"
   dependencies:
-    "@rainier/event" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-logger-0.0.1-101dcf2f-ceb9-4925-bdcb-02e0c6453d9d-1588050360289/node_modules/@rainier/rainier-event"
-
-"@rainier/rc@file:packages/rainier-rc":
-  version "0.0.1"
-  dependencies:
-    "@rainier/logger" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-rc-0.0.1-ddce536a-508d-4d48-9f24-d27b187a2486-1588050360284/node_modules/@rainier/rainier-logger"
+    "@rainier/event" "^0.0.1"
 
 "@rainier/store@file:packages/rainier-store":
   version "0.0.1"
   dependencies:
-    "@rainier/event" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-store-0.0.1-e9fe895b-e20b-4a60-bc7b-29cbb25ee8f0-1588050360285/node_modules/@rainier/rainier-event"
-    "@rainier/i18n" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-store-0.0.1-e9fe895b-e20b-4a60-bc7b-29cbb25ee8f0-1588050360285/node_modules/@rainier/rainier-i18n"
-    "@rainier/logger" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-store-0.0.1-e9fe895b-e20b-4a60-bc7b-29cbb25ee8f0-1588050360285/node_modules/@rainier/rainier-logger"
+    "@rainier/event" "^0.0.1"
+    "@rainier/i18n" "^0.0.1"
+    "@rainier/logger" "^0.0.1"
     auto-bind "^4.0.0"
     react-router-dom "^5.1.2"
 
 "@rainier/util@file:packages/rainier-util":
   version "0.0.1"
   dependencies:
-    react-router-dom "^5.1.2"
-
-"@rainier/view@file:packages/rainier-view":
-  version "0.0.1"
-  dependencies:
-    "@rainier/controller" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-view-0.0.1-ecd5e59e-ac63-48b4-9a42-35d0e70fe21f-1588050360287/node_modules/@rainier/rainier-controller"
-    "@rainier/event" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-view-0.0.1-ecd5e59e-ac63-48b4-9a42-35d0e70fe21f-1588050360287/node_modules/@rainier/rainier-event"
-    "@rainier/logger" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-view-0.0.1-ecd5e59e-ac63-48b4-9a42-35d0e70fe21f-1588050360287/node_modules/@rainier/rainier-logger"
-    "@rainier/store" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-view-0.0.1-ecd5e59e-ac63-48b4-9a42-35d0e70fe21f-1588050360287/node_modules/@rainier/rainier-store"
     react-router-dom "^5.1.2"
 
 "@types/babel__core@^7.1.7":
@@ -1992,6 +1975,13 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
+
+"@types/commander@^2.12.2":
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/@types/commander/-/commander-2.12.2.tgz#183041a23842d4281478fa5d23c5ca78e6fd08ae"
+  integrity sha512-0QEFiR8ljcHp9bAbWxecjVRuAMr16ivPiGOw6KFQBVrVd0RQIcM3xKdRisH2EDWgVWujiYtHwhSkSUoAAGzH7Q==
+  dependencies:
+    commander "*"
 
 "@types/connect@*":
   version "3.4.33"
@@ -2091,7 +2081,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/node@*", "@types/node@>= 8":
+"@types/node@*", "@types/node@>= 8", "@types/node@^13.13.4":
   version "13.13.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.4.tgz#1581d6c16e3d4803eb079c87d4ac893ee7501c2c"
   integrity sha512-x26ur3dSXgv5AwKS0lNfbjpCakGIduWU1DU91Zz58ONRWrIKGunmZBNv4P7N+e27sJkiGDsw/3fT4AtsqQBrBA==
@@ -3097,15 +3087,15 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
+commander@*, commander@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
+  integrity sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==
+
 commander@^4.0.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
   integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
-
-commander@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
-  integrity sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==
 
 commander@~2.20.3:
   version "2.20.3"

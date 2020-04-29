@@ -5,20 +5,24 @@
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
   "private": true,
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "keywords": [
+    "react",
+    "SVC",
+    "rainier"
+  ],
+  "contributors": [
+    "Mark Stevens <mdstevens94@gmail.com>"
+  ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf yarn-error.log",
     "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
     "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
   },
-  "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@types/react-router-dom": "^5.1.5"
-  },
   "dependencies": {
-    "@rainier/event": "file:../rainier-event",
-    "@rainier/i18n": "file:../rainier-i18n",
-    "@rainier/logger": "file:../rainier-logger",
+    "@rainier/event": "^0.0.1",
+    "@rainier/i18n": "^0.0.1",
+    "@rainier/logger": "^0.0.1",
     "auto-bind": "^4.0.0",
     "react-router-dom": "^5.1.2"
   },

@@ -27,5 +27,6 @@
       "@rainier/components": ["rainier-components/src"],
       "@rainier/rc": ["rainier-rc/src"]
     }
-  }
+  },
+  "exclude": ["dist", "node_modules"]
 }
