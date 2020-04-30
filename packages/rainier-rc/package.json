@@ -20,6 +20,6 @@
     "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
   },
   "dependencies": {
-    "@rainier/logger": "^0.0.1"
+    "@rainier/logger": "file:../rainier-logger"
   }
 }

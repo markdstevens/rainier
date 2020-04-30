@@ -20,6 +20,6 @@
     "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
   },
   "dependencies": {
-    "@rainier/event": "^0.0.1"
+    "@rainier/event": "file:../rainier-event"
   }
 }

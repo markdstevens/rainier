@@ -1902,7 +1902,12 @@
 "@rainier/logger@file:packages/rainier-logger":
   version "0.0.1"
   dependencies:
-    "@rainier/event" "^0.0.1"
+    "@rainier/event" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-logger-0.0.1-c4400bb0-e1a3-4688-b6c7-1953e2be5ca0-1588204636371/node_modules/@rainier/rainier-event"
+
+"@rainier/rc@file:packages/rainier-rc":
+  version "0.0.1"
+  dependencies:
+    "@rainier/logger" "file:../../../Library/Caches/Yarn/v6/npm-@rainier-rc-0.0.1-5745a6dd-4df5-4da6-9d43-97ab4d288d89-1588204636370/node_modules/@rainier/rainier-logger"
 
 "@rainier/store@file:packages/rainier-store":
   version "0.0.1"

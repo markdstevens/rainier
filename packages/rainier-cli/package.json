@@ -22,6 +22,6 @@
     "build": "yarn clean && babel src --out-dir dist --extensions .ts"
   },
   "dependencies": {
-    "@rainier/rc": "^0.0.1"
+    "@rainier/rc": "file:../rainier-rc"
   }
 }
