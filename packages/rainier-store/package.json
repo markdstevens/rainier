@@ -14,11 +14,6 @@
   "contributors": [
     "Mark Stevens <mdstevens94@gmail.com>"
   ],
-  "scripts": {
-    "clean": "rimraf dist && rimraf yarn-error.log",
-    "generateTypes": "tsc --emitDeclarationOnly --declarationDir dist",
-    "build": "yarn clean && babel src --out-dir dist --extensions .ts && yarn generateTypes"
-  },
   "dependencies": {
     "@rainier/event": "^0.0.1",
     "@rainier/i18n": "^0.0.1",

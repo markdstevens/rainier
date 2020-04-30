@@ -6,10 +6,11 @@ import { program } from 'commander';
 import { version } from '../package.json';
 import { Command } from './command';
 import { getRainierRc } from '@rainier/rc';
+import { logger } from '@rainier/logger';
 
 clear();
 
-console.log(
+logger.info(
   chalk.cyanBright(
     figlet.textSync('Rainier-CLI', {
       horizontalLayout: 'full',
@@ -17,7 +18,7 @@ console.log(
   )
 );
 
-const rainierRc = getRainierRc();
+getRainierRc();
 
 const commands = [new Command('webpack', 'compile project with webpack')];
 

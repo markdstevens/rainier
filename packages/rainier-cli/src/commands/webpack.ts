@@ -1,1 +1,1 @@
-console.log('rainier-webpack!');
+export const sayHi = (): string => 'hi';

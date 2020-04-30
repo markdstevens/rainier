@@ -8,12 +8,21 @@
     "packages/*"
   ],
   "scripts": {
-    "clean": "lerna run --parallel clean",
-    "build": "lerna run build",
+    "clean": "lerna exec -- rimraf dist",
+    "build": "lerna exec -- babel src --out-dir dist --extensions .ts",
+    "compile": "yarn clean && yarn build && yarn ts:types",
     "link-all": "lerna exec -- yarn link",
     "unlink-all": "lerna exec -- yarn unlink",
     "nuke": "yarn clean && lerna clean --yes && rimraf node_modules",
-    "rebuild": "yarn nuke && yarn --exact && yarn build"
+    "rebuild": "yarn nuke && yarn --exact && yarn build",
+    "ts:check": "lerna exec -- tsc --noEmit",
+    "ts:types": "lerna exec -- tsc --emitDeclarationOnly --declarationDir dist",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && yarn ts:check && yarn lint"
+    }
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -37,6 +46,8 @@
     "@types/node": "^13.13.4",
     "@types/react-dom": "^16.9.7",
     "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
     "babel-jest": "^25.4.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
@@ -53,8 +64,10 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "figlet": "^1.4.0",
+    "husky": "^4.2.5",
     "lerna": "^3.20.2",
     "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
     "typescript": "^3.8.3"
   }

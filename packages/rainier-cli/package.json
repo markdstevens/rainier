@@ -17,11 +17,8 @@
   "contributors": [
     "Mark Stevens <mdstevens94@gmail.com>"
   ],
-  "scripts": {
-    "clean": "rimraf dist && rimraf yarn-error.log",
-    "build": "yarn clean && babel src --out-dir dist --extensions .ts"
-  },
   "dependencies": {
-    "@rainier/rc": "file:../rainier-rc"
+    "@rainier/rc": "file:../rainier-rc",
+    "@rainier/logger": "file:../rainier-logger"
   }
 }

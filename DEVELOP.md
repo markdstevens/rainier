@@ -16,7 +16,7 @@ To test locally, you can do this:
 
 ```
 $ cd rainier
-$ yarn rebuild
+$ yarn compile
 $ cd ../side-project
 $ yarn add file:../rainier/packages/rainier-cli
 ```
@@ -25,12 +25,12 @@ Now, all binaries and exports included in `rainier-cli` with be available for co
 
 ```
 "scripts": {
-  "compile": "rainier webpack"
+  "build": "rainier webpack"
 }
 ```
 
 Then execute:
 
 ```
-$ yarn compile
+$ yarn build
 ```

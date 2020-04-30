@@ -1,1 +1,1 @@
-export const webpackEntry = () => {};
+export const webpackEntry = (): string => 'hi';

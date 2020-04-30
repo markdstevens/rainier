@@ -8,7 +8,7 @@ export const getRainierRc = (): RainierRC | null => {
   const rainierRC = `${cwd}/.rainierrc`;
 
   if (!existsSync(rainierRC)) {
-    logger.info(chalk.red(`no .rainierrc found in ${rainierRC}`));
+    logger.info(chalk.magenta(`no .rainierrc found in ${rainierRC}`));
     return null;
   }
 
