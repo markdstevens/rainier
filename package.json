@@ -1,20 +1,21 @@
 {
-  "name": "rainiertemp",
+  "name": "rainier",
   "version": "0.0.1",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
-  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "compile": "babel src --out-dir dist --extensions .ts,.tsx --no-comments && tsc --emitDeclarationOnly",
     "cli:compile": "tsc -p tsconfig-cli.json",
     "clean": "rimraf dist",
-    "build": "yarn clean && yarn cli:compile && yarn compile && cp -R src/rainier-server/views dist/rainier-server/views"
+    "build": "yarn clean && yarn cli:compile && yarn compile && cp -R src/rainier-server/views dist/rainier-server/views",
+    "ts-check": "tsc --noEmit && tsc -p tsconfig-cli.json --noEmit",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && yarn ts:check && yarn lint"
+      "pre-commit": "pretty-quick --staged && yarn ts-check && yarn lint"
     }
   },
   "bin": {

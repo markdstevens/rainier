@@ -2,8 +2,7 @@ import webpack from 'webpack';
 import { webpackServer, webpackClient } from './config-templates';
 import { CustomWebpackOptions } from './custom-webpack-options';
 import chalk from 'chalk';
-import { RainierRC } from 'rainier-rc';
-import { generatePreBuildFiles } from './generators/generate-prebuild-files';
+import { RainierRC } from '../rainier-rc';
 
 export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC): void => {
   console.info('running webpack with 👇');
