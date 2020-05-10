@@ -34,8 +34,9 @@
 
     // typescript rules
     "@typescript-eslint/interface-name-prefix": "error",
-    "@typescript-eslint/ban-ts-ignore": "error",
+    "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off",
 
     // custom rules
     "eol-last": "error",
@@ -43,8 +44,7 @@
     "require-jsdoc": "off",
     "valid-jsdoc": "off",
     "object-curly-spacing": "off",
-    "no-restricted-imports": ["off"],
-    "no-console": "error"
+    "no-restricted-imports": ["off"]
   },
   "settings": {
     "import/resolver": "webpack",

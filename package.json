@@ -1,28 +1,24 @@
 {
-  "name": "rainier",
+  "name": "rainiertemp",
   "version": "0.0.1",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "clean": "lerna exec -- rimraf dist",
-    "build": "lerna exec -- babel src --out-dir dist --extensions .ts",
-    "compile": "yarn clean && yarn build && yarn ts:types",
-    "link-all": "lerna exec -- yarn link",
-    "unlink-all": "lerna exec -- yarn unlink",
-    "nuke": "yarn clean && lerna clean --yes && rimraf node_modules",
-    "rebuild": "yarn nuke && yarn --exact && yarn build",
-    "ts:check": "lerna exec -- tsc --noEmit",
-    "ts:types": "lerna exec -- tsc --emitDeclarationOnly --declarationDir dist",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "compile": "babel src --out-dir dist --extensions .ts,.tsx --no-comments && tsc --emitDeclarationOnly",
+    "cli:compile": "tsc -p tsconfig-cli.json",
+    "clean": "rimraf dist",
+    "build": "yarn clean && yarn cli:compile && yarn compile && cp -R src/rainier-server/views dist/rainier-server/views"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged && yarn ts:check && yarn lint"
     }
+  },
+  "bin": {
+    "rainier": "dist/rainier-cli/src/rainier.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -36,16 +32,30 @@
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
     "@babel/runtime": "^7.9.2",
+    "@loadable/babel-plugin": "^5.12.0",
+    "@loadable/webpack-plugin": "^5.12.0",
     "@types/chalk": "^2.2.0",
+    "@types/clean-webpack-plugin": "^0.1.3",
     "@types/clear": "^0.1.0",
     "@types/commander": "^2.12.2",
+    "@types/copy-webpack-plugin": "^5.0.0",
     "@types/express": "^4.17.6",
     "@types/figlet": "^1.2.0",
+    "@types/html-webpack-plugin": "^3.2.2",
     "@types/loadable__component": "^5.10.0",
     "@types/loadable__server": "^5.12.1",
+    "@types/loadable__webpack-plugin": "^5.7.0",
+    "@types/mini-css-extract-plugin": "^0.9.1",
     "@types/node": "^13.13.4",
+    "@types/nodemon": "^1.19.0",
+    "@types/optimize-css-assets-webpack-plugin": "^5.0.1",
     "@types/react-dom": "^16.9.7",
     "@types/react-router-dom": "^5.1.5",
+    "@types/rimraf": "^3.0.0",
+    "@types/webpack": "^4.41.12",
+    "@types/webpack-bundle-analyzer": "^2.13.3",
+    "@types/webpack-merge": "^4.1.5",
+    "@types/workbox-webpack-plugin": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "babel-jest": "^25.4.0",
@@ -53,8 +63,12 @@
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "chalk": "^4.0.0",
+    "clean-webpack-plugin": "^3.0.0",
     "clear": "^0.1.0",
     "commander": "^5.1.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.5.3",
+    "css-modules-typescript-loader": "^4.0.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.11.0",
@@ -64,11 +78,37 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "figlet": "^1.4.0",
+    "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
     "lerna": "^3.20.2",
+    "mini-css-extract-plugin": "^0.9.0",
+    "nodemon-webpack-plugin": "^4.3.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
-    "typescript": "^3.8.3"
+    "sass-loader": "^8.0.2",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^3.7.0",
+    "webpack-merge": "^4.2.2",
+    "workbox-webpack-plugin": "^5.1.3"
+  },
+  "dependencies": {
+    "@loadable/server": "^5.12.0",
+    "auto-bind": "^4.0.0",
+    "camel-case": "^4.1.1",
+    "express": "^4.17.1",
+    "express-hbs": "^2.3.3",
+    "express-locale": "^2.0.0",
+    "pascal-case": "^3.1.1"
+  },
+  "peerDependencies": {
+    "react": "16.x",
+    "react-dom": "16.x",
+    "react-router-dom": "5.x",
+    "@loadable/component": "5.x"
   }
 }

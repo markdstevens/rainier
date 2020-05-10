@@ -1,0 +1,5 @@
+{
+  "publicAssetsDir": "../react-ts/src/public",
+  "controllersDir": "../react-ts/src/controllers",
+  "storesDir": "../react-ts/src/stores"
+}

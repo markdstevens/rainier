@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    "@loadable/babel-plugin",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-optional-chaining",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }]
+  ],
+  "presets": [
+    ["@babel/preset-react"],
+    ["@babel/env", { "modules": false }],
+    ["@babel/preset-typescript"]
+  ],
+  "ignore": ["src/rainier-cli", "src/rainier-webpack", "src/rainier-rc"]
+}

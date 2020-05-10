@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{{ htmlWebpackPlugin.options.title }}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#317EFB"/>
+    <link rel="icon" href="data:," />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/penguin.png">
+    {{{ htmlWebpackPlugin.options.linkTags }}}
+    {{{ htmlWebpackPlugin.options.styleTags }}}
+  </head>
+  <body>
+    <div id="app">{{{ htmlWebpackPlugin.options.html }}}</div>
+    <noscript>Uh oh! Your browser does not support JavaScript!</noscript>
+    {{#unless stores }}
+      <% stores = null %>
+    {{/unless}}
+    <script>window.__INITIAL_STATE__= {{{ stores }}}</script>
+    {{{ htmlWebpackPlugin.options.scriptTags }}}
+    {{#unless htmlWebpackPlugin.options.isDev }}
+      <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js');
+          });
+        }
+      </script>
+    {{/unless}}
+  </body>
+</html>
