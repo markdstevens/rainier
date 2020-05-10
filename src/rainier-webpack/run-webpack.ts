@@ -40,7 +40,7 @@ export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC):
         )
       );
     }
-    // eslint-disable-next-line
+
     console.info(chalk.green('Server webpacking complete!'));
   });
 };
