@@ -19,7 +19,7 @@ export const plugins = {
       new HtmlWebpackPlugin({
         title: 'React App',
         filename: 'index.html',
-        template: path.join(__dirname, '../../rainier-server/views/index.hbs'),
+        template: path.join(__dirname, '../../../src/rainier-server/views/index.hbs'),
       }),
       new LoadablePlugin(),
     ];
@@ -59,10 +59,7 @@ export const plugins = {
       new webpack.DefinePlugin({
         __BROWSER__: false,
       }),
-      new CopyWebpackPlugin([
-        { from: rainierRc.publicAssetsDir },
-        { from: path.join(__dirname, '../../rainier-server/views') },
-      ]),
+      new CopyWebpackPlugin([{ from: rainierRc.publicAssetsDir }]),
     ];
 
     if (options.profileServer) {

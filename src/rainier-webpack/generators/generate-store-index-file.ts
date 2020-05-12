@@ -13,6 +13,6 @@ export * from './types';`;
 
   const indexTemplate = [applicationStoreExports, existingImports].join('\n');
 
-  writeFileSync(path.join(__dirname, '../../rainier-store/index.js'), indexTemplate);
-  writeFileSync(path.join(__dirname, '../../rainier-store/index.d.ts'), indexTemplate);
+  writeFileSync(path.join(__dirname, '../../../src/rainier-store/index.ts'), indexTemplate);
+  writeFileSync(path.join(__dirname, '../../../src/rainier-store/index.d.ts'), indexTemplate);
 };

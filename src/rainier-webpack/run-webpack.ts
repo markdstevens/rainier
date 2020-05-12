@@ -8,6 +8,8 @@ export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC):
   console.info('running webpack with 👇');
   console.table(options);
 
+  process.chdir(__dirname);
+
   options.isDev = options.mode === 'development';
   options.isProd = options.mode === 'production';
 

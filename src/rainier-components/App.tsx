@@ -1,21 +1,21 @@
 import React, { FunctionComponent, Profiler } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { PageWrapper } from './PageWrapper';
 import { StoreProviders } from './StoreProviders';
 import { controllerRegistry } from '../rainier-controller/controller-registry';
 import { logger } from '../rainier-logger/logger';
 import { Stores } from '../rainier-store/types';
+import { PageWrapper } from './PageWrapper';
 
 interface AppProps {
   stores: Stores;
 }
 
-export const App: FunctionComponent<AppProps> = ({ stores }: AppProps) => (
-  <StoreProviders stores={stores}>
-    <PageWrapper>
-      <Switch>
-        {controllerRegistry.getActionMetaDataForReactRouter().map(({ path, View }) => {
-          return (
+export const App: FunctionComponent<AppProps> = ({ stores }: AppProps) => {
+  return (
+    <StoreProviders stores={stores}>
+      <PageWrapper>
+        <Switch>
+          {controllerRegistry.getActionMetaDataForReactRouter().map(({ path, View }) => (
             <Route
               key={path}
               path={path}
@@ -26,10 +26,10 @@ export const App: FunctionComponent<AppProps> = ({ stores }: AppProps) => (
                 </Profiler>
               )}
             />
-          );
-        })}
-      </Switch>
-    </PageWrapper>
-  </StoreProviders>
-);
+          ))}
+        </Switch>
+      </PageWrapper>
+    </StoreProviders>
+  );
+};
 App.displayName = 'App';

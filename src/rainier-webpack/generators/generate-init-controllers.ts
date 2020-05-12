@@ -30,5 +30,8 @@ export const generateInitControllers = ({ controllersDir }: RainierRC): void => 
   }
   `;
 
-  writeFileSync(path.join(__dirname, '../../rainier-controller/init-controllers.js'), template);
+  writeFileSync(
+    path.join(__dirname, '../../../src/rainier-controller/init-controllers.ts'),
+    template
+  );
 };

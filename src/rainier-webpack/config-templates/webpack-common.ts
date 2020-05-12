@@ -1,5 +1,4 @@
 import { CustomWebpackOptions } from '../custom-webpack-options';
-import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
 import { RainierRC } from '../../rainier-rc';
@@ -30,12 +29,22 @@ export const webpackCommon = (
         },
         {
           test: /\.tsx?$/,
-          exclude: /node_modules/,
           use: [
             {
               loader: 'babel-loader',
               options: {
-                configFile: path.join(__dirname, '../../../.babelrc'),
+                plugins: [
+                  '@loadable/babel-plugin',
+                  '@babel/plugin-transform-runtime',
+                  '@babel/plugin-proposal-optional-chaining',
+                  ['@babel/plugin-proposal-decorators', { legacy: true }],
+                  ['@babel/plugin-proposal-class-properties', { loose: true }],
+                ],
+                presets: [
+                  ['@babel/env', { modules: false }],
+                  ['@babel/preset-react'],
+                  ['@babel/preset-typescript'],
+                ],
               },
             },
           ],

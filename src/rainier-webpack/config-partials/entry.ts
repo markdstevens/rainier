@@ -3,9 +3,8 @@ import { existsSync } from 'fs';
 
 export const entry = {
   path(project: 'client' | 'server'): string {
-    const firstVariant = path.join(__dirname, `../../rainier-${project}/entry.js`);
-    const secondVariant = path.join(__dirname, `../../${project}/entry.js`);
-
+    const firstVariant = path.join(__dirname, `../../../src/rainier-${project}/entry.tsx`);
+    const secondVariant = path.join(__dirname, `../../../src/${project}/entry.tsx`);
     return existsSync(firstVariant) ? firstVariant : secondVariant;
   },
 

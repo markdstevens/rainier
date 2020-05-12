@@ -6,11 +6,11 @@ import { mkdirSync, writeFileSync } from 'fs';
 
 export const generateStoreDir = (rainierRc: RainierRC): void => {
   getStoreMetaData(rainierRc).forEach((store) => {
-    const storeDir = path.join(__dirname, `../../rainier-store/${store.storeFileName}`);
-    const contextFilePath = `${storeDir}/context.js`;
-    const useStoreFilePath = `${storeDir}/use${store.pascalStoreName}.js`;
+    const storeDir = path.join(__dirname, `../../../src/rainier-store/${store.storeFileName}`);
+    const contextFilePath = `${storeDir}/context.ts`;
+    const useStoreFilePath = `${storeDir}/use${store.pascalStoreName}.ts`;
     const useStoreDescriptionFilePath = `${storeDir}/use${store.pascalStoreName}.d.ts`;
-    const indexFilePath = `${storeDir}/index.js`;
+    const indexFilePath = `${storeDir}/index.ts`;
     const indexFileDescriptionPath = `${storeDir}/index.d.ts`;
 
     rimraf.sync(storeDir);

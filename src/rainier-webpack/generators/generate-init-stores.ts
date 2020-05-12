@@ -45,11 +45,11 @@ export function initCustomClientStores(serializedStores) {
   `;
 
   writeFileSync(
-    path.join(__dirname, '../../rainier-client/init-custom-client-stores.js'),
+    path.join(__dirname, '../../../src/rainier-client/init-custom-client-stores.ts'),
     clientTemplate
   );
   writeFileSync(
-    path.join(__dirname, '../../rainier-server/init-custom-server-stores.js'),
+    path.join(__dirname, '../../../src/rainier-server/init-custom-server-stores.ts'),
     serverTemplate
   );
 };

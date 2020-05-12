@@ -7,7 +7,7 @@ import { configureClientStores } from './configure-client-stores';
 import { App } from '../rainier-components/App';
 import './css-global-import';
 
-const stores = configureClientStores((window as any).__INITIAL_STATE__);
+const stores = configureClientStores(window.__INITIAL_STATE__);
 initControllers();
 
 loadableReady(() => {

@@ -1,6 +1,6 @@
-import { runWebpack } from '../../../rainier-webpack';
+import { runWebpack } from '../../rainier-webpack';
 import { program } from 'commander';
-import { getRainierRc } from '../../../rainier-rc';
+import { getRainierRc } from '../../rainier-rc';
 
 const args = program
   .option('--profile-client', 'Run webpack bundle analyzer for the client bundle', false)

@@ -1,5 +1,5 @@
 import { BaseStore } from '../base-store';
-import { LocKeys, LocKeyMap } from '../../rainier-i18n';
+import { LocKeyMap } from '../../rainier-i18n';
 import { logger } from '../../rainier-logger/logger';
 import { Event } from '../../rainier-event';
 import autoBind from 'auto-bind';
@@ -10,7 +10,7 @@ interface LocParams {
 
 export interface LocalizationState {
   strings: LocKeyMap;
-  getLoc: (locKey: LocKeys, locParams?: LocParams) => string;
+  getLoc: (locKey: string, locParams?: LocParams) => string;
 }
 
 export class LocalizationStore extends BaseStore<LocalizationState> {
@@ -21,7 +21,7 @@ export class LocalizationStore extends BaseStore<LocalizationState> {
     this.state.getLoc = this.getLoc;
   }
 
-  public getLoc(locKey: LocKeys, locParams: LocParams = {}): string {
+  public getLoc(locKey: string, locParams: LocParams = {}): string {
     const numArgs = Object.keys(locParams).length || 0;
 
     const rawLocString = this.state.strings[locKey];
