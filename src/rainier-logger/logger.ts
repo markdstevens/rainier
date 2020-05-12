@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Event } from '../rainier-event';
 
 interface SchedulerInteraction {
@@ -35,12 +34,6 @@ const loggerUtils = {
   },
 };
 
-/**
- * @description
- *   A basic logger that provides a consistent and single source of truth
- *   for logging errors, events, and regular messages. This object should
- *   always be used instead of console.*
- */
 export const logger = {
   info: (...messages: any[]): void => {
     messages.forEach((msg) => console.log(msg));

@@ -1,7 +1,7 @@
-import React, { FC, StrictMode, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, StrictMode } from 'react';
 import { useServerContextStore } from '../rainier-store/server-context-store';
 
-export const PageWrapper: FC = ({ children }) => {
+export const PageWrapper: FunctionComponent = ({ children }) => {
   const [serverContextState] = useServerContextStore();
 
   useEffect(() => {

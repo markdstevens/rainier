@@ -23,23 +23,6 @@ export const generateStoreProviders = (rainierRc: RainierRC): void => {
       importString: `import { ${providerName} } from '../rainier-store/${storeFileName}/context';`,
     }));
 
-  const applicationStoreElements = storeData.map(
-    ({ providerName, reducerName }) => `
-      React.createElement(
-        ${providerName},
-        {
-          value: ${reducerName}
-        }
-    `
-  );
-
-  let stores = '';
-  applicationStoreElements.forEach((store) => {
-    stores += `, ${store}`;
-  });
-  stores += ', children)';
-  applicationStoreElements.forEach((_) => (stores += ')'));
-
   const template = `import React, { useReducer, useEffect } from 'react';
 import { ServerContextStoreProvider } from '../rainier-store/server-context-store';
 import { AllStoreContextProvider } from '../rainier-store/all-store-context';
@@ -85,27 +68,26 @@ export const StoreProviders = ({
   });
 
   return (
-    React.createElement(
-      AllStoreContextProvider,
-      {
-        value: stores
-      },
-      React.createElement(
-        ServerContextStoreProvider,
-        {
-          value: serverContextStoreReducer
-        },
-        React.createElement(
-          LocalizationStoreProvider,
-          {
-            value: localizationStoreReducer
-          }
-          ${stores}
-        )
-      )
-    )
+    <AllStoreContextProvider value={stores}>
+      <ServerContextStoreProvider value={serverContextStoreReducer}>
+        <LocalizationStoreProvider value={localizationStoreReducer}>
+          ${storeData
+            .map(({ providerName, reducerName }) => `<${providerName} value={${reducerName}}>`)
+            .join('\n')}
+          {children}
+          ${storeData
+            .reverse()
+            .map(({ providerName }) => `</${providerName}>`)
+            .join('\n')}
+        </LocalizationStoreProvider>
+      </ServerContextStoreProvider>
+    </AllStoreContextProvider>
+  );
 };
   `;
 
-  writeFileSync(path.join(__dirname, '../../rainier-components/StoreProviders.js'), template);
+  writeFileSync(
+    path.join(__dirname, '../../../src/rainier-components/StoreProviders.tsx'),
+    template
+  );
 };
