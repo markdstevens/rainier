@@ -1,13 +1,17 @@
 import path from 'path';
-import { RainierRcTransformer } from './rainier-rc-transformer';
-import { exitAndLogIfFieldIsUndefined } from '../exit-and-log-if-field-is-undefined';
+import { RainierRCConfiguration } from '../rainierrc-configuration';
+import { RainierRC } from '../rainier-rc';
+import { fileOrDirExists } from '../helpers/file-or-dir-exists';
 
-export const cssGlobalFileTransformer: RainierRcTransformer = (rainierRC) => {
-  exitAndLogIfFieldIsUndefined(
-    rainierRC.cssGlobalFile,
-    'required field "cssGlobalFile" not found in .rainierrc'
-  );
+export class CssGlobalFileConfig extends RainierRCConfiguration {
+  public readonly configName: keyof RainierRC = 'cssGlobalFile';
+  public readonly defaultConfigValue = './src/styles/global.scss';
 
-  rainierRC.cssGlobalFile = path.join(process.cwd(), rainierRC.cssGlobalFile);
-  return rainierRC;
-};
+  transformConfig(cssGlobalFilePath: string): string {
+    return path.join(process.cwd(), cssGlobalFilePath);
+  }
+
+  validate(cssGlobalFilePath: string): void | never {
+    this.failValidationIf(!fileOrDirExists(cssGlobalFilePath));
+  }
+}

@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "license": "MIT",
-  "main": "src/index.ts",
-  "types": "src/index.d.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "ts-check": "tsc --noEmit",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
@@ -106,6 +105,7 @@
     "express-hbs": "^2.3.3",
     "express-locale": "^2.0.0",
     "fs-extra": "^9.0.0",
+    "node-sass": "^4.14.1",
     "pascal-case": "^3.1.1"
   },
   "peerDependencies": {

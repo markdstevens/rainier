@@ -1,13 +1,17 @@
 import path from 'path';
-import { RainierRcTransformer } from './rainier-rc-transformer';
-import { exitAndLogIfFieldIsUndefined } from '../exit-and-log-if-field-is-undefined';
+import { RainierRCConfiguration } from '../rainierrc-configuration';
+import { RainierRC } from '../rainier-rc';
+import { fileOrDirExists } from '../helpers/file-or-dir-exists';
 
-export const controllersDirTransformer: RainierRcTransformer = (rainierRC) => {
-  exitAndLogIfFieldIsUndefined(
-    rainierRC.controllersDir,
-    'required field "controllersDir" not found in .rainierrc'
-  );
+export class ControllersDirConfig extends RainierRCConfiguration {
+  public readonly configName: keyof RainierRC = 'controllersDir';
+  public readonly defaultConfigValue = './src/controllers';
 
-  rainierRC.controllersDir = path.join(process.cwd(), rainierRC.controllersDir);
-  return rainierRC;
-};
+  transformConfig(controllerDir: string): string {
+    return path.join(process.cwd(), controllerDir);
+  }
+
+  validate(controllerDir: string): void | never {
+    this.failValidationIf(!fileOrDirExists(controllerDir));
+  }
+}

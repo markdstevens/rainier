@@ -1,13 +1,17 @@
 import path from 'path';
-import { RainierRcTransformer } from './rainier-rc-transformer';
-import { exitAndLogIfFieldIsUndefined } from '../exit-and-log-if-field-is-undefined';
+import { RainierRCConfiguration } from '../rainierrc-configuration';
+import { RainierRC } from 'rainier-rc/rainier-rc';
+import { fileOrDirExists } from '../helpers/file-or-dir-exists';
 
-export const publicAssetsDirTransformer: RainierRcTransformer = (rainierRC) => {
-  exitAndLogIfFieldIsUndefined(
-    rainierRC.publicAssetsDir,
-    'required field "publicAssetsDir" not found in .rainierrc'
-  );
+export class PublicAssetsDirConfig extends RainierRCConfiguration {
+  public readonly configName: keyof RainierRC = 'publicAssetsDir';
+  public readonly defaultConfigValue = './src/public';
 
-  rainierRC.publicAssetsDir = path.join(process.cwd(), rainierRC.publicAssetsDir);
-  return rainierRC;
-};
+  transformConfig(publicAssetsDir: string): string {
+    return path.join(process.cwd(), publicAssetsDir);
+  }
+
+  validate(publicAssetsDir: string): void | never {
+    this.failValidationIf(!fileOrDirExists(publicAssetsDir));
+  }
+}

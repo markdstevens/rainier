@@ -1,39 +1,45 @@
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { RainierRC } from './rainier-rc';
 import {
-  publicAssetsDirTransformer,
-  controllersDirTransformer,
-  storesDirTransformer,
-  cssGlobalFileTransformer,
-  i18nDirTransformer,
+  I18NDirConfig,
+  PublicAssetsDirConfig,
+  ControllersDirConfig,
+  StoresDirConfig,
+  CssGlobalFileConfig,
 } from './transformers';
 
 export const getRainierRc = (): RainierRC => {
   const cwd = process.cwd();
   const rainierRC = `${cwd}/.rainierrc`;
 
-  if (!existsSync(rainierRC)) {
-    throw new Error(`no .rainierrc found in ${rainierRC}`);
-  }
-
-  let rainierConfig;
-  try {
-    rainierConfig = readFileSync(rainierRC);
-  } catch (e) {
-    throw new Error(`failed to read .rainierrc at "${rainierRC}"` + e);
-  }
+  let rainierConfigBuffer: Buffer | null;
+  let rainierConfig: RainierRC | { [key: string]: string } = {};
 
   try {
-    rainierConfig = JSON.parse(rainierConfig.toString('UTF-8')) as RainierRC;
+    rainierConfigBuffer = readFileSync(rainierRC);
   } catch (e) {
-    throw new Error('failed to convert .rainierrc to JSON' + e);
+    rainierConfigBuffer = null;
   }
 
-  rainierConfig = publicAssetsDirTransformer(rainierConfig);
-  rainierConfig = controllersDirTransformer(rainierConfig);
-  rainierConfig = storesDirTransformer(rainierConfig);
-  rainierConfig = cssGlobalFileTransformer(rainierConfig);
-  rainierConfig = i18nDirTransformer(rainierConfig);
+  if (rainierConfigBuffer) {
+    try {
+      rainierConfig = JSON.parse(rainierConfigBuffer.toString('UTF-8')) as RainierRC;
+    } catch (e) {
+      throw new Error('failed to convert .rainierrc to JSON' + e);
+    }
+  }
 
-  return rainierConfig;
+  [PublicAssetsDirConfig, ControllersDirConfig, StoresDirConfig, CssGlobalFileConfig, I18NDirConfig]
+    .map((Config) => new Config(rainierConfig))
+    .map(({ configName, getOrDefault, validate }) => ({
+      configName,
+      configValue: getOrDefault(),
+      validate,
+    }))
+    .forEach(({ configName, configValue, validate }) => {
+      validate(configValue);
+      rainierConfig[configName] = configValue;
+    });
+
+  return rainierConfig as RainierRC;
 };
