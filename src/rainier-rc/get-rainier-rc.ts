@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
 import { RainierRC } from './rainier-rc';
 import {
-  I18NDirConfig,
   PublicAssetsDirConfig,
   ControllersDirConfig,
   StoresDirConfig,
@@ -29,7 +28,7 @@ export const getRainierRc = (): RainierRC => {
     }
   }
 
-  [PublicAssetsDirConfig, ControllersDirConfig, StoresDirConfig, CssGlobalFileConfig, I18NDirConfig]
+  [PublicAssetsDirConfig, ControllersDirConfig, StoresDirConfig, CssGlobalFileConfig]
     .map((Config) => new Config(rainierConfig))
     .map(({ configName, getOrDefault, validate }) => ({
       configName,

@@ -5,8 +5,9 @@ import { logger } from '../rainier-logger/logger';
 export abstract class RainierRCConfiguration {
   abstract readonly configName: keyof RainierRC;
   abstract readonly defaultConfigValue: string;
+  abstract readonly isRequired: boolean;
   abstract transformConfig(configValue: string): string;
-  abstract validate(configValue: string): void | never;
+  abstract isValid(configValue: string): boolean;
 
   private rainierRc: RainierRC | { [key: string]: string };
 
@@ -15,8 +16,8 @@ export abstract class RainierRCConfiguration {
     autoBind(this);
   }
 
-  failValidationIf(failCondition: boolean): void | never {
-    if (failCondition) {
+  validate(configValue: string): void | never {
+    if (!this.isValid(configValue) && this.isRequired) {
       logger.terminalError(
         `no valid "${this.configName}" configuration found in .rainierrc. The default of "${this.defaultConfigValue}" was tried but is invalid or does not exist.`
       );

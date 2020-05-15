@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "include": ["src/rainier-cli", "src/rainier-webpack", "src/rainier-rc"],
   "compilerOptions": {
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "target": "ES2015"
   }
 }

@@ -2,16 +2,19 @@ import path from 'path';
 import { RainierRCConfiguration } from '../rainierrc-configuration';
 import { RainierRC } from '../rainier-rc';
 import { fileOrDirExists } from '../helpers/file-or-dir-exists';
+import { existsSync } from 'fs';
 
 export class StoresDirConfig extends RainierRCConfiguration {
   public readonly configName: keyof RainierRC = 'storesDir';
   public readonly defaultConfigValue = './src/stores';
+  public readonly isRequired = false;
 
   transformConfig(storesDir: string): string {
-    return path.join(process.cwd(), storesDir);
+    const resolvedStoresDir = path.join(process.cwd(), storesDir);
+    return existsSync(resolvedStoresDir) ? resolvedStoresDir : '';
   }
 
-  validate(storesDir: string): void | never {
-    this.failValidationIf(!fileOrDirExists(storesDir));
+  isValid(storesDir: string): boolean {
+    return fileOrDirExists(storesDir);
   }
 }

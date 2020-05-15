@@ -4,29 +4,39 @@ import { readdirSync, writeFileSync } from 'fs';
 import { pascalCase } from 'pascal-case';
 import { camelCase } from 'camel-case';
 
+interface StoreData {
+  importString: string;
+  pascalStoreName: string;
+  reducerName: string;
+  providerName: string;
+  camelStoreName: string;
+}
+
 export const generateStoreProviders = (rainierRc: RainierRC): void => {
-  const storeData = readdirSync(rainierRc.storesDir)
-    .map((store) => store.replace('.ts', ''))
-    .filter((store) => store.endsWith('-store'))
-    .map((store) => ({
-      storeFileName: store,
-      reducerName: `${camelCase(store)}Reducer`,
-      providerName: `${pascalCase(store)}Provider`,
-      pascalStoreName: pascalCase(store),
-      camelStoreName: camelCase(store),
-    }))
-    .map(({ storeFileName, reducerName, providerName, pascalStoreName, camelStoreName }) => ({
-      reducerName,
-      providerName,
-      camelStoreName,
-      pascalStoreName,
-      importString: `import { ${providerName} } from '../rainier-store/${storeFileName}/context';`,
-    }));
+  let storeData: StoreData[] = [];
+  if (rainierRc.storesDir) {
+    storeData = readdirSync(rainierRc.storesDir)
+      .map((store) => store.replace('.ts', ''))
+      .filter((store) => store.endsWith('-store'))
+      .map((store) => ({
+        storeFileName: store,
+        reducerName: `${camelCase(store)}Reducer`,
+        providerName: `${pascalCase(store)}Provider`,
+        pascalStoreName: pascalCase(store),
+        camelStoreName: camelCase(store),
+      }))
+      .map(({ storeFileName, reducerName, providerName, pascalStoreName, camelStoreName }) => ({
+        reducerName,
+        providerName,
+        camelStoreName,
+        pascalStoreName,
+        importString: `import { ${providerName} } from '../rainier-store/${storeFileName}/context';`,
+      }));
+  }
 
   const template = `import React, { useReducer, useEffect } from 'react';
 import { ServerContextStoreProvider } from '../rainier-store/server-context-store';
 import { AllStoreContextProvider } from '../rainier-store/all-store-context';
-import { LocalizationStoreProvider } from '../rainier-store/localization-store';
 import { debounce } from '../rainier-util';
 ${storeData.map(({ importString }) => importString).join('\n')}
 
@@ -35,16 +45,10 @@ export const StoreProviders = ({
   stores
 }) => {
   const serverContextStore = stores.get('serverContextStore');
-  const localizationStore = stores.get('localizationStore');
 
   const serverContextStoreReducer = useReducer(
     serverContextStore.updateState,
     serverContextStore.state
-  );
-
-  const localizationStoreReducer = useReducer(
-    localizationStore.updateState,
-    localizationStore.state
   );
 
   ${storeData
@@ -70,16 +74,14 @@ export const StoreProviders = ({
   return (
     <AllStoreContextProvider value={stores}>
       <ServerContextStoreProvider value={serverContextStoreReducer}>
-        <LocalizationStoreProvider value={localizationStoreReducer}>
-          ${storeData
-            .map(({ providerName, reducerName }) => `<${providerName} value={${reducerName}}>`)
-            .join('\n')}
-          {children}
-          ${storeData
-            .reverse()
-            .map(({ providerName }) => `</${providerName}>`)
-            .join('\n')}
-        </LocalizationStoreProvider>
+        ${storeData
+          .map(({ providerName, reducerName }) => `<${providerName} value={${reducerName}}>`)
+          .join('\n')}
+        {children}
+        ${storeData
+          .reverse()
+          .map(({ providerName }) => `</${providerName}>`)
+          .join('\n')}
       </ServerContextStoreProvider>
     </AllStoreContextProvider>
   );

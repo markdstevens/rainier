@@ -4,26 +4,41 @@ import { readdirSync, writeFileSync } from 'fs';
 import { pascalCase } from 'pascal-case';
 import { camelCase } from 'camel-case';
 
+interface InitStore {
+  initStore: string;
+}
+
+interface StoreData {
+  storeFileName: string;
+  pascalStoreName: string;
+  importString: string;
+  server: InitStore;
+  client: InitStore;
+}
+
 export const generateInitStores = (rainierRc: RainierRC): void => {
-  const storeData = readdirSync(rainierRc.storesDir)
-    .map((store) => store.replace('.ts', ''))
-    .filter((store) => store.endsWith('-store'))
-    .map((store) => ({
-      storeFileName: store,
-      pascalStoreName: pascalCase(store),
-      camelStoreName: camelCase(store),
-    }))
-    .map(({ storeFileName, pascalStoreName, camelStoreName }) => ({
-      storeFileName,
-      pascalStoreName,
-      importString: `import { ${pascalStoreName} } from '${rainierRc.storesDir}/${storeFileName}';`,
-      server: {
-        initStore: `${camelStoreName}: new ${pascalStoreName}({})`,
-      },
-      client: {
-        initStore: `${camelStoreName}: new ${pascalStoreName}(serializedStores.${camelStoreName}.state)`,
-      },
-    }));
+  let storeData: StoreData[] = [];
+  if (rainierRc.storesDir) {
+    storeData = readdirSync(rainierRc.storesDir)
+      .map((store) => store.replace('.ts', ''))
+      .filter((store) => store.endsWith('-store'))
+      .map((store) => ({
+        storeFileName: store,
+        pascalStoreName: pascalCase(store),
+        camelStoreName: camelCase(store),
+      }))
+      .map(({ storeFileName, pascalStoreName, camelStoreName }) => ({
+        storeFileName,
+        pascalStoreName,
+        importString: `import { ${pascalStoreName} } from '${rainierRc.storesDir}/${storeFileName}';`,
+        server: {
+          initStore: `${camelStoreName}: new ${pascalStoreName}({})`,
+        },
+        client: {
+          initStore: `${camelStoreName}: new ${pascalStoreName}(serializedStores.${camelStoreName}.state)`,
+        },
+      }));
+  }
 
   const imports = `${storeData.map(({ importString }) => importString).join('\n')}
   `;
