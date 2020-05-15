@@ -5,6 +5,7 @@ import { generateInitStores } from './generate-init-stores';
 import { generateStoreProviders } from './generate-store-providers';
 import { generateStoreDir } from './generate-store-dir';
 import { generateStoreIndexFile } from './generate-store-index-file';
+import { generateAppShell } from './generate-app-shell';
 
 export const generatePreBuildFiles = (rainierRc: RainierRC): void => {
   generateInitControllers(rainierRc);
@@ -13,4 +14,5 @@ export const generatePreBuildFiles = (rainierRc: RainierRC): void => {
   generateStoreProviders(rainierRc);
   generateStoreDir(rainierRc);
   generateStoreIndexFile(rainierRc);
+  generateAppShell(rainierRc);
 };

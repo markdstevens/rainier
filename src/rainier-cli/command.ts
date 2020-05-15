@@ -3,7 +3,7 @@ export class Command {
   public commandName: string;
   public description: string;
 
-  constructor(key: string, commandName: string, description: string) {
+  constructor(commandName: string, description: string, key: string = commandName) {
     this.key = key;
     this.commandName = commandName;
     this.description = description;

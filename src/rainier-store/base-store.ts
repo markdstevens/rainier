@@ -6,10 +6,11 @@ export abstract class BaseStore<T> implements Store<T> {
   public state: T;
   private getProxy: (state: T) => T;
 
-  constructor(initialState: T) {
+  constructor(initialState: T, defaultState: T | {} = {}) {
     autoBind(this);
     this.getProxy = bindProxyHandler((newState: T) => this.dispatch(newState));
-    this.state = this.getProxy(initialState);
+
+    this.state = this.getProxy(Object.assign({}, defaultState, initialState));
   }
 
   public updateState(prevState: T, nextState: T): T {

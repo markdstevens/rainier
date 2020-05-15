@@ -17,11 +17,14 @@ console.info(
   )
 );
 
-const commands = [new Command('webpack', 'webpack', 'compile project with webpack')];
+const commands = [
+  new Command('webpack', 'Compile project with webpack'),
+  new Command('init', 'Scaffold a new rainier project'),
+];
 
 commands.forEach((command) => {
   program.command(command.commandName, command.description, {
-    executableFile: `sub-commands/${command.key}`,
+    executableFile: `sub-commands/${command.key}/index`,
   });
 });
 

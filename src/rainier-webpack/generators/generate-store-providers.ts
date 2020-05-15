@@ -16,14 +16,14 @@ export const generateStoreProviders = (rainierRc: RainierRC): void => {
   let storeData: StoreData[] = [];
   if (rainierRc.storesDir) {
     storeData = readdirSync(rainierRc.storesDir)
-      .map((store) => store.replace('.ts', ''))
-      .filter((store) => store.endsWith('-store'))
+      .map((store) => store.match(/(?<name>.*-store)\.(?<ext>.*)/))
+      .filter((store) => store?.groups?.name)
       .map((store) => ({
-        storeFileName: store,
-        reducerName: `${camelCase(store)}Reducer`,
-        providerName: `${pascalCase(store)}Provider`,
-        pascalStoreName: pascalCase(store),
-        camelStoreName: camelCase(store),
+        storeFileName: store!!.groups!!.name,
+        reducerName: `${camelCase(store!!.groups!!.name)}Reducer`,
+        providerName: `${pascalCase(store!!.groups!!.name)}Provider`,
+        pascalStoreName: pascalCase(store!!.groups!!.name),
+        camelStoreName: camelCase(store!!.groups!!.name),
       }))
       .map(({ storeFileName, reducerName, providerName, pascalStoreName, camelStoreName }) => ({
         reducerName,

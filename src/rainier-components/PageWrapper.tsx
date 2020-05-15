@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, StrictMode } from 'react';
 import { useServerContextStore } from '../rainier-store/server-context-store';
+import { AppShellWrapper } from './app-shell';
 
 export const PageWrapper: FunctionComponent = ({ children }) => {
   const [serverContextState] = useServerContextStore();
@@ -8,5 +9,9 @@ export const PageWrapper: FunctionComponent = ({ children }) => {
     serverContextState.isServerLoad = false;
   }, []);
 
-  return <StrictMode>{children}</StrictMode>;
+  return (
+    <StrictMode>
+      <AppShellWrapper>{children}</AppShellWrapper>
+    </StrictMode>
+  );
 };

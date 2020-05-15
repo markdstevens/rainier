@@ -5,6 +5,7 @@ import {
   ControllersDirConfig,
   StoresDirConfig,
   CssGlobalFileConfig,
+  AppShellConfig,
 } from './transformers';
 
 export const getRainierRc = (): RainierRC => {
@@ -28,7 +29,13 @@ export const getRainierRc = (): RainierRC => {
     }
   }
 
-  [PublicAssetsDirConfig, ControllersDirConfig, StoresDirConfig, CssGlobalFileConfig]
+  [
+    PublicAssetsDirConfig,
+    ControllersDirConfig,
+    StoresDirConfig,
+    CssGlobalFileConfig,
+    AppShellConfig,
+  ]
     .map((Config) => new Config(rainierConfig))
     .map(({ configName, getOrDefault, validate }) => ({
       configName,

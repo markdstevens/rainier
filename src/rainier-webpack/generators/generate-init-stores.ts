@@ -20,22 +20,22 @@ export const generateInitStores = (rainierRc: RainierRC): void => {
   let storeData: StoreData[] = [];
   if (rainierRc.storesDir) {
     storeData = readdirSync(rainierRc.storesDir)
-      .map((store) => store.replace('.ts', ''))
-      .filter((store) => store.endsWith('-store'))
+      .map((store) => store.match(/(?<name>.*-store)\.(?<ext>.*)/))
+      .filter((store) => store?.groups?.name)
       .map((store) => ({
-        storeFileName: store,
-        pascalStoreName: pascalCase(store),
-        camelStoreName: camelCase(store),
+        storeFileName: store!!.groups!!.name,
+        pascalStoreName: pascalCase(store!!.groups!!.name),
+        camelStoreName: camelCase(store!!.groups!!.name),
       }))
       .map(({ storeFileName, pascalStoreName, camelStoreName }) => ({
         storeFileName,
         pascalStoreName,
         importString: `import { ${pascalStoreName} } from '${rainierRc.storesDir}/${storeFileName}';`,
         server: {
-          initStore: `${camelStoreName}: new ${pascalStoreName}({})`,
+          initStore: `${camelStoreName}: new ${pascalStoreName}({}, ${pascalStoreName}.getDefaultState ? ${pascalStoreName}.getDefaultState() : {})`,
         },
         client: {
-          initStore: `${camelStoreName}: new ${pascalStoreName}(serializedStores.${camelStoreName}.state)`,
+          initStore: `${camelStoreName}: new ${pascalStoreName}(serializedStores.${camelStoreName}.state, ${pascalStoreName}.getDefaultState ? ${pascalStoreName}.getDefaultState() : {})`,
         },
       }));
   }
