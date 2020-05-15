@@ -105,7 +105,6 @@
     "express": "^4.17.1",
     "express-hbs": "^2.3.3",
     "express-locale": "^2.0.0",
-    "fs-extra": "^9.0.0",
     "node-sass": "^4.14.1",
     "pascal-case": "^3.1.1"
   },

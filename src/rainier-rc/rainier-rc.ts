@@ -3,4 +3,5 @@ export interface RainierRC {
   controllersDir: string;
   storesDir: string;
   cssGlobalFile: string;
+  appShell: string;
 }
