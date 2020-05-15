@@ -3,5 +3,4 @@ export interface RainierRC {
   controllersDir: string;
   storesDir: string;
   cssGlobalFile: string;
-  i18nDir: string;
 }

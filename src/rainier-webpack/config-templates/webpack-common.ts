@@ -1,3 +1,4 @@
+import path from 'path';
 import { CustomWebpackOptions } from '../custom-webpack-options';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
@@ -11,9 +12,10 @@ export const webpackCommon = (
   return {
     mode: options.mode,
     output: {
+      path: `${process.env.ORIGINAL_DIR}/dist`,
       publicPath: '/',
     },
-    watch: options.isDev && !(options.profileClient || options.profileServer),
+    devtool: options.isDev ? 'inline-cheap-module-source-map' : false,
     watchOptions: {
       ignored: /rainier-(.*)/,
       aggregateTimeout: 300,
@@ -28,23 +30,20 @@ export const webpackCommon = (
           use: ['url-loader'],
         },
         {
-          test: /\.tsx?$/,
+          test: /\.(j|t)sx?$/,
+          include: [/rainier\/src/, path.join(process.env.ORIGINAL_DIR || process.cwd(), 'src')],
           use: [
             {
               loader: 'babel-loader',
               options: {
                 plugins: [
-                  '@loadable/babel-plugin',
                   '@babel/plugin-transform-runtime',
                   '@babel/plugin-proposal-optional-chaining',
                   ['@babel/plugin-proposal-decorators', { legacy: true }],
                   ['@babel/plugin-proposal-class-properties', { loose: true }],
+                  '@loadable/babel-plugin',
                 ],
-                presets: [
-                  ['@babel/env', { modules: false }],
-                  ['@babel/preset-react'],
-                  ['@babel/preset-typescript'],
-                ],
+                presets: [['@babel/env'], ['@babel/preset-react'], ['@babel/preset-typescript']],
               },
             },
           ],
@@ -82,7 +81,6 @@ export const webpackCommon = (
       new webpack.DefinePlugin({
         __DEV__: options.isDev,
         __CONTROLLERS_DIR__: JSON.stringify(rainierRc.controllersDir),
-        __I18N_DIR__: JSON.stringify(rainierRc.i18nDir),
       }),
       new MiniCssExtractPlugin({
         filename: options.isDev ? '[name].css' : '[name]-[contenthash].css',

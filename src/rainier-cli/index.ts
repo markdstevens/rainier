@@ -5,6 +5,8 @@ import clear from 'clear';
 import { program } from 'commander';
 import { Command } from './command';
 
+process.env.ORIGINAL_DIR = process.cwd();
+
 clear();
 
 console.info(

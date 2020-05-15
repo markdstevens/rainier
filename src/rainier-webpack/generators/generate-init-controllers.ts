@@ -6,11 +6,11 @@ import { RainierRC } from '../../rainier-rc';
 export const generateInitControllers = ({ controllersDir }: RainierRC): void => {
   const controllers = readdirSync(controllersDir);
   const controllerData = controllers
-    .filter((controller) => controller.includes('-controller'))
-    .map((controller) => controller.replace('.ts', ''))
+    .map((controller) => controller.match(/(?<name>.*-controller)\.(?<ext>.*)/))
+    .filter((controller) => controller?.groups?.name)
     .map((controller) => ({
-      controllerName: pascalCase(controller),
-      controllerFileName: controller,
+      controllerName: pascalCase(controller!!.groups!!.name),
+      controllerFileName: controller!!.groups!!.name,
     }));
 
   const imports = `${controllerData

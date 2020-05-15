@@ -59,8 +59,11 @@ export const plugins = {
       new webpack.DefinePlugin({
         __BROWSER__: false,
       }),
-      new CopyWebpackPlugin([{ from: rainierRc.publicAssetsDir }]),
     ];
+
+    if (rainierRc.publicAssetsDir) {
+      plugins.push(new CopyWebpackPlugin([{ from: rainierRc.publicAssetsDir }]));
+    }
 
     if (options.profileServer) {
       plugins.push(new BundleAnalyzerPlugin());
@@ -77,8 +80,9 @@ export const plugins = {
       if (!options.profileClient && !options.profileServer) {
         plugins.push(
           new NodemonPlugin({
-            script: `${process.cwd()}/dist/server.js`,
-            watch: [`${process.cwd()}/dist/*.server.bundle.js`],
+            script: `${process.env.ORIGINAL_DIR}/dist/server.js`,
+            watch: [`${process.env.ORIGINAL_DIR}/dist/`],
+            ext: 'ts,tsx,js,jsx,json,mjs',
           })
         );
       }

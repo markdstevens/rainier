@@ -1,5 +1,4 @@
 import { ServerContextStore, ServerContextState } from '../rainier-store/server-context-store';
-import { LocalizationStore, LocalizationState } from '../rainier-store/localization-store';
 import { StoreMap } from '../rainier-store/types';
 import { Request } from 'express';
 
@@ -22,6 +21,5 @@ export function initPlatformStores(request: Request): StoreMap {
 
   return {
     serverContextStore: new ServerContextStore({ ...serverContextStoreState }),
-    localizationStore: new LocalizationStore({} as LocalizationState),
   };
 }

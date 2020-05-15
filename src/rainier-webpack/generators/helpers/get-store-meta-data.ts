@@ -13,15 +13,23 @@ interface StoreMetaData {
 }
 
 export const getStoreMetaData = (rainierRc: RainierRC): StoreMetaData[] => {
-  return readdirSync(rainierRc.storesDir)
-    .map((store) => store.replace('.ts', ''))
-    .filter((store) => store.endsWith('-store'))
-    .map((store) => ({
-      storeFileName: store,
-      reducerName: `${camelCase(store)}Reducer`,
-      providerName: `${pascalCase(store)}Provider`,
-      contextName: `${pascalCase(store)}Context`,
-      pascalStoreName: pascalCase(store),
-      camelStoreName: camelCase(store),
-    }));
+  if (rainierRc.storesDir) {
+    return readdirSync(rainierRc.storesDir)
+      .map((store) => store.match(/(?<name>.*-store)\.(?<ext>.*)/))
+      .map((store) => store?.groups?.name)
+      .filter((storeName) => storeName)
+      .map((store) => {
+        const nonNullStore = store as string;
+        return {
+          storeFileName: nonNullStore,
+          reducerName: `${camelCase(nonNullStore)}Reducer`,
+          providerName: `${pascalCase(nonNullStore)}Provider`,
+          contextName: `${pascalCase(nonNullStore)}Context`,
+          pascalStoreName: pascalCase(nonNullStore),
+          camelStoreName: camelCase(nonNullStore),
+        };
+      });
+  }
+
+  return [];
 };

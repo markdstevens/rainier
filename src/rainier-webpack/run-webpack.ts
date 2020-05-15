@@ -13,36 +13,18 @@ export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC):
   options.isDev = options.mode === 'development';
   options.isProd = options.mode === 'production';
 
-  const clientConfig = webpackClient(options, rainierRC);
-  const serverConfig = webpackServer(options, rainierRC);
+  const compiler = webpack([webpackClient(options, rainierRC), webpackServer(options, rainierRC)]);
 
-  webpack(clientConfig, (err, stats) => {
-    if (err || stats.hasErrors()) {
-      console.info(
-        chalk.red(
-          stats.toString({
-            chunks: false, // Makes the build much quieter
-            colors: true, // Shows colors in the console
-          })
-        )
-      );
-    }
-    console.info(chalk.green('Client webpacking complete!'));
-  });
-
-  webpack(serverConfig, (err, stats) => {
-    if (err || stats.hasErrors()) {
-      // eslint-disable-next-line
-      console.info(
-        chalk.red(
-          stats.toString({
-            chunks: false, // Makes the build much quieter
-            colors: true, // Shows colors in the console
-          })
-        )
-      );
-    }
-
-    console.info(chalk.green('Server webpacking complete!'));
-  });
+  if (options.isDev) {
+    compiler.watch(
+      {
+        aggregateTimeout: 300,
+        poll: true,
+        ignored: /node_modules/,
+      },
+      (err, stats) => {
+        console.log(chalk.green('finished recompiling!'));
+      }
+    );
+  }
 };
