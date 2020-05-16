@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import { webpackServer, webpackClient } from './config-templates';
 import { CustomWebpackOptions } from './custom-webpack-options';
-import chalk from 'chalk';
 import { RainierRC } from '../rainier-rc';
 
 export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC): void => {
@@ -23,7 +22,20 @@ export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC):
         ignored: /node_modules/,
       },
       (err, stats) => {
-        console.log(chalk.green('finished recompiling!'));
+        if (err) {
+          console.error(err.stack || err);
+          return;
+        }
+
+        const info = stats.toJson();
+
+        if (stats.hasErrors()) {
+          console.error(info.errors);
+        }
+
+        // if (stats.hasWarnings()) {
+        //   console.warn(info.warnings);
+        // }
       }
     );
   } else {

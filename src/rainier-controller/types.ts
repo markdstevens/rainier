@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { LoadableComponent } from '@loadable/component';
 import { Stores } from '../rainier-store/types';
-import { Controller } from './controller';
 
 export interface FetchOptions {
   params: Params;
@@ -16,24 +15,52 @@ interface Params {
   [key: string]: string | number | boolean;
 }
 
-export interface RegisteredControllerAction {
-  name: string;
+export interface RegisteredControllerViewAction {
   paths: string[];
   fullPaths: string[];
-  view: LoadableComponent<{}> | undefined;
-  method: ((fetchOptions: FetchOptions) => Promise<void>) | undefined;
-  controller: RegisteredController;
+  View: LoadableComponent<{}>;
+  method?: ((fetchOptions: FetchOptions) => Promise<void>) | undefined;
+}
+
+export interface RegisteredControllerApiAction {
+  paths: string[];
+  fullPaths: string[];
+  method: (fetchOptions: FetchOptions) => Promise<void>;
+}
+
+export type RegisteredControllerAction =
+  | RegisteredControllerViewAction
+  | RegisteredControllerApiAction;
+
+export interface ControllerAndAction {
+  controller?: RegisteredController;
+  action?: RegisteredControllerAction;
+}
+
+export interface ControllerViewActionRoute {
+  fullPath: string;
+  View: FC | LoadableComponent<{}> | undefined;
+}
+
+export interface ControllerViewAction {
+  paths: string[];
+  View: LoadableComponent<{}>;
+  method?: ((fetchOptions: FetchOptions) => Promise<any>) | undefined;
+}
+
+export interface ControllerApiAction {
+  paths: string[];
+  method: (fetchOptions: FetchOptions) => Promise<any>;
+}
+
+export type ControllerAction = ControllerViewAction | ControllerApiAction;
+
+export interface Controller {
+  basePath: string;
+  actions: ControllerAction[];
 }
 
 export interface RegisteredController {
-  instance: Controller | undefined;
-  name: string;
   basePath: string;
   actions: RegisteredControllerAction[];
-}
-
-export interface ReactRouterAction {
-  basePath: string;
-  path: string;
-  View: FC | LoadableComponent<{}> | undefined;
 }
