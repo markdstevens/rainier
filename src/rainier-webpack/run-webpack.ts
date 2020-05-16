@@ -26,5 +26,7 @@ export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC):
         console.log(chalk.green('finished recompiling!'));
       }
     );
+  } else {
+    compiler.run((err, stats) => console.log(stats.toJson()));
   }
 };

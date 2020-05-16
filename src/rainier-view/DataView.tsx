@@ -14,7 +14,7 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
     const stores = useContext(AllStoreContext);
     const [serverContextState] = useServerContextStore();
 
-    const action = controllerRegistry.findActionByFullPath(location.pathname);
+    const { controller, action } = controllerRegistry.findControllerAndAction(location.pathname);
 
     if (!action?.method) {
       logger.event(
@@ -28,8 +28,8 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
         params,
         stores,
         fullPaths: action?.fullPaths ?? [],
-        actionPaths: action?.paths ?? [],
-        controllerPath: action?.controller.basePath ?? '/',
+        actionPaths: action?.path ?? [],
+        controllerPath: controller?.basePath ?? '/',
         isServer: typeof window === 'undefined',
       }),
       [location]

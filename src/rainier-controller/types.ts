@@ -6,7 +6,7 @@ import { Controller } from './controller';
 export interface FetchOptions {
   params: Params;
   stores: Stores;
-  actionPaths: string[];
+  actionPaths: string[] | string;
   fullPaths: string[];
   controllerPath: string;
   isServer: boolean;
@@ -36,35 +36,4 @@ export interface ReactRouterAction {
   basePath: string;
   path: string;
   View: FC | LoadableComponent<{}> | undefined;
-}
-
-export interface ControllerRegistry {
-  findControllerByControllerName: (controllerName: string) => RegisteredController | undefined;
-  findActionByControllerAndActionName: (
-    controllerName: string,
-    actionName: string
-  ) => RegisteredControllerAction | undefined;
-  findActionByFullPath: (fullPath: string) => RegisteredControllerAction | undefined;
-  findViewByControllerAndActionName: (
-    controllerName: string,
-    actionName: string
-  ) => LoadableComponent<{}> | undefined;
-  findControllerByAction: (
-    action: RegisteredControllerAction | undefined
-  ) => RegisteredController | undefined;
-
-  registerAndGetNewController: (name: string, basePath: string) => RegisteredController;
-  registerViewForAction: (
-    controllerName: string,
-    actionName: string,
-    loadableComponent: LoadableComponent<{}>
-  ) => void;
-  registerAndGetNewActionForController: (
-    controllerName: string,
-    actionName: string,
-    actionPaths: string[]
-  ) => RegisteredControllerAction;
-  initializeOrGetController: (controllerName: string) => RegisteredController;
-  getRegisteredControllers: () => RegisteredController[];
-  getActionMetaDataForReactRouter: () => ReactRouterAction[];
 }

@@ -1,21 +1,21 @@
-import { RegisteredControllerAction } from '../rainier-controller';
+import { ControllerAndAction } from '../rainier-controller';
 import { getMatchFromAction } from '../rainier-util';
 import { Stores } from '../rainier-store/types';
 import { logger } from '../rainier-logger/logger';
 import { Event } from '../rainier-event';
 
 export async function fetchInitialRouteData(
-  controllerAction: RegisteredControllerAction | undefined,
+  { controller, action }: ControllerAndAction,
   stores: Stores,
   pathname: string
-): Promise<void> {
-  if (controllerAction) {
-    await controllerAction.method?.({
-      params: getMatchFromAction(controllerAction, pathname)?.params ?? {},
+): Promise<any> {
+  if (controller) {
+    return await action?.method?.({
+      params: getMatchFromAction(action, pathname)?.params ?? {},
       stores,
-      controllerPath: controllerAction.controller.basePath,
-      actionPaths: controllerAction.paths,
-      fullPaths: controllerAction.fullPaths,
+      controllerPath: controller.basePath,
+      actionPaths: action.path,
+      fullPaths: action.fullPaths,
       isServer: true,
     });
   } else {

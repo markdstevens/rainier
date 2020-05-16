@@ -1,5 +1,4 @@
 import { Event } from '../rainier-event';
-import chalk from 'chalk';
 
 interface SchedulerInteraction {
   id: number;
@@ -45,7 +44,7 @@ export const logger = {
   },
 
   warn: (msg: string): void => {
-    console.warn(chalk.yellow(msg));
+    console.warn(msg);
   },
 
   error: (err: string, e: Error): void => {
@@ -53,7 +52,7 @@ export const logger = {
   },
 
   terminalError: (msg: string): never => {
-    console.error(chalk.red(msg) + `\n`);
+    console.error(msg + `\n`);
     process.exit(1);
   },
 

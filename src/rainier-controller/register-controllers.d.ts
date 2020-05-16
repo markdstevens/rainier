@@ -4,4 +4,4 @@
  * in the host app. Controllers from the host app are retrieved via the
  * "controllersDir" configuration option in the .rainierrc file.
  */
-export declare function initControllers(): void;
+export declare function registerControllers(): void;

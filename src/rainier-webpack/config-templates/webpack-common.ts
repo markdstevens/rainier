@@ -81,6 +81,8 @@ export const webpackCommon = (
       new webpack.DefinePlugin({
         __DEV__: options.isDev,
         __CONTROLLERS_DIR__: JSON.stringify(rainierRc.controllersDir),
+        __RAINIER_ROOT__: JSON.stringify(path.join(__dirname, '../../../')),
+        __APP_ROOT__: JSON.stringify(process.env.ORIGINAL_DIR),
       }),
       new MiniCssExtractPlugin({
         filename: options.isDev ? '[name].css' : '[name]-[contenthash].css',

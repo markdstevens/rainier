@@ -2,7 +2,7 @@ import { CustomWebpackOptions } from '../custom-webpack-options';
 import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+// import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import NodemonPlugin from 'nodemon-webpack-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
@@ -41,14 +41,14 @@ export const plugins = {
     }
 
     if (options.isProd) {
-      plugins.push(
-        ...[
-          new WorkboxWebpackPlugin.InjectManifest({
-            swSrc: '../../rainier-public/service-worker.js',
-            swDest: 'service-worker.js',
-          }),
-        ]
-      );
+      // plugins.push(
+      //   ...[
+      //     new WorkboxWebpackPlugin.InjectManifest({
+      //       swSrc: '../../rainier-public/service-worker.js',
+      //       swDest: 'service-worker.js',
+      //     }),
+      //   ]
+      // );
     }
 
     return plugins;
