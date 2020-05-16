@@ -1,32 +1,66 @@
-import { Controller, ControllerActionRoute, ControllerAndAction } from './controller';
+import {
+  Controller,
+  ControllerViewActionRoute,
+  ControllerAndAction,
+  ControllerAction,
+  ControllerViewAction,
+  RegisteredController,
+  RegisteredControllerAction,
+  RegisteredControllerViewAction,
+} from './types';
 import { dataView } from '../rainier-view';
 
-const registeredControllers: Controller[] = [];
+const isControllerViewAction = (action: ControllerAction): action is ControllerViewAction =>
+  (action as ControllerViewAction).View !== undefined;
+
+const registeredControllers: RegisteredController[] = [];
 
 export const controllerRegistry = {
+  isRegisteredControllerViewAction: (
+    action?: RegisteredControllerAction
+  ): action is RegisteredControllerViewAction =>
+    (action as RegisteredControllerViewAction)?.View !== undefined,
+
   register: (controller: Controller): void => {
-    registeredControllers.push(controller);
+    const registeredControllerActions: RegisteredControllerAction[] = [];
     controller.actions.forEach((action) => {
-      action.fullPaths = [];
-      action.path = typeof action.path === 'string' ? [action.path] : action.path;
-      action.path.map((p) =>
-        action.fullPaths.push((controller.basePath + p).replace(/\/\//g, '/'))
-      );
+      const registeredControllerAction = {
+        paths: action.paths,
+        fullPaths: action.paths.map((path) => (controller.basePath + path).replace(/\/\//g, '/')),
+        method: action.method,
+      };
+
+      if (isControllerViewAction(action)) {
+        Object.assign(registeredControllerAction, {
+          View: action.View,
+        });
+      }
+
+      registeredControllerActions.push(registeredControllerAction as RegisteredControllerAction);
+    });
+
+    registeredControllers.push({
+      basePath: controller.basePath,
+      actions: registeredControllerActions,
     });
   },
 
-  getAllActions: (): ControllerActionRoute[] => {
-    const actions: ControllerActionRoute[] = [];
+  getAllViewActions: (): ControllerViewActionRoute[] => {
+    const actions: ControllerViewActionRoute[] = [];
+
     registeredControllers
       .map((controller) => controller.actions)
       .forEach((controllerActions) => {
-        controllerActions.forEach(({ fullPaths, View, method }) => {
-          fullPaths.forEach((fullPath) =>
-            actions.push({
-              fullPath,
-              View: View ? (method ? dataView(View) : View) : undefined,
-            })
-          );
+        controllerActions.forEach((action) => {
+          if (controllerRegistry.isRegisteredControllerViewAction(action)) {
+            const { fullPaths, View, method } = action;
+            fullPaths.forEach((fullPath) =>
+              actions.push({
+                fullPath,
+                View: View ? (method ? dataView(View) : View) : undefined,
+              })
+            );
+          }
         });
       });
 

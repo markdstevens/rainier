@@ -14,7 +14,7 @@ export async function fetchInitialRouteData(
       params: getMatchFromAction(action, pathname)?.params ?? {},
       stores,
       controllerPath: controller.basePath,
-      actionPaths: action.path,
+      actionPaths: action.paths,
       fullPaths: action.fullPaths,
       isServer: true,
     });

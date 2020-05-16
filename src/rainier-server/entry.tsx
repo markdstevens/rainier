@@ -36,10 +36,7 @@ server.get('*', async (req, res) => {
   registerControllers();
 
   const controllerAndAction = controllerRegistry.findControllerAndAction(req.path);
-
   const data = await fetchInitialRouteData(controllerAndAction, stores, req.path);
-
-  console.log(data);
 
   const html = renderToString(
     extractor.collectChunks(
@@ -55,7 +52,7 @@ server.get('*', async (req, res) => {
     extractor.getScriptTags(),
   ];
 
-  if (!data) {
+  if (controllerRegistry.isRegisteredControllerViewAction(controllerAndAction.action)) {
     res.render('index', {
       stores: JSON.stringify(stores) || '',
       htmlWebpackPlugin: {

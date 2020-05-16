@@ -28,7 +28,7 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
         params,
         stores,
         fullPaths: action?.fullPaths ?? [],
-        actionPaths: action?.path ?? [],
+        actionPaths: action?.paths ?? [],
         controllerPath: controller?.basePath ?? '/',
         isServer: typeof window === 'undefined',
       }),
