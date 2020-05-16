@@ -15,7 +15,7 @@ export const App: FunctionComponent<AppProps> = ({ stores }: AppProps) => {
     <StoreProviders stores={stores}>
       <PageWrapper>
         <Switch>
-          {controllerRegistry.getActionMetaDataForReactRouter().map(({ path, View }) => (
+          {controllerRegistry.getAllActions().map(({ fullPath: path, View }) => (
             <Route
               key={path}
               path={path}

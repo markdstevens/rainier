@@ -19,7 +19,7 @@
     {{/unless}}
     <script>window.__INITIAL_STATE__= {{{ stores }}}</script>
     {{{ htmlWebpackPlugin.options.scriptTags }}}
-    {{#unless htmlWebpackPlugin.options.isDev }}
+    {{#if htmlWebpackPlugin.options.includeServiceWorker }}
       <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
@@ -27,6 +27,6 @@
           });
         }
       </script>
-    {{/unless}}
+    {{/if}}
   </body>
 </html>

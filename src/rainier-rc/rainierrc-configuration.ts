@@ -1,6 +1,6 @@
 import { RainierRC } from './rainier-rc';
 import autoBind from 'auto-bind';
-import { logger } from '../rainier-logger/logger';
+import chalk from 'chalk';
 
 export abstract class RainierRCConfiguration {
   abstract readonly configName: keyof RainierRC;
@@ -18,9 +18,12 @@ export abstract class RainierRCConfiguration {
 
   validate(configValue: string): void | never {
     if (!this.isValid(configValue) && this.isRequired) {
-      logger.terminalError(
-        `no valid "${this.configName}" configuration found in .rainierrc. The default of "${this.defaultConfigValue}" was tried but is invalid or does not exist.`
+      console.error(
+        chalk.red(
+          `no valid "${this.configName}" configuration found in .rainierrc. The default of "${this.defaultConfigValue}" was tried but is invalid or does not exist.`
+        )
       );
+      process.exit(1);
     }
   }
 

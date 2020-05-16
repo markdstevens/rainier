@@ -1,29 +1,25 @@
-import autoBind from 'auto-bind';
-import { controllerRegistry } from './controller-registry';
-import { Event } from '../rainier-event';
-import { logger } from '../rainier-logger/logger';
+import { FC } from 'react';
+import { LoadableComponent } from '@loadable/component';
+import { FetchOptions } from './types';
 
-export abstract class Controller {
-  [key: string]: any;
-  public path = '';
+export interface ControllerAndAction {
+  controller?: Controller;
+  action?: ControllerAction;
+}
 
-  constructor(name: string) {
-    autoBind(this);
+export interface ControllerActionRoute {
+  fullPath: string;
+  View: FC | LoadableComponent<{}> | undefined;
+}
 
-    const controller = controllerRegistry.findControllerByControllerName(name);
-    if (controller) {
-      controller.instance = this;
-      controller?.actions.forEach((action) => {
-        action.method = controller.instance?.[action.name];
-      });
-    } else {
-      logger.event(
-        Event.CONTROLLER_NOT_INITIALIZED,
-        `no controller in the controller registry matches ${this.path}`,
-        {
-          path: this.path,
-        }
-      );
-    }
-  }
+export interface ControllerAction {
+  path: string | string[];
+  fullPaths: string[];
+  View: LoadableComponent<{}>;
+  method: ((fetchOptions: FetchOptions) => Promise<any>) | undefined;
+}
+
+export interface Controller {
+  basePath: string;
+  actions: ControllerAction[];
 }

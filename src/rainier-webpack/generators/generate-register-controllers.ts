@@ -3,7 +3,7 @@ import { readdirSync, writeFileSync } from 'fs';
 import { pascalCase } from 'pascal-case';
 import { RainierRC } from '../../rainier-rc';
 
-export const generateInitControllers = ({ controllersDir }: RainierRC): void => {
+export const generateRegisterControllers = ({ controllersDir }: RainierRC): void => {
   const controllers = readdirSync(controllersDir);
   const controllerData = controllers
     .map((controller) => controller.match(/(?<name>.*-controller)\.(?<ext>.*)/))
@@ -16,22 +16,21 @@ export const generateInitControllers = ({ controllersDir }: RainierRC): void => 
   const imports = `${controllerData
     .map(
       ({ controllerName, controllerFileName }) =>
-        `import { ${controllerName} } from '${controllersDir}/${controllerFileName}';`
+        `import ${controllerName} from '${controllersDir}/${controllerFileName}';`
     )
     .join('\n')}`;
 
   const template = `${imports}
-  export function initControllers() {
-    return [
-      ${controllerData
-        .map(({ controllerName }) => `new ${controllerName}('${controllerName}')`)
-        .join(', ')}
-    ];
+  import { controllerRegistry } from './controller-registry';
+  export function registerControllers() {
+    ${controllerData
+      .map(({ controllerName }) => `controllerRegistry.register(${controllerName});`)
+      .join('\n')}
   }
   `;
 
   writeFileSync(
-    path.join(__dirname, '../../../src/rainier-controller/init-controllers.ts'),
+    path.join(__dirname, '../../../src/rainier-controller/register-controllers.ts'),
     template
   );
 };
