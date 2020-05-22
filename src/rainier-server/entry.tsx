@@ -27,16 +27,15 @@ server.set('views', path.join(__RAINIER_ROOT__, 'src/rainier-server/views'));
 server.use(express.static(`${__APP_ROOT__}/dist`));
 server.use(createLocaleMiddleware());
 
+registerControllers();
+
 server.get('*', async (req, res) => {
-  console.log(req.url);
   const extractor = new ChunkExtractor({ statsFile });
 
   const stores = configureServerStores(req);
 
-  registerControllers();
-
-  const controllerAndAction = controllerRegistry.findControllerAndAction(req.path);
-  const data = await fetchInitialRouteData(controllerAndAction, stores, req.path);
+  const controllerMatch = controllerRegistry.findControllerAndAction(req.path);
+  await fetchInitialRouteData(controllerMatch, stores, req.path);
 
   const html = renderToString(
     extractor.collectChunks(
@@ -52,26 +51,22 @@ server.get('*', async (req, res) => {
     extractor.getScriptTags(),
   ];
 
-  if (controllerRegistry.isRegisteredControllerViewAction(controllerAndAction.action)) {
-    res.render('index', {
-      stores: JSON.stringify(stores) || '',
-      htmlWebpackPlugin: {
-        options: {
-          title: 'React App',
-          isDev: __DEV__,
-          scriptTags,
-          linkTags,
-          styleTags,
-          html,
-          includeServiceWorker: __DEV__ && hasServiceWorker,
-          hasManifest,
-        },
+  res.render('index', {
+    stores: JSON.stringify(stores) || '',
+    htmlWebpackPlugin: {
+      options: {
+        title: 'React App',
+        isDev: __DEV__,
+        scriptTags,
+        linkTags,
+        styleTags,
+        html,
+        includeServiceWorker: __DEV__ && hasServiceWorker,
+        hasManifest,
       },
-      inject: false,
-    });
-  } else {
-    res.send(data);
-  }
+    },
+    inject: false,
+  });
 });
 
 server.listen(3000, () => logger.info('App listening on port 3000!'));
