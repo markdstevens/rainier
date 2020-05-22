@@ -32,9 +32,12 @@ export type RegisteredControllerAction =
   | RegisteredControllerViewAction
   | RegisteredControllerApiAction;
 
-export interface ControllerAndAction {
+export interface ControllerMatchResponse {
   controller?: RegisteredController;
-  action?: RegisteredControllerAction;
+  method?: (fetchOptions: FetchOptions) => Promise<any>;
+  params: Params;
+  paths: string[];
+  fullPaths: string[];
 }
 
 export interface ControllerViewActionRoute {
@@ -57,10 +60,10 @@ export type ControllerAction = ControllerViewAction | ControllerApiAction;
 
 export interface Controller {
   basePath: string;
-  actions: ControllerAction[];
+  actions?: ControllerAction[];
 }
 
 export interface RegisteredController {
   basePath: string;
-  actions: RegisteredControllerAction[];
+  actions?: RegisteredControllerAction[];
 }

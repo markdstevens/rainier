@@ -1,14 +1,15 @@
 import {
   Controller,
   ControllerViewActionRoute,
-  ControllerAndAction,
   ControllerAction,
   ControllerViewAction,
   RegisteredController,
   RegisteredControllerAction,
   RegisteredControllerViewAction,
+  ControllerMatchResponse,
 } from './types';
 import { dataView } from '../rainier-view';
+import { getMatchFromAction, removeSlashes } from '../rainier-util';
 
 const isControllerViewAction = (action: ControllerAction): action is ControllerViewAction =>
   (action as ControllerViewAction).View !== undefined;
@@ -23,10 +24,14 @@ export const controllerRegistry = {
 
   register: (controller: Controller): void => {
     const registeredControllerActions: RegisteredControllerAction[] = [];
-    controller.actions.forEach((action) => {
+    const normalizedBasePath = '/' + removeSlashes(controller.basePath);
+
+    controller.actions?.forEach((action) => {
+      const normalizedPaths = action.paths.map((path) => '/' + removeSlashes(path));
+
       const registeredControllerAction = {
-        paths: action.paths,
-        fullPaths: action.paths.map((path) => (controller.basePath + path).replace(/\/\//g, '/')),
+        paths: normalizedPaths,
+        fullPaths: normalizedPaths.map((normalizedPath) => normalizedBasePath + normalizedPath),
         method: action.method,
       };
 
@@ -40,7 +45,7 @@ export const controllerRegistry = {
     });
 
     registeredControllers.push({
-      basePath: controller.basePath,
+      basePath: normalizedBasePath,
       actions: registeredControllerActions,
     });
   },
@@ -48,34 +53,54 @@ export const controllerRegistry = {
   getAllViewActions: (): ControllerViewActionRoute[] => {
     const actions: ControllerViewActionRoute[] = [];
 
-    registeredControllers
-      .map((controller) => controller.actions)
-      .forEach((controllerActions) => {
-        controllerActions.forEach((action) => {
-          if (controllerRegistry.isRegisteredControllerViewAction(action)) {
-            const { fullPaths, View, method } = action;
-            fullPaths.forEach((fullPath) =>
-              actions.push({
-                fullPath,
-                View: View ? (method ? dataView(View) : View) : undefined,
-              })
-            );
-          }
-        });
+    registeredControllers.forEach((controller) => {
+      controller?.actions?.forEach((action) => {
+        if (controllerRegistry.isRegisteredControllerViewAction(action)) {
+          const { fullPaths, View, method } = action;
+          fullPaths.forEach((fullPath) =>
+            actions.push({
+              fullPath,
+              View: View ? (method ? dataView(View) : View) : undefined,
+            })
+          );
+        }
       });
+    });
 
     return actions;
   },
 
-  findControllerAndAction: (fullPath: string): ControllerAndAction => {
-    const controller = registeredControllers.find((registeredController) =>
-      fullPath.startsWith(registeredController.basePath)
-    );
-    const action = controller?.actions.find((action) => action.fullPaths.includes(fullPath));
+  findControllerAndAction: (fullPath: string): ControllerMatchResponse => {
+    // remove trailing slash if there is one
+    const normalizedFullPath = fullPath.replace('/$', '');
 
+    const controller = registeredControllers.find(({ basePath }) => {
+      const action = normalizedFullPath.replace(basePath, '');
+      return basePath + action === normalizedFullPath && (action === '' || action.startsWith('/'));
+    });
+
+    const actionAndMatch = controller?.actions
+      ?.map((action) => ({
+        action,
+        match: getMatchFromAction(action, fullPath),
+      }))
+      .find(({ match }) => match?.isExact);
+
+    if (controller && !actionAndMatch) {
+      // default controller handling for non-matching requests
+    }
+
+    if (!controller && !actionAndMatch) {
+      // no match and no default controller handler..fall back to default controller if there is one
+    }
+
+    // a full controller-action match was found..yay!
     return {
       controller,
-      action,
+      method: actionAndMatch?.action?.method,
+      params: actionAndMatch?.match?.params ?? {},
+      paths: actionAndMatch?.action?.paths || [],
+      fullPaths: actionAndMatch?.action?.fullPaths || [],
     };
   },
 };

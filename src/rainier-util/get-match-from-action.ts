@@ -1,10 +1,11 @@
 import { matchPath, match } from 'react-router-dom';
 
 export const getMatchFromAction = (
-  action: { fullPaths: string[] },
-  fullPath: string
+  action: { fullPaths: string[]; paths: string[] },
+  fullPath: string,
+  pathsKey: 'fullPaths' | 'paths' = 'fullPaths'
 ): match<{}> | null | undefined =>
-  action.fullPaths
+  action[pathsKey]
     .map((path) =>
       matchPath(fullPath, {
         path,

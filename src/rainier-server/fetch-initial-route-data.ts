@@ -1,27 +1,26 @@
-import { ControllerAndAction } from '../rainier-controller';
-import { getMatchFromAction } from '../rainier-util';
+import { ControllerMatchResponse } from '../rainier-controller';
 import { Stores } from '../rainier-store/types';
 import { logger } from '../rainier-logger/logger';
 import { Event } from '../rainier-event';
 
 export async function fetchInitialRouteData(
-  { controller, action }: ControllerAndAction,
+  { controller, method, params, paths, fullPaths }: ControllerMatchResponse,
   stores: Stores,
   pathname: string
 ): Promise<any> {
   if (controller) {
-    return await action?.method?.({
-      params: getMatchFromAction(action, pathname)?.params ?? {},
+    return await method?.({
+      params,
       stores,
       controllerPath: controller.basePath,
-      actionPaths: action.paths,
-      fullPaths: action.fullPaths,
+      actionPaths: paths,
+      fullPaths,
       isServer: true,
     });
   } else {
     logger.event(
       Event.NO_CONTROLLER_ACTION_FOUND,
-      `no controller mapping exists found for ${pathname}`,
+      `no controller mapping exists found for ${pathname}. Falling back to default controller.`,
       {
         path: pathname,
       }

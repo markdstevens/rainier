@@ -14,9 +14,11 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
     const stores = useContext(AllStoreContext);
     const [serverContextState] = useServerContextStore();
 
-    const { controller, action } = controllerRegistry.findControllerAndAction(location.pathname);
+    const { controller, method, fullPaths, paths } = controllerRegistry.findControllerAndAction(
+      location.pathname
+    );
 
-    if (!action?.method) {
+    if (!method) {
       logger.event(
         Event.NO_CONTROLLER_ACTION_FOUND,
         `no controller action found for ${location.pathname}`
@@ -27,8 +29,8 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
       () => ({
         params,
         stores,
-        fullPaths: action?.fullPaths ?? [],
-        actionPaths: action?.paths ?? [],
+        fullPaths: fullPaths ?? [],
+        actionPaths: paths ?? [],
         controllerPath: controller?.basePath ?? '/',
         isServer: typeof window === 'undefined',
       }),
@@ -37,8 +39,8 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
 
     useEffect(() => {
       (async function (): Promise<void> {
-        if (action?.method && !serverContextState.isServerLoad) {
-          await action?.method(clientFetchParams);
+        if (method && !serverContextState.isServerLoad) {
+          await method(clientFetchParams);
         }
       })();
     }, [clientFetchParams]);
