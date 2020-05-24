@@ -29,7 +29,7 @@ server.use(createLocaleMiddleware());
 
 registerControllers();
 
-server.get(['*', '/'], async (req, res) => {
+server.get('*', async (req, res) => {
   const extractor = new ChunkExtractor({ statsFile });
 
   const stores = configureServerStores(req);
