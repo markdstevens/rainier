@@ -34,7 +34,7 @@ server.get('*', async (req, res) => {
 
   const stores = configureServerStores(req);
 
-  const controllerMatch = controllerRegistry.findControllerAndAction(req.path);
+  const controllerMatch = controllerRegistry.findControllerAndRoute(req.path);
   await fetchInitialRouteData(controllerMatch, stores, req.path);
 
   const html = renderToString(

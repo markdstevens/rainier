@@ -5,7 +5,7 @@ import { Stores } from '../rainier-store/types';
 export interface FetchOptions {
   params: Params;
   stores: Stores;
-  actionPaths: string[] | string;
+  routePaths: string[] | string;
   fullPaths: string[];
   controllerPath: string;
   isServer: boolean;
@@ -15,7 +15,7 @@ interface Params {
   [key: string]: string | number | boolean;
 }
 
-export interface RegisteredControllerViewAction {
+export interface RegisteredControllerViewRoute {
   paths: string[];
   fullPaths: string[];
   View: LoadableComponent<{}>;
@@ -23,15 +23,15 @@ export interface RegisteredControllerViewAction {
   isDefault: boolean;
 }
 
-export interface RegisteredControllerApiAction {
+export interface RegisteredControllerApiRoute {
   paths: string[];
   fullPaths: string[];
   method: (fetchOptions: FetchOptions) => Promise<void>;
 }
 
-export type RegisteredControllerAction =
-  | RegisteredControllerViewAction
-  | RegisteredControllerApiAction;
+export type RegisteredControllerRoute =
+  | RegisteredControllerViewRoute
+  | RegisteredControllerApiRoute;
 
 export interface ControllerMatchResponse {
   controller?: RegisteredController;
@@ -41,32 +41,32 @@ export interface ControllerMatchResponse {
   fullPaths: string[];
 }
 
-export interface ControllerViewActionRoute {
-  fullPath: string;
-  View: FC | LoadableComponent<{}> | undefined;
-}
-
-export interface ControllerViewAction {
+export interface ControllerViewRoute {
   paths?: string[];
-  View: LoadableComponent<{}>;
+  View: Promise<any>;
   method?: ((fetchOptions: FetchOptions) => Promise<any>) | undefined;
 }
 
-export interface ControllerApiAction {
+export interface ControllerApiRoute {
   paths: string[];
   method: (fetchOptions: FetchOptions) => Promise<any>;
 }
 
-export type ControllerAction = ControllerViewAction | ControllerApiAction;
+export type ControllerRoute = ControllerViewRoute | ControllerApiRoute;
 
 export interface Controller {
   basePath?: string;
-  actions?: ControllerAction[];
+  routes?: ControllerRoute[];
 }
 
 export interface RegisteredController {
   basePath: string;
-  actions: RegisteredControllerAction[];
+  routes: RegisteredControllerRoute[];
   isDefault: boolean;
   isHome: boolean;
+}
+
+export interface ReactRouterControllerData {
+  fullPath: string;
+  View: LoadableComponent<{}> | FC | undefined;
 }
