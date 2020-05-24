@@ -9,6 +9,16 @@ export async function fetchInitialRouteData(
   pathname: string
 ): Promise<any> {
   if (controller) {
+    if (controller.isDefault) {
+      logger.event(
+        Event.NO_CONTROLLER_FOUND,
+        `no controller mapping exists found for ${pathname}. Falling back to default controller.`,
+        {
+          path: pathname,
+        }
+      );
+    }
+
     return await method?.({
       params,
       stores,
@@ -18,12 +28,8 @@ export async function fetchInitialRouteData(
       isServer: true,
     });
   } else {
-    logger.event(
-      Event.NO_CONTROLLER_ACTION_FOUND,
-      `no controller mapping exists found for ${pathname}. Falling back to default controller.`,
-      {
-        path: pathname,
-      }
-    );
+    logger.event(Event.CONTROLLER_FALLBACK_FAILURE, `Fallback to default controller failed`, {
+      path: pathname,
+    });
   }
 }
