@@ -20,6 +20,7 @@ export interface RegisteredControllerViewAction {
   fullPaths: string[];
   View: LoadableComponent<{}>;
   method?: ((fetchOptions: FetchOptions) => Promise<void>) | undefined;
+  isDefault: boolean;
 }
 
 export interface RegisteredControllerApiAction {
@@ -46,7 +47,7 @@ export interface ControllerViewActionRoute {
 }
 
 export interface ControllerViewAction {
-  paths: string[];
+  paths?: string[];
   View: LoadableComponent<{}>;
   method?: ((fetchOptions: FetchOptions) => Promise<any>) | undefined;
 }
@@ -59,11 +60,13 @@ export interface ControllerApiAction {
 export type ControllerAction = ControllerViewAction | ControllerApiAction;
 
 export interface Controller {
-  basePath: string;
+  basePath?: string;
   actions?: ControllerAction[];
 }
 
 export interface RegisteredController {
   basePath: string;
-  actions?: RegisteredControllerAction[];
+  actions: RegisteredControllerAction[];
+  isDefault: boolean;
+  isHome: boolean;
 }

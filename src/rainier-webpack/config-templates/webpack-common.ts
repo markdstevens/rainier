@@ -13,7 +13,7 @@ export const webpackCommon = (
     mode: options.mode,
     output: {
       path: `${process.env.ORIGINAL_DIR}/dist`,
-      publicPath: '/',
+      publicPath: '/public/',
     },
     devtool: options.isDev ? 'inline-cheap-module-source-map' : false,
     watchOptions: {

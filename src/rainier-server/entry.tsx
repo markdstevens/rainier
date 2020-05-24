@@ -24,12 +24,12 @@ server.engine('hbs', hbs.express4());
 server.set('view engine', 'hbs');
 server.set('views', path.join(__RAINIER_ROOT__, 'src/rainier-server/views'));
 
-server.use(express.static(`${__APP_ROOT__}/dist`));
+server.use('/public', express.static(`${__APP_ROOT__}/dist`));
 server.use(createLocaleMiddleware());
 
 registerControllers();
 
-server.get('*', async (req, res) => {
+server.get(['*', '/'], async (req, res) => {
   const extractor = new ChunkExtractor({ statsFile });
 
   const stores = configureServerStores(req);
@@ -61,7 +61,7 @@ server.get('*', async (req, res) => {
         linkTags,
         styleTags,
         html,
-        includeServiceWorker: __DEV__ && hasServiceWorker,
+        includeServiceWorker: !__DEV__ && hasServiceWorker,
         hasManifest,
       },
     },
