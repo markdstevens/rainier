@@ -23,7 +23,7 @@ export async function fetchInitialRouteData(
       params,
       stores,
       controllerPath: controller.basePath,
-      actionPaths: paths,
+      routePaths: paths,
       fullPaths,
       isServer: true,
     });

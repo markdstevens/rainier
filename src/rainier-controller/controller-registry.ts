@@ -1,15 +1,15 @@
 import {
   Controller,
-  ControllerViewActionRoute,
-  ControllerAction,
-  ControllerViewAction,
+  ControllerRoute,
+  ControllerViewRoute,
   RegisteredController,
-  RegisteredControllerAction,
-  RegisteredControllerViewAction,
+  RegisteredControllerRoute,
+  RegisteredControllerViewRoute,
   ControllerMatchResponse,
+  ReactRouterControllerData,
 } from './types';
 import { dataView } from '../rainier-view';
-import { getMatchFromAction, trimSlashes } from '../rainier-util';
+import { getMatchFromRoute, trimSlashes } from '../rainier-util';
 
 const getNormalizedBasePath = (
   isDefaultController: boolean,
@@ -22,19 +22,19 @@ const getNormalizedBasePath = (
   return '/' + trimSlashes(basePath);
 };
 
-const isControllerViewAction = (action: ControllerAction): action is ControllerViewAction =>
-  (action as ControllerViewAction).View !== undefined;
+const isControllerViewRoute = (route: ControllerRoute): route is ControllerViewRoute =>
+  (route as ControllerViewRoute).View !== undefined;
 
 const registeredControllers: RegisteredController[] = [];
 
 export const controllerRegistry = {
-  isRegisteredControllerViewAction: (
-    action?: RegisteredControllerAction
-  ): action is RegisteredControllerViewAction =>
-    (action as RegisteredControllerViewAction)?.View !== undefined,
+  isRegisteredControllerViewRoute: (
+    route?: RegisteredControllerRoute
+  ): route is RegisteredControllerViewRoute =>
+    (route as RegisteredControllerViewRoute)?.View !== undefined,
 
   register: (controller: Controller): void => {
-    const registeredControllerActions: RegisteredControllerAction[] = [];
+    const registeredControllerRoutes: RegisteredControllerRoute[] = [];
 
     // when no base path is specified, default to "home" controller
     if (!controller.basePath) {
@@ -50,47 +50,49 @@ export const controllerRegistry = {
       controller.basePath
     );
 
-    controller.actions?.forEach((action) => {
-      const isDefaultAction = !action.paths;
-      const normalizedPaths = action.paths?.map((path) => '/' + trimSlashes(path)) ?? ['/*'];
+    controller.routes?.forEach((route) => {
+      const isDefaultRoute = !route.paths;
+      const normalizedPaths = route.paths?.map((path) => '/' + trimSlashes(path)) ?? ['/*'];
 
-      const registeredControllerAction = {
+      const registeredControllerRoute = {
         paths: normalizedPaths,
         fullPaths: normalizedPaths?.map(
-          (normalizedActionPath) => normalizedBasePath + normalizedActionPath
+          (normalizedRoutePath) => normalizedBasePath + normalizedRoutePath
         ),
-        method: action.method,
-        isDefault: isDefaultAction,
+        method: route.method,
+        isDefault: isDefaultRoute,
       };
 
-      if (isControllerViewAction(action)) {
-        Object.assign(registeredControllerAction, {
-          View: action.View,
+      if (isControllerViewRoute(route)) {
+        Object.assign(registeredControllerRoute, {
+          View: route.View,
         });
       }
 
-      registeredControllerActions.push(registeredControllerAction as RegisteredControllerAction);
+      console.log(registeredControllerRoute);
+
+      registeredControllerRoutes.push(registeredControllerRoute as RegisteredControllerRoute);
     });
 
     registeredControllers.push({
       basePath: normalizedBasePath,
-      actions: registeredControllerActions,
+      routes: registeredControllerRoutes,
       isDefault: isDefaultController,
       isHome: isHomeController,
     });
   },
 
-  getAllViewActions: (): ControllerViewActionRoute[] => {
-    const actions: ControllerViewActionRoute[] = [];
+  getAllViewRoutes: (): ReactRouterControllerData[] => {
+    const routes: ReactRouterControllerData[] = [];
     const defaultController = controllerRegistry.defaultController;
 
-    const addViewActions = (controller: RegisteredController): void => {
-      controller?.actions?.forEach((action) => {
-        if (controllerRegistry.isRegisteredControllerViewAction(action)) {
-          const { fullPaths, View, method } = action;
+    const addViewRoutes = (controller: RegisteredController): void => {
+      controller?.routes?.forEach((route) => {
+        if (controllerRegistry.isRegisteredControllerViewRoute(route)) {
+          const { fullPaths, View, method } = route;
           console.log(fullPaths);
           fullPaths.forEach((fullPath) =>
-            actions.push({
+            routes.push({
               fullPath,
               View: View ? (method ? dataView(View) : View) : undefined,
             })
@@ -101,11 +103,11 @@ export const controllerRegistry = {
 
     registeredControllers
       .filter((controller) => !controller.isDefault)
-      .forEach((controller) => addViewActions(controller));
+      .forEach((controller) => addViewRoutes(controller));
 
-    defaultController && addViewActions(defaultController);
+    defaultController && addViewRoutes(defaultController);
 
-    return actions;
+    return routes;
   },
 
   get defaultController(): RegisteredController | undefined {
@@ -116,7 +118,7 @@ export const controllerRegistry = {
     return registeredControllers.find((controller) => controller.isHome);
   },
 
-  findControllerAndAction: (fullPath: string): ControllerMatchResponse => {
+  findControllerAndRoute: (fullPath: string): ControllerMatchResponse => {
     // remove trailing slash if there is one
     const normalizedFullPath = fullPath.replace('/$', '');
 
@@ -135,27 +137,27 @@ export const controllerRegistry = {
         registeredControllers
           .filter(({ isDefault, isHome }) => !isDefault && !isHome)
           .find(({ basePath }) => {
-            const action = normalizedFullPath.replace(basePath, '');
+            const route = normalizedFullPath.replace(basePath, '');
 
             return (
-              basePath + action === normalizedFullPath && (action === '' || action.startsWith('/'))
+              basePath + route === normalizedFullPath && (route === '' || route.startsWith('/'))
             );
           }) || defaultController;
     }
 
-    const actionAndMatch = controller?.actions
-      ?.map((action) => ({
-        action,
-        match: getMatchFromAction(action, fullPath),
+    const routeAndMatch = controller?.routes
+      ?.map((route) => ({
+        route,
+        match: getMatchFromRoute(route, fullPath),
       }))
       .find(({ match }) => match?.isExact);
 
     return {
       controller,
-      method: actionAndMatch?.action?.method,
-      params: actionAndMatch?.match?.params ?? {},
-      paths: actionAndMatch?.action?.paths || [],
-      fullPaths: actionAndMatch?.action?.fullPaths || [],
+      method: routeAndMatch?.route?.method,
+      params: routeAndMatch?.match?.params ?? {},
+      paths: routeAndMatch?.route?.paths || [],
+      fullPaths: routeAndMatch?.route?.fullPaths || [],
     };
   },
 };

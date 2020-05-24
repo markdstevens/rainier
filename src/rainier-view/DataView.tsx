@@ -14,14 +14,14 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
     const stores = useContext(AllStoreContext);
     const [serverContextState] = useServerContextStore();
 
-    const { controller, method, fullPaths, paths } = controllerRegistry.findControllerAndAction(
+    const { controller, method, fullPaths, paths } = controllerRegistry.findControllerAndRoute(
       location.pathname
     );
 
     if (!method) {
       logger.event(
-        Event.NO_CONTROLLER_ACTION_FOUND,
-        `no controller action found for ${location.pathname}`
+        Event.NO_CONTROLLER_ROUTE_FOUND,
+        `no controller route found for ${location.pathname}`
       );
     }
 
@@ -30,7 +30,7 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
         params,
         stores,
         fullPaths: fullPaths ?? [],
-        actionPaths: paths ?? [],
+        routePaths: paths ?? [],
         controllerPath: controller?.basePath ?? '/',
         isServer: typeof window === 'undefined',
       }),
