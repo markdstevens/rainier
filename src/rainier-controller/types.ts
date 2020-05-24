@@ -43,7 +43,7 @@ export interface ControllerMatchResponse {
 
 export interface ControllerViewRoute {
   paths?: string[];
-  View: Promise<any>;
+  View: LoadableComponent<{}> | FC | undefined;
   method?: ((fetchOptions: FetchOptions) => Promise<any>) | undefined;
 }
 
