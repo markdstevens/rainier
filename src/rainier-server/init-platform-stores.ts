@@ -1,5 +1,5 @@
-import { ServerContextStore, ServerContextState } from '../rainier-store/server-context-store';
-import { StoreMap } from '../rainier-store/types';
+import { ServerContextStore, ServerContextState } from 'rainier-store/server-context-store';
+import { StoreMap } from 'rainier-store/types';
 import { Request } from 'express';
 
 interface ExpressLocale {

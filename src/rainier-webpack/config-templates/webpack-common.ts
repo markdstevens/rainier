@@ -2,16 +2,31 @@ import path from 'path';
 import { CustomWebpackOptions } from '../custom-webpack-options';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
-import { RainierRC } from '../../rainier-rc';
+import { RainierRC } from 'rainier-rc';
+import { existsSync } from 'fs';
+import convertPathsToAliases from 'convert-tsconfig-paths-to-webpack-aliases';
+
+const aliasesFromClientTsconfig = function (): any {
+  const tsconfigPath = `${process.env.ORIGINAL_DIR}/tsconfig.json`;
+
+  if (existsSync(tsconfigPath)) {
+    const tsconfig = require(tsconfigPath);
+    return convertPathsToAliases(tsconfig, process.env.ORIGINAL_DIR);
+  }
+
+  return {};
+};
 
 export const webpackCommon = (
   options: CustomWebpackOptions,
   rainierRc: RainierRC
 ): webpack.Configuration => {
+  const appRoot = process.env.ORIGINAL_DIR ?? process.cwd();
+
   return {
     mode: options.mode,
     output: {
-      path: `${process.env.ORIGINAL_DIR}/dist`,
+      path: `${appRoot}/dist`,
       publicPath: '/public/',
     },
     devtool: options.isDev ? 'inline-cheap-module-source-map' : false,
@@ -21,6 +36,24 @@ export const webpackCommon = (
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css', '.scss', '.png'],
+      alias: Object.assign(
+        {
+          'rainier-cli': path.join(__dirname, '../../rainier-cli/'),
+          'rainier-client': path.join(__dirname, '../../rainier-client/'),
+          'rainier-components': path.join(__dirname, '../../rainier-components/'),
+          'rainier-controller': path.join(__dirname, '../../rainier-controller/'),
+          'rainier-event': path.join(__dirname, '../../rainier-event/'),
+          'rainier-logger': path.join(__dirname, '../../rainier-logger/'),
+          'rainier-public': path.join(__dirname, '../../rainier-public/'),
+          'rainier-rc': path.join(__dirname, '../../rainier-rc/'),
+          'rainier-server': path.join(__dirname, '../../rainier-server/'),
+          'rainier-store': path.join(__dirname, '../../rainier-store/'),
+          'rainier-util': path.join(__dirname, '../../rainier-util/'),
+          'rainier-view': path.join(__dirname, '../../rainier-view/'),
+          'rainier-webpack': path.join(__dirname, '../../rainier-webpack/'),
+        },
+        aliasesFromClientTsconfig()
+      ),
     },
     module: {
       rules: [
@@ -30,7 +63,7 @@ export const webpackCommon = (
         },
         {
           test: /\.(j|t)sx?$/,
-          include: [/rainier\/src/, path.join(process.env.ORIGINAL_DIR || process.cwd(), 'src')],
+          include: [/rainier\/dist/, path.join(process.env.ORIGINAL_DIR || process.cwd(), 'src')],
           use: [
             {
               loader: 'babel-loader',
@@ -81,7 +114,7 @@ export const webpackCommon = (
         __DEV__: options.isDev,
         __CONTROLLERS_DIR__: JSON.stringify(rainierRc.controllersDir),
         __RAINIER_ROOT__: JSON.stringify(path.join(__dirname, '../../../')),
-        __APP_ROOT__: JSON.stringify(process.env.ORIGINAL_DIR),
+        __APP_ROOT__: JSON.stringify(appRoot),
         __APP_SHELL__: JSON.stringify(rainierRc.appShell),
         __STORES_DIR__: JSON.stringify(rainierRc.storesDir),
       }),

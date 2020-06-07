@@ -1,4 +1,4 @@
-import { Event } from '../rainier-event';
+import { Event } from 'rainier-event';
 
 interface SchedulerInteraction {
   id: number;

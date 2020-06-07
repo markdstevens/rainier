@@ -1,5 +1,4 @@
 import { RainierRC } from './rainier-rc';
-import autoBind from 'auto-bind';
 import chalk from 'chalk';
 
 export abstract class RainierRCConfiguration {
@@ -13,7 +12,9 @@ export abstract class RainierRCConfiguration {
 
   constructor(rainierRc: RainierRC | {}) {
     this.rainierRc = rainierRc;
-    autoBind(this);
+
+    this.validate = this.validate.bind(this);
+    this.getOrDefault = this.getOrDefault.bind(this);
   }
 
   validate(configValue: string): void | never {

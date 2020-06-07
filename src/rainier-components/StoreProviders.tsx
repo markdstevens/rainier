@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
-import { AllStoreContextProvider } from '../rainier-store/all-store-context';
-import { debounce } from '../rainier-util';
-import { Stores, IStore } from '../rainier-store';
+import { AllStoreContext } from 'rainier-store/all-store-context';
+import { debounce } from 'rainier-util';
+import { Stores, IStore } from 'rainier-store';
 
 type StoreProvidersProps = React.PropsWithChildren<{
   stores: Stores;
@@ -21,9 +21,10 @@ export const StoreProviders: React.FC<StoreProvidersProps> = ({
 
   for (const store of Object.values(stores.stores)) {
     storeData.push({
-      store,
-      reducer: useReducer(store.updateState, store), // eslint-disable-line
+      // eslint-disable-next-line
+      reducer: useReducer(store.updateState, store),
       Provider: store.context.Provider,
+      store,
     });
   }
 
@@ -31,7 +32,7 @@ export const StoreProviders: React.FC<StoreProvidersProps> = ({
     storeData.forEach(({ store, reducer }) => {
       store.dispatch = debounce(reducer[1], 10);
     });
-  });
+  }, []);
 
   const tree = storeData
     .reverse()
@@ -40,5 +41,5 @@ export const StoreProviders: React.FC<StoreProvidersProps> = ({
       children
     );
 
-  return <AllStoreContextProvider value={stores}>{tree}</AllStoreContextProvider>;
+  return <AllStoreContext.Provider value={stores}>{tree}</AllStoreContext.Provider>;
 };

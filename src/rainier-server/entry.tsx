@@ -7,10 +7,10 @@ import { ChunkExtractor } from '@loadable/server';
 import createLocaleMiddleware from 'express-locale';
 import { configureServerStores } from './configure-server-stores';
 import { fetchInitialRouteData } from './fetch-initial-route-data';
-import { controllerRegistry } from '../rainier-controller/controller-registry';
-import { registerControllers } from '../rainier-controller/register-controllers';
-import { logger } from '../rainier-logger/logger';
-import { App } from '../rainier-components/App';
+import { controllerRegistry } from 'rainier-controller/controller-registry';
+import { registerControllers } from 'rainier-controller/register-controllers';
+import { logger } from 'rainier-logger/logger';
+import { App } from 'rainier-components/App';
 import hbs from 'express-hbs';
 import { existsSync } from 'fs';
 
@@ -22,7 +22,7 @@ const server = express();
 
 server.engine('hbs', hbs.express4());
 server.set('view engine', 'hbs');
-server.set('views', path.join(__RAINIER_ROOT__, 'src/rainier-server/views'));
+server.set('views', path.join(__RAINIER_ROOT__, 'dist/rainier-server/views'));
 
 server.use('/public', express.static(`${__APP_ROOT__}/dist`));
 server.use(createLocaleMiddleware());

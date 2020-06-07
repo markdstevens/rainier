@@ -8,7 +8,7 @@ import NodemonPlugin from 'nodemon-webpack-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import { RainierRC } from '../../rainier-rc';
+import { RainierRC } from 'rainier-rc';
 
 export const plugins = {
   client: (options: CustomWebpackOptions, rainierRc: RainierRC): webpack.Plugin[] => {

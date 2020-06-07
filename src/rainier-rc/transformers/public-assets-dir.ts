@@ -1,6 +1,6 @@
 import path from 'path';
 import { RainierRCConfiguration } from '../rainierrc-configuration';
-import { RainierRC } from 'rainier-rc/rainier-rc';
+import { RainierRC } from '../rainier-rc';
 import { fileOrDirExists } from '../helpers/file-or-dir-exists';
 import { existsSync } from 'fs';
 
