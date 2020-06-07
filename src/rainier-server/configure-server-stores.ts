@@ -1,7 +1,8 @@
 import { Request } from 'express';
-import { Stores } from '../rainier-store/types';
-import { initCustomServerStores } from './init-custom-server-stores';
+import { Stores, StoreConstructorFunction } from '../rainier-store/types';
 import { initPlatformStores } from './init-platform-stores';
+
+const { default: initCustomServerStores } = require(`${__STORES_DIR__}/init/server-stores`);
 
 export function configureServerStores(req: Request): Stores {
   const stores = {
@@ -13,8 +14,14 @@ export function configureServerStores(req: Request): Stores {
     {},
     {
       stores,
-      get: function <T>(storeName: string): T {
-        return (this.stores[storeName] as unknown) as T;
+      get: function <T extends StoreConstructorFunction>(storeClass: T): InstanceType<T> | never {
+        const store = Object.values(stores).find((store) => store instanceof storeClass);
+
+        if (!store) {
+          throw new Error(`No store named "${storeClass.name}" was found`);
+        }
+
+        return store as InstanceType<T>;
       },
     }
   );

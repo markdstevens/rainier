@@ -10,7 +10,7 @@
     "cli:compile": "tsc -p tsconfig-cli.json",
     "clean": "rimraf dist",
     "nuke": "yarn clean && rimraf node_modules && rm yarn.lock && yarn",
-    "build": "yarn clean && yarn cli:compile"
+    "build": "yarn clean && yarn ts-check && yarn cli:compile"
   },
   "husky": {
     "hooks": {

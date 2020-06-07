@@ -15,6 +15,7 @@ export const plugins = {
     const plugins = [
       new webpack.DefinePlugin({
         __BROWSER__: true,
+        __CSS_GLOBAL_FILE__: JSON.stringify(rainierRc.cssGlobalFile),
       }),
       new HtmlWebpackPlugin({
         title: 'React App',

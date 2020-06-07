@@ -1,6 +1,6 @@
-export const todoStore = `import { BaseStore } from "rainier";
+export const todoStore = `import { Store } from "rainier";
 
-export class TodoStore extends BaseStore {
+export class TodoStore extends Store {
   async populateTodos() {
     this.state.todos = [];
     this.state.todos.push("wake up");

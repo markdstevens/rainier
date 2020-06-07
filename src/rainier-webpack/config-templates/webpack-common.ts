@@ -3,7 +3,6 @@ import { CustomWebpackOptions } from '../custom-webpack-options';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
 import { RainierRC } from '../../rainier-rc';
-import { GeneratePrebuildFilesPlugin } from '../custom-plugins/generate-prebuild-files-plugin';
 
 export const webpackCommon = (
   options: CustomWebpackOptions,
@@ -83,11 +82,12 @@ export const webpackCommon = (
         __CONTROLLERS_DIR__: JSON.stringify(rainierRc.controllersDir),
         __RAINIER_ROOT__: JSON.stringify(path.join(__dirname, '../../../')),
         __APP_ROOT__: JSON.stringify(process.env.ORIGINAL_DIR),
+        __APP_SHELL__: JSON.stringify(rainierRc.appShell),
+        __STORES_DIR__: JSON.stringify(rainierRc.storesDir),
       }),
       new MiniCssExtractPlugin({
         filename: options.isDev ? '[name].css' : '[name]-[contenthash].css',
       }),
-      new GeneratePrebuildFilesPlugin(rainierRc),
     ],
   };
 };
