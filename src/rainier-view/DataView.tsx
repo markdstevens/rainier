@@ -1,10 +1,10 @@
 import React, { FC, useContext, useMemo, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { LoadableComponent } from '@loadable/component';
-import { Event } from '../rainier-event';
-import { logger } from '../rainier-logger/logger';
-import { controllerRegistry } from '../rainier-controller/controller-registry';
-import { AllStoreContext, useStore, ServerContextStore } from '../rainier-store';
+import { Event } from 'rainier-event';
+import { logger } from 'rainier-logger/logger';
+import { controllerRegistry } from 'rainier-controller/controller-registry';
+import { AllStoreContext, useStore, ServerContextStore } from 'rainier-store';
 
 export const dataView = (View: LoadableComponent<{}>): FC => {
   const DataView = (): JSX.Element => {

@@ -1,10 +1,14 @@
-export const todoStore = `import { Store } from "rainier";
+export const todoStoreJs = `import { Store } from "rainier";
 
 export class TodoStore extends Store {
+  static getDefaultState() {
+    return {
+      todos: [],
+    };
+  }
+
   async populateTodos() {
-    this.state.todos = [];
     this.state.todos.push("wake up");
-    this.state.todos.push("drink coffee");
 
     await this.sleep(2000);
     this.state.todos.push("take shower");
@@ -17,5 +21,4 @@ export class TodoStore extends Store {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   }
 }
-
 `;

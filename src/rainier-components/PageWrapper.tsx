@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, StrictMode } from 'react';
-import { useStore, ServerContextStore } from '../rainier-store';
+import { useStore, ServerContextStore } from 'rainier-store';
+
 const { default: AppShell } = require(__APP_SHELL__);
 
 export const PageWrapper: FunctionComponent = ({ children }) => {

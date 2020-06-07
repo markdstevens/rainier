@@ -4,7 +4,7 @@ import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import { webpackCommon } from './webpack-common';
 import { CustomWebpackOptions } from '../custom-webpack-options';
 import { entry, target, output, plugins } from '../config-partials';
-import { RainierRC } from '../../rainier-rc';
+import { RainierRC } from 'rainier-rc';
 
 export const webpackClient = (
   options: CustomWebpackOptions,

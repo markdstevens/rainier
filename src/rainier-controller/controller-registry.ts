@@ -1,15 +1,13 @@
+import { Controller, ControllerRoute, ControllerViewRoute } from './types';
 import {
-  Controller,
-  ControllerRoute,
-  ControllerViewRoute,
   RegisteredController,
   RegisteredControllerRoute,
   RegisteredControllerViewRoute,
   ControllerMatchResponse,
   ReactRouterControllerData,
-} from './types';
-import { dataView } from '../rainier-view';
-import { getMatchFromRoute, trimSlashes } from '../rainier-util';
+} from './internal-types';
+import { dataView } from 'rainier-view';
+import { getMatchFromRoute, trimSlashes } from 'rainier-util';
 
 const getNormalizedBasePath = (
   isDefaultController: boolean,
@@ -25,15 +23,15 @@ const getNormalizedBasePath = (
 const isControllerViewRoute = (route: ControllerRoute): route is ControllerViewRoute =>
   (route as ControllerViewRoute).View !== undefined;
 
+const isRegisteredControllerViewRoute = (
+  route?: RegisteredControllerRoute
+): route is RegisteredControllerViewRoute =>
+  (route as RegisteredControllerViewRoute)?.View !== undefined;
+
 const registeredControllers: RegisteredController[] = [];
 
 export const controllerRegistry = {
-  isRegisteredControllerViewRoute: (
-    route?: RegisteredControllerRoute
-  ): route is RegisteredControllerViewRoute =>
-    (route as RegisteredControllerViewRoute)?.View !== undefined,
-
-  register: (controller: Controller): void => {
+  registerController: (controller: Controller): void => {
     const registeredControllerRoutes: RegisteredControllerRoute[] = [];
 
     // when no base path is specified, default to "home" controller
@@ -86,7 +84,7 @@ export const controllerRegistry = {
 
     const addViewRoutes = (controller: RegisteredController): void => {
       controller?.routes?.forEach((route) => {
-        if (controllerRegistry.isRegisteredControllerViewRoute(route)) {
+        if (isRegisteredControllerViewRoute(route)) {
           const { fullPaths, View, method } = route;
           fullPaths.forEach((fullPath) =>
             routes.push({

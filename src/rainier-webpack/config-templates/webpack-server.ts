@@ -3,7 +3,7 @@ import merge from 'webpack-merge';
 import { CustomWebpackOptions } from '../custom-webpack-options';
 import { webpackCommon } from './webpack-common';
 import { entry, target, output, plugins } from '../config-partials';
-import { RainierRC } from '../../rainier-rc';
+import { RainierRC } from 'rainier-rc';
 
 export const webpackServer = (
   options: CustomWebpackOptions,

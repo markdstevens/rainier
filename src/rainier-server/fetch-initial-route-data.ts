@@ -1,7 +1,7 @@
-import { ControllerMatchResponse } from '../rainier-controller';
-import { Stores } from '../rainier-store/types';
-import { logger } from '../rainier-logger/logger';
-import { Event } from '../rainier-event';
+import { ControllerMatchResponse } from 'rainier-controller/internal-types';
+import { Stores } from 'rainier-store/types';
+import { logger } from 'rainier-logger/logger';
+import { Event } from 'rainier-event';
 
 export async function fetchInitialRouteData(
   { controller, method, params, paths, fullPaths }: ControllerMatchResponse,

@@ -1,28 +1,15 @@
 import { Request } from 'express';
-import { Stores, StoreConstructorFunction } from '../rainier-store/types';
+import { Stores, StoreMap } from 'rainier-store/types';
 import { initPlatformStores } from './init-platform-stores';
+import { wrapStoresWithGetter } from 'rainier-store/to-stores-obj';
 
 const { default: initCustomServerStores } = require(`${__STORES_DIR__}/init/server-stores`);
 
 export function configureServerStores(req: Request): Stores {
-  const stores = {
+  const stores: StoreMap = {
     ...initCustomServerStores(),
     ...initPlatformStores(req),
   };
 
-  return Object.assign(
-    {},
-    {
-      stores,
-      get: function <T extends StoreConstructorFunction>(storeClass: T): InstanceType<T> | never {
-        const store = Object.values(stores).find((store) => store instanceof storeClass);
-
-        if (!store) {
-          throw new Error(`No store named "${storeClass.name}" was found`);
-        }
-
-        return store as InstanceType<T>;
-      },
-    }
-  );
+  return wrapStoresWithGetter(stores);
 }

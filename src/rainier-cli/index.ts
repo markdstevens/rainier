@@ -18,7 +18,7 @@ console.info(
 );
 
 const commands = [
-  new Command('webpack', 'Compile project with webpack'),
+  new Command('build', 'Compile project with webpack'),
   new Command('init', 'Scaffold a new rainier project'),
 ];
 
