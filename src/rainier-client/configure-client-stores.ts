@@ -1,6 +1,7 @@
-import { Stores, StoreMap } from '../rainier-store/types';
-import { initCustomClientStores } from './init-custom-client-stores';
+import { Stores, StoreMap, StoreConstructorFunction } from '../rainier-store/types';
 import { initPlatformClientStores } from './init-platform-stores';
+
+const { default: initCustomClientStores } = require(`${__STORES_DIR__}/init/client-stores`);
 
 export function configureClientStores(serializedStores: { stores: StoreMap }): Stores {
   const stores = {
@@ -12,8 +13,14 @@ export function configureClientStores(serializedStores: { stores: StoreMap }): S
     {},
     {
       stores,
-      get: function <T>(storeName: string): T {
-        return (this.stores[storeName] as unknown) as T;
+      get: function <T extends StoreConstructorFunction>(storeClass: T): InstanceType<T> | never {
+        const store = Object.values(stores).find((store) => store instanceof storeClass);
+
+        if (!store) {
+          throw new Error(`No store named "${storeClass.name}" was found`);
+        }
+
+        return store as InstanceType<T>;
       },
     }
   );

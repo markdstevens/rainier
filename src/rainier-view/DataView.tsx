@@ -4,15 +4,14 @@ import { LoadableComponent } from '@loadable/component';
 import { Event } from '../rainier-event';
 import { logger } from '../rainier-logger/logger';
 import { controllerRegistry } from '../rainier-controller/controller-registry';
-import { AllStoreContext } from '../rainier-store/all-store-context';
-import { useServerContextStore } from '../rainier-store/server-context-store';
+import { AllStoreContext, useStore, ServerContextStore } from '../rainier-store';
 
 export const dataView = (View: LoadableComponent<{}>): FC => {
   const DataView = (): JSX.Element => {
     const location = useLocation();
     const params = useParams();
     const stores = useContext(AllStoreContext);
-    const [serverContextState] = useServerContextStore();
+    const serverContextStore = useStore(ServerContextStore);
 
     const { controller, method, fullPaths, paths } = controllerRegistry.findControllerAndRoute(
       location.pathname
@@ -39,7 +38,7 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
 
     useEffect(() => {
       (async function (): Promise<void> {
-        if (method && !serverContextState.isServerLoad) {
+        if (method && !serverContextStore.state.isServerLoad) {
           await method(clientFetchParams);
         }
       })();

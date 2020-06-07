@@ -69,8 +69,6 @@ export const controllerRegistry = {
         });
       }
 
-      console.log(registeredControllerRoute);
-
       registeredControllerRoutes.push(registeredControllerRoute as RegisteredControllerRoute);
     });
 
@@ -90,7 +88,6 @@ export const controllerRegistry = {
       controller?.routes?.forEach((route) => {
         if (controllerRegistry.isRegisteredControllerViewRoute(route)) {
           const { fullPaths, View, method } = route;
-          console.log(fullPaths);
           fullPaths.forEach((fullPath) =>
             routes.push({
               fullPath,

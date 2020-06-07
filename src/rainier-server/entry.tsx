@@ -52,7 +52,7 @@ server.get('*', async (req, res) => {
   ];
 
   res.render('index', {
-    stores: JSON.stringify(stores) || '',
+    stores: JSON.stringify(stores, (key, value) => (key === 'context' ? undefined : value)) || '',
     htmlWebpackPlugin: {
       options: {
         title: 'React App',

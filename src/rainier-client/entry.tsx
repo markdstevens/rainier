@@ -5,7 +5,8 @@ import { loadableReady } from '@loadable/component';
 import { registerControllers } from '../rainier-controller/register-controllers';
 import { configureClientStores } from './configure-client-stores';
 import { App } from '../rainier-components/App';
-import './css-global-import';
+
+__CSS_GLOBAL_FILE__ && require(__CSS_GLOBAL_FILE__);
 
 const stores = configureClientStores(window.__INITIAL_STATE__);
 registerControllers();

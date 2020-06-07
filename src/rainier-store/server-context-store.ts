@@ -1,4 +1,4 @@
-import { BaseStore } from '../base-store';
+import { Store } from './store';
 
 export interface ServerContextState {
   location: string;
@@ -8,7 +8,9 @@ export interface ServerContextState {
   isServerLoad: boolean;
 }
 
-export class ServerContextStore extends BaseStore<ServerContextState> {
+export class ServerContextStore extends Store<ServerContextState> {
+  public isPlatformStore = true;
+
   public async fetch(): Promise<void> {
     return Promise.resolve();
   }

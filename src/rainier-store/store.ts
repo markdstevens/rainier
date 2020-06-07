@@ -1,8 +1,12 @@
+import React from 'react';
 import autoBind from 'auto-bind';
-import { Store } from './types';
+import { IStore } from './types';
 import { bindProxyHandler } from '../rainier-util';
 
-export abstract class BaseStore<T> implements Store<T> {
+export abstract class Store<T> implements IStore<T> {
+  public isPlatformStore = false;
+  public context = React.createContext({} as T);
+
   public state: T;
   private getProxy: (state: T) => T;
 

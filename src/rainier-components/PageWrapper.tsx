@@ -1,17 +1,17 @@
 import React, { FunctionComponent, useEffect, StrictMode } from 'react';
-import { useServerContextStore } from '../rainier-store/server-context-store';
-import { AppShellWrapper } from './app-shell';
+import { useStore, ServerContextStore } from '../rainier-store';
+const { default: AppShell } = require(__APP_SHELL__);
 
 export const PageWrapper: FunctionComponent = ({ children }) => {
-  const [serverContextState] = useServerContextStore();
+  const serverContextStore = useStore(ServerContextStore);
 
   useEffect(() => {
-    serverContextState.isServerLoad = false;
+    serverContextStore.state.isServerLoad = false;
   }, []);
 
   return (
     <StrictMode>
-      <AppShellWrapper>{children}</AppShellWrapper>
+      <AppShell>{children}</AppShell>
     </StrictMode>
   );
 };
