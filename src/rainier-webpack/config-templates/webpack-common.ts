@@ -112,11 +112,12 @@ export const webpackCommon = (
     plugins: [
       new webpack.DefinePlugin({
         __DEV__: options.isDev,
-        __CONTROLLERS_DIR__: JSON.stringify(rainierRc.controllersDir),
+        __CONTROLLERS_MANIFEST__: JSON.stringify(rainierRc.controller.manifest),
         __RAINIER_ROOT__: JSON.stringify(path.join(__dirname, '../../../')),
         __APP_ROOT__: JSON.stringify(appRoot),
         __APP_SHELL__: JSON.stringify(rainierRc.appShell),
-        __STORES_DIR__: JSON.stringify(rainierRc.storesDir),
+        __INIT_CLIENT_STORES__: JSON.stringify(rainierRc.store.initClientStores),
+        __INIT_SERVER_STORES__: JSON.stringify(rainierRc.store.initServerStores),
       }),
       new MiniCssExtractPlugin({
         filename: options.isDev ? '[name].css' : '[name]-[contenthash].css',

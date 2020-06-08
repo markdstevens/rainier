@@ -2,8 +2,8 @@ import { readFileSync } from 'fs';
 import { RainierRC } from './rainier-rc';
 import {
   PublicAssetsDirConfig,
-  ControllersDirConfig,
-  StoresDirConfig,
+  ControllerConfiguration,
+  StoreConfiguration,
   CssGlobalFileConfig,
   AppShellConfig,
 } from './transformers';
@@ -13,7 +13,7 @@ export const getRainierRc = (): RainierRC => {
   const rainierRC = `${cwd}/.rainierrc`;
 
   let rainierConfigBuffer: Buffer | null;
-  let rainierConfig: RainierRC | { [key: string]: string } = {};
+  let rainierConfig = {} as RainierRC;
 
   try {
     rainierConfigBuffer = readFileSync(rainierRC);
@@ -31,8 +31,8 @@ export const getRainierRc = (): RainierRC => {
 
   [
     PublicAssetsDirConfig,
-    ControllersDirConfig,
-    StoresDirConfig,
+    ControllerConfiguration,
+    StoreConfiguration,
     CssGlobalFileConfig,
     AppShellConfig,
   ]
@@ -44,7 +44,7 @@ export const getRainierRc = (): RainierRC => {
     }))
     .forEach(({ configName, configValue, validate }) => {
       validate(configValue);
-      rainierConfig[configName] = configValue;
+      (rainierConfig[configName] as typeof configValue) = configValue;
     });
 
   return rainierConfig as RainierRC;
