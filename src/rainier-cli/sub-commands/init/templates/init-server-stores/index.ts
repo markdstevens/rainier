@@ -1,1 +1,1 @@
-export * from './init-server-stores';
+export * from './initServerStores';

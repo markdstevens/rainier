@@ -1,5 +1,5 @@
 export const packageJsonJs = `{
-  "name": "test-rainier",
+  "name": "todo-app",
   "version": "1.0.0",
   "description": "An app built with rainier!",
   "main": "./dist/server.js",
@@ -13,7 +13,7 @@ export const packageJsonJs = `{
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "rainier": "file:../../rainier",
+    "rainier": "0.x.x",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"

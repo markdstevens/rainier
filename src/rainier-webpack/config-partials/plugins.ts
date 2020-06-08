@@ -20,7 +20,7 @@ export const plugins = {
       new HtmlWebpackPlugin({
         title: 'React App',
         filename: 'index.html',
-        template: path.join(__dirname, '../../../src/rainier-server/views/index.hbs'),
+        template: path.join(__dirname, '../../rainier-server/views/index.hbs'),
       }),
       new LoadablePlugin(),
     ];

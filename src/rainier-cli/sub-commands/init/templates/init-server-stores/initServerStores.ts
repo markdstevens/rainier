@@ -1,4 +1,4 @@
-export const initServerStores = `import { TodoStore } from "../todo-store";
+export const initServerStores = `import { TodoStore } from "stores/todo-store";
 
 export default () => {
   return {
