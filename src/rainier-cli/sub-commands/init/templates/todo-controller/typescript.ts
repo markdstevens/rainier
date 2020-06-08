@@ -6,7 +6,7 @@ const TodoController: Controller = {
   routes: [
     {
       paths: ["/show/:id"],
-      View: loadable(() => import("../views/show-todos")),
+      View: loadable(() => import("views/show-todos")),
       async method(fetchOptions: FetchOptions) {
         const todoStore = fetchOptions.stores.get(TodoStore);
         await todoStore.populateTodos();

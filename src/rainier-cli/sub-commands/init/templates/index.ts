@@ -3,10 +3,10 @@ import { gitignore } from './gitignore';
 import { tsconfig } from './tsconfigJson';
 import { appShellJs, appShellTs } from './app-shell';
 import { todoControllerJs, todoControllerTs } from './todo-controller';
-import { controllerIndex } from './controller-index';
+import { controllerManifest } from './controller-manifest/index';
 import { showTodosJs, showTodosTs } from './show-todos';
 import { todoStoreJs, todoStoreTs } from './todo-store';
-import { todoStoreIndex } from './todo-store-index';
+import { todoStoreIndex } from './todo-store-index/index';
 import { initClientStoresJs, initClientStoresTs } from './init-client-stores';
 import { initServerStores } from './init-server-stores';
 
@@ -16,7 +16,7 @@ interface TemplateFiles {
   tsconfig?: string;
   appShell: string;
   todoController: string;
-  controllerIndex: string;
+  controllerManifest: string;
   showTodos: string;
   todoStore: string;
   todoStoreIndex: string;
@@ -29,7 +29,7 @@ const jsTemplates: TemplateFiles = {
   gitignore,
   appShell: appShellJs,
   todoController: todoControllerJs,
-  controllerIndex,
+  controllerManifest,
   showTodos: showTodosJs,
   todoStore: todoStoreJs,
   todoStoreIndex,
@@ -43,7 +43,7 @@ const tsTemplates: TemplateFiles = {
   tsconfig,
   appShell: appShellTs,
   todoController: todoControllerTs,
-  controllerIndex,
+  controllerManifest,
   showTodos: showTodosTs,
   todoStore: todoStoreTs,
   todoStoreIndex,

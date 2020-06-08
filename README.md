@@ -21,15 +21,14 @@ Rainier is **not** an oppionated, monolith framework that forces you to use a pa
 To get started, create a new rainier project using rainier's CLI:
 
 ```
-$ mkdir rainier-todo-app
-$ cd rainier-todo-app
-$ npx run rainier init
+$ npx rainier init todo-app
 ```
 
 💡Pro tip! By default, the `init` command will create a rainier project with typescript as the default langugage. If you want to use vanilla javascript, then you can run this instead:
 
 ```
-$ npx run rainier init --js
+$ npx rainier init todo-app --js
+$ cd todo-app
 ```
 
 #### Installing and running

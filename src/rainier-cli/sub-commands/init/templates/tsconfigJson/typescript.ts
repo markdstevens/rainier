@@ -15,7 +15,8 @@ export const tsconfig = `{
     "declaration": true,
     "outDir": "dist",
     "paths": {
-      "stores/*": ["stores/*"]
+      "stores/*": ["stores/*"],
+      "views/*": ["views/*"]
     }
   }
 }

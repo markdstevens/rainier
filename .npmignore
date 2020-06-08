@@ -8,4 +8,5 @@ src
 CODEOWNERS
 DEVELOP.md
 tsconfig.json
+tsconfig-cli.json
 yarn-error.log
