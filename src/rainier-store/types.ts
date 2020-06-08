@@ -27,6 +27,13 @@ export interface IStore<T = any> {
 }
 
 /**
+ * These are the fields that exist on the store class but should not be exposed
+ * to clients of the rainier project. These are internal details of the store
+ * class.
+ */
+export type PrivateStoreMembers = 'updateState' | 'dispatch' | 'context' | 'isPlatformStore';
+
+/**
  * Only the "get" function should be used directly. Stores can be retrieved
  * like this:
  *
@@ -35,7 +42,9 @@ export interface IStore<T = any> {
  */
 export interface Stores {
   stores: StoreMap;
-  get<T extends StoreConstructorFunction>(storeName: T): InstanceType<T> | never;
+  get<T extends StoreConstructorFunction>(
+    storeName: T
+  ): Omit<InstanceType<T>, PrivateStoreMembers> | never;
 }
 
 export interface StoreMap {

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { AllStoreContext } from './all-store-context';
 import { StoreConstructorFunction } from './internal-types';
+import { PrivateStoreMembers } from './types';
 
 /**
  * A hook that returns a reactive, application-state store. This
@@ -13,9 +14,11 @@ import { StoreConstructorFunction } from './internal-types';
  */
 export const useStore = function <T extends StoreConstructorFunction>(
   storeClass: T
-): InstanceType<T> {
+): Omit<InstanceType<T>, PrivateStoreMembers> {
   const allStores = useContext(AllStoreContext);
-  const store = allStores.get<T>(storeClass);
+  const store = allStores.get(storeClass) as Omit<InstanceType<T>, PrivateStoreMembers> & {
+    context: React.Context<any>;
+  };
 
   return useContext(store.context)[0];
 };

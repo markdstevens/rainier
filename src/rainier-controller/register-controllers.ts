@@ -1,7 +1,7 @@
 import { controllerRegistry } from './controller-registry';
 import { Controller } from './types';
 
-const { default: controllers } = require(__CONTROLLERS_DIR__);
+const { default: controllers } = require(__CONTROLLERS_MANIFEST__);
 
 export const registerControllers = (): void =>
   controllers.forEach((controller: Controller) =>

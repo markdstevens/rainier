@@ -13,6 +13,6 @@ export class AppShellConfig extends RainierRCConfiguration {
   }
 
   isValid(appShellPath: string): boolean {
-    return fileOrDirExists(appShellPath);
+    return fileOrDirExists(appShellPath, ['jsx', 'tsx']);
   }
 }

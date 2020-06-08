@@ -6,10 +6,10 @@
   "main": "./dist/index",
   "scripts": {
     "ts-check": "tsc --noEmit",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}' --quiet --fix",
     "clean": "rimraf dist",
     "nuke": "yarn clean && rimraf node_modules && rm yarn.lock && yarn",
-    "tsc": "tsc && tsc -p tsconfig-cli.json",
+    "tsc": "ttsc && tsc -p tsconfig-cli.json",
     "build": "yarn clean && yarn tsc && cp -R src/rainier-server/views dist/rainier-server"
   },
   "husky": {
@@ -90,7 +90,9 @@
     "rimraf": "^3.0.2",
     "sass-loader": "^8.0.2",
     "ts-node": "^8.10.1",
+    "ttypescript": "^1.5.10",
     "typescript": "^3.8.3",
+    "typescript-transform-paths": "^1.1.14",
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.7.0",
