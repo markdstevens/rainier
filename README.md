@@ -22,13 +22,13 @@ To get started, create a new rainier project using rainier's CLI:
 
 ```
 $ npx rainier init todo-app
+$ cd todo-app
 ```
 
 💡Pro tip! By default, the `init` command will create a rainier project with typescript as the default langugage. If you want to use vanilla javascript, then you can run this instead:
 
 ```
 $ npx rainier init todo-app --js
-$ cd todo-app
 ```
 
 #### Installing and running
