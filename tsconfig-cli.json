@@ -3,6 +3,10 @@
   "include": ["src/rainier-cli", "src/rainier-webpack", "src/rainier-rc"],
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "ES2015"
+    "target": "ES2015",
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   }
 }

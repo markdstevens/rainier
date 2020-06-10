@@ -1,10 +1,10 @@
-import { ControllerMatchResponse } from 'rainier-controller/internal-types';
+import { ControllerMatchResponse } from 'rainier-controller';
 import { Stores } from 'rainier-store/types';
 import { logger } from 'rainier-logger/logger';
 import { Event } from 'rainier-event';
 
 export async function fetchInitialRouteData(
-  { controller, method, params, paths, fullPaths }: ControllerMatchResponse,
+  { controller, fetch, params, paths, fullPaths }: ControllerMatchResponse,
   stores: Stores,
   pathname: string
 ): Promise<any> {
@@ -19,7 +19,7 @@ export async function fetchInitialRouteData(
       );
     }
 
-    return await method?.({
+    return await fetch?.({
       params,
       stores,
       controllerPath: controller.basePath,

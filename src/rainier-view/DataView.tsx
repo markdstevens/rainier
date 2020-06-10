@@ -13,11 +13,13 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
     const stores = useContext(AllStoreContext);
     const serverContextStore = useStore(ServerContextStore);
 
-    const { controller, method, fullPaths, paths } = controllerRegistry.findControllerAndRoute(
-      location.pathname
-    );
+    const controllerMatch = controllerRegistry.findControllerAndRoute(location.pathname);
 
-    if (!method) {
+    if (typeof window !== 'undefined') {
+      window.__CLIENT_CONFIG__?.hooks?.onRouteMatch?.(controllerMatch);
+    }
+
+    if (!controllerMatch.fetch) {
       logger.event(
         Event.NO_CONTROLLER_ROUTE_FOUND,
         `no controller route found for ${location.pathname}`
@@ -28,9 +30,9 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
       () => ({
         params,
         stores,
-        fullPaths: fullPaths ?? [],
-        routePaths: paths ?? [],
-        controllerPath: controller?.basePath ?? '/',
+        fullPaths: controllerMatch.fullPaths ?? [],
+        routePaths: controllerMatch.paths ?? [],
+        controllerPath: controllerMatch.controller?.basePath ?? '/',
         isServer: typeof window === 'undefined',
       }),
       [location]
@@ -38,8 +40,9 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
 
     useEffect(() => {
       (async function (): Promise<void> {
-        if (method && !serverContextStore.state.isServerLoad) {
-          await method(clientFetchParams);
+        if (controllerMatch.fetch && !serverContextStore.state.isServerLoad) {
+          await controllerMatch.fetch(clientFetchParams);
+          await window.__CLIENT_CONFIG__?.hooks?.onAfterClientDataFetch?.(stores);
         }
       })();
     }, [clientFetchParams]);

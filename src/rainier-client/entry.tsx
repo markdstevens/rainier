@@ -5,17 +5,27 @@ import { loadableReady } from '@loadable/component';
 import { registerControllers } from 'rainier-controller/register-controllers';
 import { App } from 'rainier-components/App';
 import { configureClientStores } from './configure-client-stores';
+import { initClientHooks } from 'rainier-lifecycle/init-hooks';
+import { Stores } from 'rainier-store';
 
 __CSS_GLOBAL_FILE__ && require(__CSS_GLOBAL_FILE__);
 
-const stores = configureClientStores(window.__INITIAL_STATE__);
+const clientConfig = initClientHooks();
+window.__CLIENT_CONFIG__ = clientConfig;
+
 registerControllers();
 
-loadableReady(() => {
-  hydrate(
-    <BrowserRouter>
-      <App stores={stores} />
-    </BrowserRouter>,
-    document.getElementById('app')
-  );
+(async function initClientStores(): Promise<Stores> {
+  const stores = configureClientStores(window.__INITIAL_STATE__);
+  await clientConfig?.hooks?.onAfterStoreInit?.(stores);
+  return stores;
+})().then((stores) => {
+  loadableReady(() => {
+    hydrate(
+      <BrowserRouter>
+        <App stores={stores} />
+      </BrowserRouter>,
+      document.getElementById('app')
+    );
+  });
 });

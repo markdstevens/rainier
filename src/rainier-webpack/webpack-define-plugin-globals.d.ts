@@ -10,8 +10,12 @@ declare global {
   const __STORE_MANIFEST__: string;
   const __INIT_CLIENT_STORES__: string;
   const __INIT_SERVER_STORES__: string;
+  const __SERVER_HOOKS__: string;
+  const __CLIENT_HOOKS__: string;
 
   interface Window {
     __INITIAL_STATE__: any;
+    __CLIENT_CONFIG__?: any;
+    __HTML_TAGS__: any;
   }
 }

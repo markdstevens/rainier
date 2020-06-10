@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { LoadableComponent } from '@loadable/component';
-import { Stores } from 'rainier-store/types';
-
+import { Stores } from '../rainier-store/types';
 /**
- * This object gets passed to every controller route's "method" function
+ * This object gets passed to every controller route's "fetch" function
  */
 export interface FetchOptions {
   /**
@@ -50,15 +49,64 @@ export interface FetchOptions {
    */
   isServer: boolean;
 }
-
 export interface Params {
   [key: string]: string | number | boolean;
 }
 
+export type HtmlAttributes = {
+  [key: string]: string | boolean;
+};
+
+/* Example:
+ *   {
+ *     type: 'script',
+ *     content: 'console.log('blah');'
+ *     attributes: {
+ *       async: true
+ *     }
+ *   }
+ */
+export interface HtmlTag {
+  /**
+   * The type of tag to append to the DOM
+   */
+  type: 'script' | 'link' | 'style';
+  /**
+   * The actual content to insert into the tag
+   */
+  content?: string;
+  /**
+   * A map of key-value attributes to add to the tag
+   * element.
+   */
+  attributes?: HtmlAttributes;
+}
+
+export interface ViewData {
+  /**
+   * The title of the page that will be used in the header's
+   * <title> tag.
+   */
+  pageTitle?: string | ((controllerMatch: ControllerMatchResponse) => string);
+  /**
+   * The text that will be displayed in the event that the user
+   * has disabled javascript on the page. The text will be displayed
+   * in the <noscript> tag.
+   */
+  noScriptText?: string | ((controllerMatch: ControllerMatchResponse) => string);
+  /**
+   * A list of html tags to append to the <head>
+   */
+  headTags?: HtmlTag[] | ((controllerMatch: ControllerMatchResponse) => HtmlTag[]);
+  /**
+   * A list of html tags to append to the <body>
+   */
+  bodyTags?: HtmlTag[] | ((controllerMatch: ControllerMatchResponse) => HtmlTag[]);
+}
 export interface ControllerViewRoute {
   /**
    * The actual URL mappings. More than 1 path can be defined, but
-   * all paths will map to a single View and method.
+   * all paths will map to a single View and fetch function.
    */
   paths?: string[];
   /**
@@ -70,36 +118,38 @@ export interface ControllerViewRoute {
    */
   View: LoadableComponent<{}> | FC;
   /**
-   * The method that will be executed whenever a route's paths matches
+   * The function that will be executed whenever a route's paths matches
    * the current URL. For view routes, this field is optional.
    */
-  method?: ((fetchOptions: FetchOptions) => Promise<any>) | undefined;
+  fetch?: ((fetchOptions: FetchOptions) => Promise<any>) | undefined;
+  /**
+   * Data that is specific to the route's page like the page title and
+   * any custom script/style tags.
+   */
+  viewData?: ViewData;
 }
-
 export interface ControllerApiRoute {
   /**
    * The actual URL mappings. More than 1 path can be defined, but
-   * all paths will map to the single "method" function.
+   * all paths will map to the single fetch function.
    */
   paths: string[];
   /**
-   * The method that will be executed whenever a route's paths matches
-   * the current URL. For API routes, the "method" function must return
+   * The function that will be executed whenever a route's paths matches
+   * the current URL. For API routes, the "fetch" function must return
    * a JSON-serializable object.
    */
-  method: (fetchOptions: FetchOptions) => Promise<any>;
+  fetch: (fetchOptions: FetchOptions) => Promise<any>;
 }
-
 /**
  * There various types of routes. Currently, there are view routes and
  * api routes. A "view" route is a route that maps a URL to a react
  * component (a view). An "api" route is a route that maps a URL to a
  * JSON object which is sent back to the browser. Api routes cannot, for
- * obvious reasons, have a view. However, api routes must have a method
- * which returns a JSON-serializable object.
+ * obvious reasons, have a view. However, api routes must specify a "fetch"
+ * function which returns a JSON-serializable object.
  */
-export type ControllerRoute = ControllerViewRoute | ControllerApiRoute;
-
+export declare type ControllerRoute = ControllerViewRoute | ControllerApiRoute;
 /**
  * Controllers are the backbone of the rainier framework. At their simplest,
  * controllers map URLs to react components (views). Controllers can also:
@@ -126,4 +176,128 @@ export interface Controller {
    * The individual routes that define actual endpoints and their view mappings.
    */
   routes?: ControllerRoute[];
+  /**
+   * Data that is specific to the route's page like the page title and
+   * any custom script/style tags.
+   */
+  viewData?: ViewData;
+}
+export interface RegisteredControllerViewRoute {
+  /**
+   * All of the relative paths for the route
+   */
+  paths: string[];
+  /**
+   * All of the full paths for the route. A full path is equal
+   * to the controller's base path plus the relative path.
+   */
+  fullPaths: string[];
+  /**
+   * The react component that will be rendered whenever a
+   * the route is matched to the current URL.
+   */
+  View: LoadableComponent<{}>;
+  /**
+   * The function that will be called to fetch data for the
+   * matched controller route.
+   */
+  fetch?: ((fetchOptions: FetchOptions) => Promise<void>) | undefined;
+  /**
+   * A flag that indicates if the controller route is the default
+   * route or not. The default route is the route that will be used
+   * when a request matches the controller but doesn't match any of
+   * the other routes.
+   */
+  isDefault: boolean;
+  /**
+   * Data that is specific to the route's page like the page title and
+   * any custom script/style tags.
+   */
+  viewData?: ViewData;
+}
+export interface RegisteredControllerApiRoute {
+  /**
+   * All of the relative paths for the route
+   */
+  paths: string[];
+  /**
+   * All of the full paths for the route. A full path is equal
+   * to the controller's base path plus the relative path.
+   */
+  fullPaths: string[];
+  /**
+   * The function that will be called to fetch data for the
+   * matched controller route.
+   */
+  fetch: (fetchOptions: FetchOptions) => Promise<void>;
+}
+export declare type RegisteredControllerRoute =
+  | RegisteredControllerViewRoute
+  | RegisteredControllerApiRoute;
+export interface ControllerMatchResponse {
+  /**
+   * The controller that matched the request URL
+   */
+  controller?: RegisteredController;
+  /**
+   * The function that will be called to fetch data for the
+   * request URL.
+   */
+  fetch?: (fetchOptions: FetchOptions) => Promise<any>;
+  /**
+   * The URL path params from the request; not the URL
+   * parameters.
+   */
+  params: Params;
+  /**
+   * All of the relative route paths that map to the matched
+   * controller route.
+   */
+  paths: string[];
+  /**
+   * All of the full route paths that map to the matched
+   * controller route.
+   */
+  fullPaths: string[];
+  /**
+   * Data that is specific to the route's page like the page title and
+   * any custom script/style tags.
+   */
+  routeViewData?: ViewData;
+  /**
+   * Data that is specific to the controller. All data in this field can
+   * be overwritten by the more specific "routeViewData".
+   */
+  controllerViewData?: ViewData;
+}
+export interface RegisteredController {
+  /**
+   * The base path of the controller
+   */
+  basePath: string;
+  /**
+   * The list of the controller's configured routes
+   */
+  routes: RegisteredControllerRoute[];
+  /**
+   * A flag that indicates if the controller is the default
+   * controller in the rainier application. The default controller
+   * will receive all requests that can't be matched to another
+   * controller.
+   */
+  isDefault: boolean;
+  /**
+   * A flag that indicates if the controller is the home controller.
+   * The home controller is the controller that has a base path of /
+   */
+  isHome: boolean;
+  /**
+   * Data that is specific to the route's page like the page title and
+   * any custom script/style tags.
+   */
+  viewData?: ViewData;
+}
+export interface ReactRouterControllerData {
+  fullPath: string;
+  View: LoadableComponent<{}> | FC | undefined;
 }

@@ -19,19 +19,25 @@ export abstract class RainierRCConfiguration {
     this.getOrDefault = this.getOrDefault.bind(this);
   }
 
-  validate(configValue: RainierRCValues): void | never {
-    if (!this.isValid(configValue) && this.isRequired) {
-      console.error(
-        chalk.red(
-          `no valid "${
-            this.configName
-          }" configuration found in .rainierrc. The default of "${JSON.stringify(
-            this.defaultConfigValue
-          )}" was tried but is invalid or does not exist.\n`
-        )
-      );
-      process.exit(1);
+  validate(configValue: RainierRCValues): boolean | never {
+    if (!this.isValid(configValue)) {
+      if (this.isRequired) {
+        console.error(
+          chalk.red(
+            `no valid "${
+              this.configName
+            }" configuration found in .rainierrc. The default of "${JSON.stringify(
+              this.defaultConfigValue
+            )}" was tried but is invalid or does not exist.\n`
+          )
+        );
+        process.exit(1);
+      } else {
+        return false;
+      }
     }
+
+    return true;
   }
 
   getOrDefault(): RainierRCValues {
