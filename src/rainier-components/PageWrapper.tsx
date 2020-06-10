@@ -25,7 +25,7 @@ export const PageWrapper: FunctionComponent = ({ children }) => {
       }
 
       const noScriptElement = document.getElementsByTagName('noscript')[0];
-      if (noScriptElement.innerHTML !== noScriptText) {
+      if (noScriptElement && noScriptElement.innerHTML !== noScriptText) {
         noScriptElement.innerHTML = noScriptText;
       }
 

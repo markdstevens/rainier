@@ -12,8 +12,6 @@ export abstract class RainierRCConfiguration {
 
   private rainierRc: RainierRC;
 
-  public isValidConfig = true;
-
   constructor(rainierRc: RainierRC | {}) {
     this.rainierRc = rainierRc as RainierRC;
 
