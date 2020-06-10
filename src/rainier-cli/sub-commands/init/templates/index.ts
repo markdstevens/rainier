@@ -9,6 +9,7 @@ import { todoStoreJs, todoStoreTs } from './todo-store';
 import { todoStoreIndex } from './todo-store-index/index';
 import { initClientStoresJs, initClientStoresTs } from './init-client-stores';
 import { initServerStores } from './init-server-stores';
+import { todosJs, todosTs } from './todos';
 
 interface TemplateFiles {
   packageJson: string;
@@ -22,6 +23,7 @@ interface TemplateFiles {
   todoStoreIndex: string;
   initClientStores: string;
   initServerStores: string;
+  todos: string;
 }
 
 const jsTemplates: TemplateFiles = {
@@ -35,6 +37,7 @@ const jsTemplates: TemplateFiles = {
   todoStoreIndex,
   initClientStores: initClientStoresJs,
   initServerStores: initServerStores,
+  todos: todosJs,
 };
 
 const tsTemplates: TemplateFiles = {
@@ -49,6 +52,7 @@ const tsTemplates: TemplateFiles = {
   todoStoreIndex,
   initClientStores: initClientStoresTs,
   initServerStores: initServerStores,
+  todos: todosTs,
 };
 
 const getTemplates = (isJs: boolean): TemplateFiles => (isJs ? jsTemplates : tsTemplates);

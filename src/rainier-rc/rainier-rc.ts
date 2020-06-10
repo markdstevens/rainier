@@ -7,10 +7,16 @@ export interface StoreConfig {
   initServerStores: string;
 }
 
+export interface RainierHooks {
+  server?: string;
+  client?: string;
+}
+
 export interface RainierRC {
-  publicAssetsDir: string;
+  publicAssetsDir?: string;
   controller: ControllerConfig;
-  store: StoreConfig;
-  cssGlobalFile: string;
-  appShell: string;
+  store?: StoreConfig;
+  cssGlobalFile?: string;
+  appShell?: string;
+  rainierHooks?: RainierHooks;
 }

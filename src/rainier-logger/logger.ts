@@ -1,4 +1,5 @@
 import { Event } from 'rainier-event';
+import { FetchOptions } from 'rainier-controller';
 
 interface SchedulerInteraction {
   id: number;
@@ -8,6 +9,7 @@ interface SchedulerInteraction {
 
 type EventParams = {
   [key: string]: any;
+  blob?: FetchOptions;
 };
 
 const loggerUtils = {

@@ -5,9 +5,13 @@ const TodoController = {
   basePath: "/todos",
   routes: [
     {
+      paths: ["/"],
+      View: loadable(() => import("views/todos")),
+    },
+    {
       paths: ["/show/:id"],
       View: loadable(() => import("views/show-todos")),
-      async method(fetchOptions) {
+      async fetch(fetchOptions) {
         const todoStore = fetchOptions.stores.get(TodoStore);
         await todoStore.populateTodos();
       },

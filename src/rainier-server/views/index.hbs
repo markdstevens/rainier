@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <title>{{{ htmlWebpackPlugin.options.title }}}</title>
     <meta charset="utf-8" />
@@ -8,17 +8,16 @@
     {{#if htmlWebpackPlugin.options.hasManifest}}
       <link rel="manifest" href="/manifest.json" />
     {{/if}}
-    {{{ htmlWebpackPlugin.options.linkTags }}}
-    {{{ htmlWebpackPlugin.options.styleTags }}}
+    {{{ htmlWebpackPlugin.options.headTags }}}
   </head>
   <body>
     <div id="app">{{{ htmlWebpackPlugin.options.html }}}</div>
-    <noscript>Uh oh! Your browser does not support JavaScript!</noscript>
+    <noscript>{{{ htmlWebpackPlugin.options.noScriptText }}}</noscript>
     {{#unless stores }}
       <% stores = null %>
     {{/unless}}
     <script>window.__INITIAL_STATE__= {{{ stores }}}</script>
-    {{{ htmlWebpackPlugin.options.scriptTags }}}
+    {{{ htmlWebpackPlugin.options.bodyTags }}}
     {{#if htmlWebpackPlugin.options.includeServiceWorker }}
       <script>
         if ('serviceWorker' in navigator) {
@@ -28,5 +27,6 @@
         }
       </script>
     {{/if}}
+    <script>window.__HTML_TAGS__= {{{ htmlWebpackPlugin.options.htmlTags }}}</script>
   </body>
 </html>

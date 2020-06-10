@@ -1,11 +1,13 @@
-import { Controller, ControllerRoute, ControllerViewRoute } from './types';
 import {
+  Controller,
+  ControllerRoute,
+  ControllerViewRoute,
   RegisteredController,
   RegisteredControllerRoute,
   RegisteredControllerViewRoute,
   ControllerMatchResponse,
   ReactRouterControllerData,
-} from './internal-types';
+} from './types';
 import { dataView } from 'rainier-view';
 import { getMatchFromRoute, trimSlashes } from 'rainier-util';
 
@@ -57,13 +59,14 @@ export const controllerRegistry = {
         fullPaths: normalizedPaths?.map(
           (normalizedRoutePath) => normalizedBasePath + normalizedRoutePath
         ),
-        method: route.method,
+        fetch: route.fetch,
         isDefault: isDefaultRoute,
       };
 
       if (isControllerViewRoute(route)) {
         Object.assign(registeredControllerRoute, {
           View: route.View,
+          viewData: route.viewData,
         });
       }
 
@@ -75,6 +78,7 @@ export const controllerRegistry = {
       routes: registeredControllerRoutes,
       isDefault: isDefaultController,
       isHome: isHomeController,
+      viewData: controller.viewData,
     });
   },
 
@@ -85,11 +89,11 @@ export const controllerRegistry = {
     const addViewRoutes = (controller: RegisteredController): void => {
       controller?.routes?.forEach((route) => {
         if (isRegisteredControllerViewRoute(route)) {
-          const { fullPaths, View, method } = route;
+          const { fullPaths, View, fetch } = route;
           fullPaths.forEach((fullPath) =>
             routes.push({
               fullPath,
-              View: View ? (method ? dataView(View) : View) : undefined,
+              View: View ? (fetch ? dataView(View) : View) : undefined,
             })
           );
         }
@@ -149,10 +153,12 @@ export const controllerRegistry = {
 
     return {
       controller,
-      method: routeAndMatch?.route?.method,
+      fetch: routeAndMatch?.route?.fetch,
       params: routeAndMatch?.match?.params ?? {},
       paths: routeAndMatch?.route?.paths || [],
       fullPaths: routeAndMatch?.route?.fullPaths || [],
+      routeViewData: (routeAndMatch?.route as ControllerViewRoute).viewData,
+      controllerViewData: controller?.viewData,
     };
   },
 };

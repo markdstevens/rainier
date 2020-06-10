@@ -12,8 +12,8 @@ export class StoreConfiguration extends RainierRCConfiguration {
   };
 
   transformConfig(storeConfig: StoreConfig): StoreConfig {
-    const initClientStores = path.join(process.cwd(), storeConfig?.initClientStores) ?? '';
-    const initServerStores = path.join(process.cwd(), storeConfig?.initServerStores) ?? '';
+    const initClientStores = path.join(process.cwd(), storeConfig?.initClientStores ?? '');
+    const initServerStores = path.join(process.cwd(), storeConfig?.initServerStores ?? '');
 
     return {
       initClientStores,
@@ -22,9 +22,9 @@ export class StoreConfiguration extends RainierRCConfiguration {
   }
 
   isValid(storeConfig: StoreConfig): boolean {
-    const extensions = ['js', 'ts'];
-    const initClientStoresExists = fileOrDirExists(storeConfig?.initClientStores, extensions) ?? '';
-    const initServerStoresExists = fileOrDirExists(storeConfig?.initServerStores, extensions) ?? '';
+    const exts = ['js', 'ts'];
+    const initClientStoresExists = fileOrDirExists(storeConfig?.initClientStores, exts) ?? false;
+    const initServerStoresExists = fileOrDirExists(storeConfig?.initServerStores, exts) ?? false;
 
     return initClientStoresExists && initServerStoresExists;
   }

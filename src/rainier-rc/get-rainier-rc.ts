@@ -6,6 +6,7 @@ import {
   StoreConfiguration,
   CssGlobalFileConfig,
   AppShellConfig,
+  RainierHooksConfiguration,
 } from './transformers';
 
 export const getRainierRc = (): RainierRC => {
@@ -35,6 +36,7 @@ export const getRainierRc = (): RainierRC => {
     StoreConfiguration,
     CssGlobalFileConfig,
     AppShellConfig,
+    RainierHooksConfiguration,
   ]
     .map((Config) => new Config(rainierConfig))
     .map(({ configName, getOrDefault, validate }) => ({
@@ -42,8 +44,8 @@ export const getRainierRc = (): RainierRC => {
       configValue: getOrDefault(),
       validate,
     }))
-    .forEach(({ configName, configValue, validate }) => {
-      validate(configValue);
+    .filter(({ validate, configValue }) => validate(configValue))
+    .forEach(({ configName, configValue }) => {
       (rainierConfig[configName] as typeof configValue) = configValue;
     });
 

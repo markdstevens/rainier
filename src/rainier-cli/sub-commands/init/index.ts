@@ -63,5 +63,6 @@ writeFileSync(`${outDir}/src/stores/init/server.${baseExtension}`, templates.ini
 writeFileSync(`${outDir}/src/controllers/manifest.${baseExtension}`, templates.controllerManifest);
 writeFileSync(`${outDir}/src/components/app-shell.${reactBaseExtension}`, templates.appShell);
 writeFileSync(`${outDir}/src/views/show-todos.${reactBaseExtension}`, templates.showTodos);
+writeFileSync(`${outDir}/src/views/todoss.${reactBaseExtension}`, templates.todos);
 
 console.info(chalk.green(`Rainier application successfully scaffolded in ${outDir}`));
