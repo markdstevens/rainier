@@ -15,8 +15,8 @@ import hbs from 'express-hbs';
 import { existsSync } from 'fs';
 import { initServerHooks } from 'rainier-lifecycle/init-hooks';
 import { ParsedQuery } from 'query-string';
-import { toRouteMatchParams } from 'rainier-lifecycle/on-route-match';
-import { buildHtmlTag } from 'rainier-controller/build-html-tag';
+import { toRouteMatchHookParams } from 'rainier-lifecycle/to-route-match-hook-params';
+import { adaptViewDataForServer } from './adapt-view-data-for-server';
 
 registerControllers();
 
@@ -50,7 +50,7 @@ server.get('*', async (req, res) => {
   );
 
   if (controllerMatch.controller) {
-    await serverHooks?.hooks?.onRouteMatch?.(toRouteMatchParams(controllerMatch));
+    await serverHooks?.hooks?.onRouteMatch?.(toRouteMatchHookParams(controllerMatch));
   }
 
   await fetchInitialRouteData(controllerMatch, stores, req.path);
@@ -64,47 +64,15 @@ server.get('*', async (req, res) => {
     )
   );
 
-  const [linkTags, styleTags, scriptTags] = [
-    extractor.getLinkTags(),
-    extractor.getStyleTags(),
-    extractor.getScriptTags(),
-  ];
-
-  const { pageTitle, noScriptText, bodyTags, headTags } = controllerMatch.viewData;
-
   await serverHooks?.hooks?.onBeforeServerRender?.();
+
   res.render('index', {
-    stores: JSON.stringify(stores, (key, value) => (key === 'context' ? undefined : value)) || '',
-    htmlWebpackPlugin: {
-      options: {
-        title: pageTitle,
-        noScriptText,
-        isDev: __DEV__,
-        bodyTags:
-          scriptTags +
-          '\n' +
-          bodyTags
-            .map((tag) => buildHtmlTag(tag))
-            .join('\n')
-            .trim(),
-        headTags:
-          linkTags +
-          styleTags +
-          '\n' +
-          headTags
-            .map((tag) => buildHtmlTag(tag))
-            .join('\n')
-            .trim(),
-        html,
-        includeServiceWorker: !__DEV__ && hasServiceWorker,
-        hasManifest,
-        htmlTags: JSON.stringify({
-          headTags,
-          bodyTags,
-        }),
-      },
-    },
-    inject: false,
+    stores: JSON.stringify(stores),
+    viewData: adaptViewDataForServer(controllerMatch.viewData, extractor),
+    isDev: __DEV__,
+    html,
+    includeServiceWorker: !__DEV__ && hasServiceWorker,
+    hasManifest,
   });
 });
 

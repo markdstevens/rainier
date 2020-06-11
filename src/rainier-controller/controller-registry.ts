@@ -1,9 +1,7 @@
 import {
   Controller,
-  ControllerRoute,
   ControllerViewRoute,
   RegisteredController,
-  RegisteredControllerRoute,
   RegisteredControllerViewRoute,
   ControllerMatchResponse,
   ReactRouterControllerData,
@@ -13,38 +11,33 @@ import { getMatchFromRoute, trimSlashes } from 'rainier-util';
 import { ParsedQuery } from 'query-string';
 import { getAggregateViewData } from 'rainier-view/view-data-retriever';
 
+const registeredControllers: RegisteredController[] = [];
+
+const HOME_CONTROLLER_PATH = '';
+const DEFAULT_CONTROLLER_PATH = '*';
+const ROOT_PATH = '/';
+
 const getNormalizedBasePath = (
   isDefaultController: boolean,
   isHomeController: boolean,
   basePath: string
 ): string => {
   if (isDefaultController) return basePath;
-  if (isHomeController) return '';
+  if (isHomeController) return HOME_CONTROLLER_PATH;
 
-  return '/' + trimSlashes(basePath);
+  return ROOT_PATH + trimSlashes(basePath);
 };
-
-const isControllerViewRoute = (route: ControllerRoute): route is ControllerViewRoute =>
-  (route as ControllerViewRoute).View !== undefined;
-
-const isRegisteredControllerViewRoute = (
-  route?: RegisteredControllerRoute
-): route is RegisteredControllerViewRoute =>
-  (route as RegisteredControllerViewRoute)?.View !== undefined;
-
-const registeredControllers: RegisteredController[] = [];
 
 export const controllerRegistry = {
   registerController: (controller: Controller): void => {
-    const registeredControllerRoutes: RegisteredControllerRoute[] = [];
+    const registeredControllerRoutes: RegisteredControllerViewRoute[] = [];
 
-    // when no base path is specified, default to "home" controller
-    if (!controller.basePath) {
-      controller.basePath = '';
+    if (!controller.basePath || controller.basePath === ROOT_PATH) {
+      controller.basePath = HOME_CONTROLLER_PATH;
     }
 
-    const isDefaultController = controller.basePath === '*';
-    const isHomeController = controller.basePath === '/' || controller.basePath === '';
+    const isDefaultController = controller.basePath === DEFAULT_CONTROLLER_PATH;
+    const isHomeController = controller.basePath === HOME_CONTROLLER_PATH;
 
     const normalizedBasePath = getNormalizedBasePath(
       isDefaultController,
@@ -54,25 +47,19 @@ export const controllerRegistry = {
 
     controller.routes?.forEach((route) => {
       const isDefaultRoute = !route.paths;
-      const normalizedPaths = route.paths?.map((path) => '/' + trimSlashes(path)) ?? ['/*'];
+      const normalizedPaths = route.paths?.map((path) => ROOT_PATH + trimSlashes(path)) ?? ['/*'];
+      const normalizedFullPaths = normalizedPaths?.map(
+        (normalizedRoutePath) => normalizedBasePath + normalizedRoutePath
+      );
 
-      const registeredControllerRoute = {
+      registeredControllerRoutes.push({
         paths: normalizedPaths,
-        fullPaths: normalizedPaths?.map(
-          (normalizedRoutePath) => normalizedBasePath + normalizedRoutePath
-        ),
+        fullPaths: normalizedFullPaths,
         fetch: route.fetch,
         isDefault: isDefaultRoute,
-      };
-
-      if (isControllerViewRoute(route)) {
-        Object.assign(registeredControllerRoute, {
-          View: route.View,
-          viewData: route.viewData,
-        });
-      }
-
-      registeredControllerRoutes.push(registeredControllerRoute as RegisteredControllerRoute);
+        View: route.View,
+        viewData: route.viewData,
+      });
     });
 
     registeredControllers.push({
@@ -86,19 +73,16 @@ export const controllerRegistry = {
 
   getAllViewRoutes: (): ReactRouterControllerData[] => {
     const routes: ReactRouterControllerData[] = [];
-    const defaultController = controllerRegistry.defaultController;
+    const { defaultController } = controllerRegistry;
 
     const addViewRoutes = (controller: RegisteredController): void => {
-      controller?.routes?.forEach((route) => {
-        if (isRegisteredControllerViewRoute(route)) {
-          const { fullPaths, View, fetch } = route;
-          fullPaths.forEach((fullPath) =>
-            routes.push({
-              fullPath,
-              View: View ? (fetch ? dataView(View) : View) : undefined,
-            })
-          );
-        }
+      controller.routes.forEach(({ fullPaths, View, fetch }) => {
+        fullPaths.forEach((fullPath) => {
+          routes.push({
+            fullPath,
+            View: View ? (fetch ? dataView(View) : View) : undefined,
+          });
+        });
       });
     };
 
@@ -127,8 +111,7 @@ export const controllerRegistry = {
     // (e.g. /about or /blah)
     const isHomeRoute = (normalizedFullPath.match(/\//g) || []).length === 1;
 
-    const defaultController = controllerRegistry.defaultController;
-    const homeController = controllerRegistry.homeController;
+    const { defaultController, homeController } = controllerRegistry;
 
     let controller;
     if (isHomeRoute && homeController) {
@@ -136,7 +119,7 @@ export const controllerRegistry = {
     } else {
       controller =
         registeredControllers
-          .filter(({ isDefault, isHome }) => !isDefault && !isHome)
+          .filter(({ isDefault }) => !isDefault)
           .find(({ basePath }) => {
             const route = normalizedFullPath.replace(basePath, '');
 

@@ -25,7 +25,7 @@ export async function fetchInitialRouteData(
       stores,
     });
   } else {
-    logger.event(Event.CONTROLLER_FALLBACK_FAILURE, `Fallback to default controller failed`, {
+    logger.event(Event.NO_CONTROLLER_FOUND, `No controller found for request`, {
       path: pathname,
     });
   }

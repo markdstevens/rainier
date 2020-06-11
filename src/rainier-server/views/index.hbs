@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{{ htmlWebpackPlugin.options.title }}}</title>
+    <title>{{{ viewData.title }}}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:," />
-    {{#if htmlWebpackPlugin.options.hasManifest}}
+    {{#if hasManifest}}
       <link rel="manifest" href="/manifest.json" />
     {{/if}}
-    {{{ htmlWebpackPlugin.options.headTags }}}
+    {{{ viewData.headTags }}}
   </head>
   <body>
-    <div id="app">{{{ htmlWebpackPlugin.options.html }}}</div>
-    <noscript>{{{ htmlWebpackPlugin.options.noScriptText }}}</noscript>
+    <div id="app">{{{ html }}}</div>
+    <noscript>{{{ viewData.noScriptText }}}</noscript>
     {{#unless stores }}
       <% stores = null %>
     {{/unless}}
     <script>window.__INITIAL_STATE__= {{{ stores }}}</script>
-    {{{ htmlWebpackPlugin.options.bodyTags }}}
-    {{#if htmlWebpackPlugin.options.includeServiceWorker }}
+    {{{ viewData.bodyTags }}}
+    {{#if includeServiceWorker }}
       <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
@@ -27,6 +27,6 @@
         }
       </script>
     {{/if}}
-    <script>window.__HTML_TAGS__= {{{ htmlWebpackPlugin.options.htmlTags }}}</script>
+    <script>window.__HTML_TAGS__= {{{ viewData.htmlTags }}}</script>
   </body>
 </html>
