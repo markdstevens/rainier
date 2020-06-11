@@ -118,19 +118,6 @@ export interface ControllerViewRoute {
    */
   viewData?: ViewData;
 }
-export interface ControllerApiRoute {
-  /**
-   * The actual URL mappings. More than 1 path can be defined, but
-   * all paths will map to the single fetch function.
-   */
-  paths: string[];
-  /**
-   * The function that will be executed whenever a route's paths matches
-   * the current URL. For API routes, the "fetch" function must return
-   * a JSON-serializable object.
-   */
-  fetch: (fetchOptions: FetchOptions) => Promise<any>;
-}
 /**
  * There various types of routes. Currently, there are view routes and
  * api routes. A "view" route is a route that maps a URL to a react
@@ -139,7 +126,7 @@ export interface ControllerApiRoute {
  * obvious reasons, have a view. However, api routes must specify a "fetch"
  * function which returns a JSON-serializable object.
  */
-export declare type ControllerRoute = ControllerViewRoute | ControllerApiRoute;
+export declare type ControllerRoute = ControllerViewRoute;
 /**
  * Controllers are the backbone of the rainier framework. At their simplest,
  * controllers map URLs to react components (views). Controllers can also:
@@ -186,7 +173,7 @@ export interface RegisteredControllerViewRoute {
    * The react component that will be rendered whenever a
    * the route is matched to the current URL.
    */
-  View: LoadableComponent<{}>;
+  View: LoadableComponent<{}> | React.FC;
   /**
    * The function that will be called to fetch data for the
    * matched controller route.
@@ -205,25 +192,7 @@ export interface RegisteredControllerViewRoute {
    */
   viewData?: ViewData;
 }
-export interface RegisteredControllerApiRoute {
-  /**
-   * All of the relative paths for the route
-   */
-  paths: string[];
-  /**
-   * All of the full paths for the route. A full path is equal
-   * to the controller's base path plus the relative path.
-   */
-  fullPaths: string[];
-  /**
-   * The function that will be called to fetch data for the
-   * matched controller route.
-   */
-  fetch: (fetchOptions: FetchOptions) => Promise<void>;
-}
-export declare type RegisteredControllerRoute =
-  | RegisteredControllerViewRoute
-  | RegisteredControllerApiRoute;
+
 export interface ControllerMatchResponse {
   /**
    * The controller that matched the request URL
@@ -273,7 +242,7 @@ export interface RegisteredController {
   /**
    * The list of the controller's configured routes
    */
-  routes: RegisteredControllerRoute[];
+  routes: RegisteredControllerViewRoute[];
   /**
    * A flag that indicates if the controller is the default
    * controller in the rainier application. The default controller

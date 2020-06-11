@@ -1,4 +1,4 @@
-import { RainierClientConfig, RainierServerConfig } from './lifecycle-hooks';
+import { RainierClientConfig, RainierServerConfig } from './types';
 
 export function initServerHooks(): RainierServerConfig | undefined {
   return __SERVER_HOOKS__ && require(__SERVER_HOOKS__)?.default;

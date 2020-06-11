@@ -1,2 +1,2 @@
-export * from './lifecycle-hooks';
-export * from './on-route-match';
+export * from './types';
+export * from './to-route-match-hook-params';

@@ -6,9 +6,9 @@ import { logger } from 'rainier-logger/logger';
 import { controllerRegistry } from 'rainier-controller/controller-registry';
 import { AllStoreContext, useStore, ServerContextStore } from 'rainier-store';
 import queryString from 'query-string';
-import { toRouteMatchParams } from 'rainier-lifecycle';
+import { toRouteMatchHookParams } from 'rainier-lifecycle';
 
-export const dataView = (View: LoadableComponent<{}>): FC => {
+export const dataView = (View: LoadableComponent<{}> | FC): FC => {
   const DataView = (): JSX.Element => {
     const location = useLocation();
     const stores = useContext(AllStoreContext);
@@ -20,7 +20,7 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
     );
 
     if (typeof window !== 'undefined') {
-      window.__CLIENT_CONFIG__?.hooks?.onRouteMatch?.(toRouteMatchParams(controllerMatch));
+      window.__CLIENT_CONFIG__?.hooks?.onRouteMatch?.(toRouteMatchHookParams(controllerMatch));
     }
 
     if (!controllerMatch.fetch) {

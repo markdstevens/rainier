@@ -24,6 +24,11 @@ export interface IStore<T = any> {
    * An internal of the base store. Don't touch.
    */
   context: React.Context<T>;
+  /**
+   * Any keys specified in this list will be excluded from
+   * the serialized stores that get passed to the client.
+   */
+  keysToExcludeFromSerializedStores: string[];
 }
 
 /**
@@ -50,3 +55,5 @@ export interface Stores {
 export interface StoreMap {
   [key: string]: IStore;
 }
+
+export type StoreKeys = keyof IStore;
