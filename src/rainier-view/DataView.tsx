@@ -1,22 +1,26 @@
 import React, { FC, useContext, useMemo, useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { LoadableComponent } from '@loadable/component';
 import { Event } from 'rainier-event';
 import { logger } from 'rainier-logger/logger';
 import { controllerRegistry } from 'rainier-controller/controller-registry';
 import { AllStoreContext, useStore, ServerContextStore } from 'rainier-store';
+import queryString from 'query-string';
+import { toRouteMatchParams } from 'rainier-lifecycle';
 
 export const dataView = (View: LoadableComponent<{}>): FC => {
   const DataView = (): JSX.Element => {
     const location = useLocation();
-    const params = useParams();
     const stores = useContext(AllStoreContext);
     const serverContextStore = useStore(ServerContextStore);
 
-    const controllerMatch = controllerRegistry.findControllerAndRoute(location.pathname);
+    const controllerMatch = controllerRegistry.findControllerAndRoute(
+      location.pathname,
+      queryString.parse(location.search)
+    );
 
     if (typeof window !== 'undefined') {
-      window.__CLIENT_CONFIG__?.hooks?.onRouteMatch?.(controllerMatch);
+      window.__CLIENT_CONFIG__?.hooks?.onRouteMatch?.(toRouteMatchParams(controllerMatch));
     }
 
     if (!controllerMatch.fetch) {
@@ -28,12 +32,9 @@ export const dataView = (View: LoadableComponent<{}>): FC => {
 
     const clientFetchParams = useMemo(
       () => ({
-        params,
         stores,
-        fullPaths: controllerMatch.fullPaths ?? [],
-        routePaths: controllerMatch.paths ?? [],
-        controllerPath: controllerMatch.controller?.basePath ?? '/',
-        isServer: typeof window === 'undefined',
+        pathParams: controllerMatch.pathParams,
+        queryParams: controllerMatch.queryParams,
       }),
       [location]
     );

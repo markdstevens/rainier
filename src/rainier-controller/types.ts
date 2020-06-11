@@ -1,53 +1,43 @@
 import { FC } from 'react';
 import { LoadableComponent } from '@loadable/component';
 import { Stores } from '../rainier-store/types';
+import { ParsedQuery } from 'query-string';
+import { NormalizedViewData } from 'rainier-view';
+
 /**
  * This object gets passed to every controller route's "fetch" function
  */
 export interface FetchOptions {
   /**
-   * An object representing the result of react-router's matchPath function.
-   * If you define a route of /todos/show/:id and a customer then accessess
-   * /todos/show/1, then the value of "params" will be: { id: '1' }
+   * The URL query params from the request; distinct from
+   * the URL path parameters. Note that all query params
+   * will be converted to strings, so you must transform
+   * them into the appropriate data type yourself.
+   *
+   * Example - given this URL:
+   *   path: /todos/show?id=5&priority=HIGH
+   *
+   * Then the queryParams will be: { id: "5", priority: "TOP" }
    */
-  params: Params;
+  queryParams: ParsedQuery;
+  /**
+   * The URL path params from the request; distinct from
+   * the URL query parameters. Note that all path params
+   * will be converted to strings, so you must transform
+   * them into the appropriate data type yourself.
+   *
+   * Example - given this configuration:
+   *   path: /todos/show/:id
+   *   URL: /todos/show/5
+   *
+   * Then the pathParams will be: { id: "5" }
+   */
+  pathParams: Params;
   /**
    * All of the platform and user-defined stores. Stores can be retrieved
    * by using the stores.get(...) function.
    */
   stores: Stores;
-  /**
-   * All of the defined routes that map to the customer's current URL. For
-   * example, if you've defined a controller action with two matching URL
-   * patterns like this:
-   *
-   * {
-   *  paths: ["/show/foo", "/show/bar"],
-   *  ...
-   * }
-   *
-   * Then the value of "routePaths" for a customer accessing /show/foo would
-   * be:
-   *
-   * [ '/show/foo', '/show/bar' ]
-   */
-  routePaths: string[] | string;
-  /**
-   * Same as "routePaths" with the exception that each path includes the
-   * controller's base path as well. In the example in "routePaths", if
-   * the basePath was /todos, then the value of "fullPaths" would be:
-   *
-   * [ '/todos/show/foo', '/todos/show/bar' ]
-   */
-  fullPaths: string[];
-  /**
-   * The controller's base path
-   */
-  controllerPath: string;
-  /**
-   * True when executing on the server. False when executing on the client.
-   */
-  isServer: boolean;
 }
 export interface Params {
   [key: string]: string | number | boolean;
@@ -87,21 +77,21 @@ export interface ViewData {
    * The title of the page that will be used in the header's
    * <title> tag.
    */
-  pageTitle?: string | ((controllerMatch: ControllerMatchResponse) => string);
+  pageTitle?: string | (() => string);
   /**
    * The text that will be displayed in the event that the user
    * has disabled javascript on the page. The text will be displayed
    * in the <noscript> tag.
    */
-  noScriptText?: string | ((controllerMatch: ControllerMatchResponse) => string);
+  noScriptText?: string | (() => string);
   /**
    * A list of html tags to append to the <head>
    */
-  headTags?: HtmlTag[] | ((controllerMatch: ControllerMatchResponse) => HtmlTag[]);
+  headTags?: HtmlTag[] | (() => HtmlTag[]);
   /**
    * A list of html tags to append to the <body>
    */
-  bodyTags?: HtmlTag[] | ((controllerMatch: ControllerMatchResponse) => HtmlTag[]);
+  bodyTags?: HtmlTag[] | (() => HtmlTag[]);
 }
 export interface ControllerViewRoute {
   /**
@@ -245,30 +235,35 @@ export interface ControllerMatchResponse {
    */
   fetch?: (fetchOptions: FetchOptions) => Promise<any>;
   /**
-   * The URL path params from the request; not the URL
-   * parameters.
+   * The URL path params from the request; distinct from
+   * the URL query parameters. Note that all path params
+   * will be converted to strings, so you must transform
+   * them into the appropriate data type yourself.
+   *
+   * Example - given this configuration:
+   *   path: /todos/show/:id
+   *   URL: /todos/show/5
+   *
+   * Then the pathParams will be: { id: "5" }
    */
-  params: Params;
+  pathParams: Params;
   /**
-   * All of the relative route paths that map to the matched
-   * controller route.
+   * The URL query params from the request; distinct from
+   * the URL path parameters. Note that all query params
+   * will be converted to strings, so you must transform
+   * them into the appropriate data type yourself.
+   *
+   * Example - given this URL:
+   *   path: /todos/show?id=5&priority=HIGH
+   *
+   * Then the queryParams will be: { id: "5", priority: "TOP" }
    */
-  paths: string[];
-  /**
-   * All of the full route paths that map to the matched
-   * controller route.
-   */
-  fullPaths: string[];
+  queryParams: ParsedQuery;
   /**
    * Data that is specific to the route's page like the page title and
    * any custom script/style tags.
    */
-  routeViewData?: ViewData;
-  /**
-   * Data that is specific to the controller. All data in this field can
-   * be overwritten by the more specific "routeViewData".
-   */
-  controllerViewData?: ViewData;
+  viewData: NormalizedViewData;
 }
 export interface RegisteredController {
   /**

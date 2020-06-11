@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ControllerMatchResponse } from 'rainier-controller';
 import { Stores } from 'rainier-store';
+import { RouteMatchData } from './on-route-match';
 
 type ExpressMiddleware = (req: Request, res: Response, next: NextFunction) => void;
 
@@ -55,7 +56,7 @@ export interface RainierServerHooks {
    *
    * The hook can be synchronous or asynchronous.
    */
-  onRouteMatch?: (controllerMatch?: ControllerMatchResponse) => void | Promise<void>;
+  onRouteMatch?: (routeMatchData?: RouteMatchData) => void | Promise<void>;
   /**
    * A hook that is called immediately after the server has fetched
    * data.
