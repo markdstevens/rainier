@@ -2,11 +2,11 @@ import React, { FunctionComponent, useEffect, StrictMode } from 'react';
 import { useStore, ServerContextStore } from 'rainier-store';
 import { controllerRegistry } from 'rainier-controller/controller-registry';
 import { useLocation } from 'react-router-dom';
-import { getViewDataFromControllerMatch } from 'rainier-view/view-data-retriever';
 import {
   initTagRegistryWithHtmlTagsFromServerRender,
   appendTagsToDOMIfNotAlreadyPresent,
 } from 'rainier-view/html-tag-manager';
+import queryString from 'query-string';
 
 const { default: AppShell } = require(__APP_SHELL__);
 
@@ -16,9 +16,15 @@ export const PageWrapper: FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     if (!serverContextStore.state.isServerLoad) {
-      const { bodyTags, headTags, pageTitle, noScriptText } = getViewDataFromControllerMatch(
-        controllerRegistry.findControllerAndRoute(location.pathname)
-      );
+      const {
+        bodyTags,
+        headTags,
+        pageTitle,
+        noScriptText,
+      } = controllerRegistry.findControllerAndRoute(
+        location.pathname,
+        queryString.parse(location.search)
+      ).viewData;
 
       if (document.title !== pageTitle) {
         document.title = pageTitle;

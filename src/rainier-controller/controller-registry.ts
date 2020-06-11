@@ -10,6 +10,8 @@ import {
 } from './types';
 import { dataView } from 'rainier-view';
 import { getMatchFromRoute, trimSlashes } from 'rainier-util';
+import { ParsedQuery } from 'query-string';
+import { getAggregateViewData } from 'rainier-view/view-data-retriever';
 
 const getNormalizedBasePath = (
   isDefaultController: boolean,
@@ -117,7 +119,7 @@ export const controllerRegistry = {
     return registeredControllers.find((controller) => controller.isHome);
   },
 
-  findControllerAndRoute: (fullPath: string): ControllerMatchResponse => {
+  findControllerAndRoute: (fullPath: string, queryParams: ParsedQuery): ControllerMatchResponse => {
     // remove trailing slash if there is one
     const normalizedFullPath = fullPath.replace('/$', '');
 
@@ -144,21 +146,23 @@ export const controllerRegistry = {
           }) || defaultController;
     }
 
-    const routeAndMatch = controller?.routes
+    const matchData = controller?.routes
       ?.map((route) => ({
         route,
         match: getMatchFromRoute(route, fullPath),
+        queryParams,
       }))
       .find(({ match }) => match?.isExact);
 
     return {
       controller,
-      fetch: routeAndMatch?.route?.fetch,
-      params: routeAndMatch?.match?.params ?? {},
-      paths: routeAndMatch?.route?.paths || [],
-      fullPaths: routeAndMatch?.route?.fullPaths || [],
-      routeViewData: (routeAndMatch?.route as ControllerViewRoute).viewData,
-      controllerViewData: controller?.viewData,
+      fetch: matchData?.route?.fetch,
+      pathParams: matchData?.match?.params ?? {},
+      queryParams: matchData?.queryParams ?? {},
+      viewData: getAggregateViewData(
+        controller?.viewData ?? {},
+        (matchData?.route as ControllerViewRoute).viewData ?? {}
+      ),
     };
   },
 };

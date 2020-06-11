@@ -14,8 +14,9 @@ import { App } from 'rainier-components/App';
 import hbs from 'express-hbs';
 import { existsSync } from 'fs';
 import { initServerHooks } from 'rainier-lifecycle/init-hooks';
-import { getViewDataFromControllerMatch } from 'rainier-view/view-data-retriever';
-import { HtmlTag } from 'rainier-controller';
+import { ParsedQuery } from 'query-string';
+import { toRouteMatchParams } from 'rainier-lifecycle/on-route-match';
+import { buildHtmlTag } from 'rainier-controller/build-html-tag';
 
 registerControllers();
 
@@ -43,12 +44,14 @@ server.get('*', async (req, res) => {
   const stores = configureServerStores(req);
   await serverHooks?.hooks?.onAfterStoreInit?.(stores);
 
-  const controllerMatch = controllerRegistry.findControllerAndRoute(req.path);
-  await serverHooks?.hooks?.onRouteMatch?.(controllerMatch);
-
-  const { bodyTags, headTags, pageTitle, noScriptText } = getViewDataFromControllerMatch(
-    controllerMatch
+  const controllerMatch = controllerRegistry.findControllerAndRoute(
+    req.path,
+    req.query as ParsedQuery
   );
+
+  if (controllerMatch.controller) {
+    await serverHooks?.hooks?.onRouteMatch?.(toRouteMatchParams(controllerMatch));
+  }
 
   await fetchInitialRouteData(controllerMatch, stores, req.path);
   await serverHooks?.hooks?.onAfterServerDataFetch?.(stores);
@@ -67,13 +70,7 @@ server.get('*', async (req, res) => {
     extractor.getScriptTags(),
   ];
 
-  const buildHtmlTag = ({ type, content, attributes = {} }: HtmlTag): string => {
-    const attrs = Object.entries(attributes)
-      .map(([key, value]) => (value === true ? key : `${key}="${value}"`))
-      .join(' ');
-
-    return `<${type} ${attrs}>${content}</${type}>`;
-  };
+  const { pageTitle, noScriptText, bodyTags, headTags } = controllerMatch.viewData;
 
   await serverHooks?.hooks?.onBeforeServerRender?.();
   res.render('index', {
@@ -86,18 +83,18 @@ server.get('*', async (req, res) => {
         bodyTags:
           scriptTags +
           '\n' +
-          (bodyTags
-            ?.map((tag) => buildHtmlTag(tag))
-            ?.join('\n')
-            .trim() ?? ''),
+          bodyTags
+            .map((tag) => buildHtmlTag(tag))
+            .join('\n')
+            .trim(),
         headTags:
           linkTags +
           styleTags +
           '\n' +
-          (headTags
-            ?.map((tag) => buildHtmlTag(tag))
-            ?.join('\n')
-            .trim() ?? ''),
+          headTags
+            .map((tag) => buildHtmlTag(tag))
+            .join('\n')
+            .trim(),
         html,
         includeServiceWorker: !__DEV__ && hasServiceWorker,
         hasManifest,

@@ -4,7 +4,7 @@ import { logger } from 'rainier-logger/logger';
 import { Event } from 'rainier-event';
 
 export async function fetchInitialRouteData(
-  { controller, fetch, params, paths, fullPaths }: ControllerMatchResponse,
+  { controller, fetch, pathParams, queryParams }: ControllerMatchResponse,
   stores: Stores,
   pathname: string
 ): Promise<any> {
@@ -20,12 +20,9 @@ export async function fetchInitialRouteData(
     }
 
     return await fetch?.({
-      params,
+      pathParams,
+      queryParams,
       stores,
-      controllerPath: controller.basePath,
-      routePaths: paths,
-      fullPaths,
-      isServer: true,
     });
   } else {
     logger.event(Event.CONTROLLER_FALLBACK_FAILURE, `Fallback to default controller failed`, {
