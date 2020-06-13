@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { LoadableComponent } from '@loadable/component';
 import { Event } from 'rainier-event';
 import { logger } from 'rainier-logger/logger';
-import { controllerRegistry } from 'rainier-controller/controller-registry';
+import { controllerRegistry } from 'rainier-controller/registry';
 import { AllStoreContext, useStore, ServerContextStore } from 'rainier-store';
 import queryString from 'query-string';
 import { toRouteMatchHookParams } from 'rainier-lifecycle';

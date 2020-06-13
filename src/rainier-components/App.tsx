@@ -1,6 +1,6 @@
 import React, { FC, Profiler } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { controllerRegistry } from 'rainier-controller/controller-registry';
+import { controllerRegistry } from 'rainier-controller/registry';
 import { logger } from 'rainier-logger/logger';
 import { Stores } from 'rainier-store/types';
 import { StoreProviders } from './StoreProviders';
@@ -14,7 +14,7 @@ export const App: FC<AppProps> = ({ stores }: AppProps) => (
   <StoreProviders stores={stores}>
     <PageWrapper>
       <Switch>
-        {controllerRegistry.getAllViewRoutes().map(
+        {controllerRegistry.reactRouterControllerData.map(
           ({ fullPath: path, View }) =>
             View && (
               <Route

@@ -70,6 +70,7 @@ export const webpackCommon = (
               loader: 'babel-loader',
               options: {
                 plugins: [
+                  '@babel/plugin-syntax-top-level-await',
                   '@babel/plugin-transform-runtime',
                   '@babel/plugin-proposal-optional-chaining',
                   ['@babel/plugin-proposal-decorators', { legacy: true }],
