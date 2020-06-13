@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, StrictMode } from 'react';
 import { useStore, ServerContextStore } from 'rainier-store';
-import { controllerRegistry } from 'rainier-controller/controller-registry';
+import { controllerRegistry } from 'rainier-controller/registry';
 import { useLocation } from 'react-router-dom';
 import {
   initTagRegistryWithHtmlTagsFromServerRender,

@@ -1,4 +1,4 @@
-import { controllerRegistry } from './controller-registry';
+import { controllerRegistry } from './registry';
 import { Controller } from './types';
 
 const { default: controllers } = require(__CONTROLLERS_MANIFEST__);
