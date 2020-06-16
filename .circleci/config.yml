@@ -1,15 +1,20 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+commands:
+  npm-install:
+    description: 'Installs npm dependencies exactly as they are in package-lock.json'
+    steps:
+      - run:
+          name: install
+          command: npm ci
 jobs:
   'Build and Test':
     executor:
       name: node/default
     steps:
       - checkout
-      - run:
-          name: install
-          command: npm ci
+      - npm-install
       - run:
           name: build
           command: npm run build
@@ -22,16 +27,14 @@ jobs:
       name: node/default
     steps:
       - checkout
-      - run:
-          name: install
-          command: npm ci
+      - npm-install
       - run:
           name: prettier and eslint
           command: npm run code-checks
 workflows:
-  'Build and Test':
+  build-and-test':
     jobs:
       - 'Build and Test'
-  'Eslint and Prettier':
+  code-quality:
     jobs:
       - 'Eslint and Prettier'
