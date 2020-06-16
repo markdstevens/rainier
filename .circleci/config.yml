@@ -2,16 +2,30 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
+  'Build and Test':
+    executor: node/default
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm run test
+      - node/install:
+          node-version: 12.16.3
+      - run: node --version
+      - node/install-packages
+      - run: npm run build
+      - run: npm run test
+
+  'Eslint and Prettier':
+    executor: node/default
+    steps:
+      - checkout
+      - node/install:
+          node-version: 12.16.3
+      - run: node --version
+      - node/install-packages
+      - run: npm run code-checks
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test':
+    jobs:
+      - 'Build and Test'
+  code-quality:
+    jobs:
+      - 'Eslint and Prettier'

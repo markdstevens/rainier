@@ -10,16 +10,20 @@
   "scripts": {
     "build": "npm run clean && npm run tsc && cp -R src/rainier-server/views dist/rainier-server",
     "clean": "rimraf dist && rimraf coverage",
-    "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}' --quiet --fix",
+    "eslint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
+    "eslint:fix": "npm run eslint -- --quiet --fix",
     "nuke": "npm run clean && rimraf node_modules && rm package-lock.json",
-    "ts-check": "tsc --noEmit",
     "tsc": "ttsc -p tsconfig-non-cli.json && tsc -p tsconfig-cli.json",
     "test": "BABEL_ENV=test jest",
-    "pre:publish": "npm run build && rimraf node_modules && npm i --prod"
+    "pre:publish": "npm run build && rimraf node_modules && npm i --prod",
+    "check:ts": "tsc --noEmit",
+    "check:prettier": "prettier --check 'src/**/*.{js,jsx,ts,tsx}' 'test/**/*.{js,jsx,ts,tsx}'",
+    "check:eslint": "eslint 'src/**/*.{js,ts,jsx,tsx}' 'test/**/*.{js,jsx,ts,tsx}' --quiet",
+    "code-checks": "npm run check:prettier && npm run check:eslint"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && npm run ts-check && npm run lint"
+      "pre-commit": "pretty-quick --staged && npm run eslint:fix && npm run check:ts"
     }
   },
   "dependencies": {
