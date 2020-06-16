@@ -6,16 +6,16 @@ jobs:
     steps:
       - checkout
       - run:
-        name: install
-        command: npm ci
+          name: install
+          command: npm ci
 
       - run:
-        name: build
-        command: npm run build
+          name: build
+          command: npm run build
 
       - run:
-        name: test
-        command: npm run test
+          name: test
+          command: npm run test
 workflows:
   build-and-test:
     jobs:
