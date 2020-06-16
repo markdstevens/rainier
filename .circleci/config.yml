@@ -8,10 +8,12 @@ commands:
       - run:
           name: install
           command: npm ci
+executors:
+  node-executor:
+    name: node/default
 jobs:
   'Build and Test':
-    executor:
-      name: node/default
+    executor: node-executor
     steps:
       - checkout
       - npm-install
@@ -23,8 +25,7 @@ jobs:
           command: npm run test
 
   'Eslint and Prettier':
-    executor:
-      name: node/default
+    executor: node-executor
     steps:
       - checkout
       - npm-install
