@@ -29,9 +29,9 @@ jobs:
           name: prettier and eslint
           command: npm run code-checks
 workflows:
-  build-and-test:
+  'Build and Test':
     jobs:
       - build-and-test
-  code-quality:
+  'Eslint and Prettier':
     jobs:
       - code-quality
