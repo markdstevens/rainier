@@ -1,8 +1,6 @@
 version: 2.1
-
 orbs:
   node: circleci/node@3.0.0
-
 jobs:
   build-and-test:
     executor:
@@ -12,14 +10,24 @@ jobs:
       - run:
           name: install
           command: npm ci
-
       - run:
           name: build
           command: npm run build
-
       - run:
           name: test
           command: npm run test
+
+  code-quality:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: npm ci
+      - run:
+          name: prettier and eslint
+          command: npm run code-checks
 workflows:
   build-and-test:
     jobs:
