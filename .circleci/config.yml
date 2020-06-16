@@ -6,12 +6,15 @@ jobs:
     executor:
       name: node/default
     steps:
+      - checkout
       - run:
         name: install
         command: npm ci
+
       - run:
         name: build
         command: npm run build
+
       - run:
         name: test
         command: npm run test
