@@ -10,8 +10,8 @@ jobs:
       - node/install:
           node-version: 12.16.3
       - run: node --version
-      - run: npm run build
-      - node/test
+      - run-command: build
+      - run-command: test
 
   'Eslint and Prettier':
     executor: node/default
@@ -21,7 +21,7 @@ jobs:
       - node/install:
           node-version: 12.16.3
       - run: node --version
-      - run: npm run code-checks
+      - run-command: code-checks
 workflows:
   build-and-test':
     jobs:
