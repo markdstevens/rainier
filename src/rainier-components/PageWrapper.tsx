@@ -1,16 +1,17 @@
-import React, { FunctionComponent, useEffect, StrictMode } from 'react';
-import { useStore, ServerContextStore } from 'rainier-store';
-import { controllerRegistry } from 'rainier-controller/registry';
+import React, { FC, useEffect, StrictMode } from 'react';
 import { useLocation } from 'react-router-dom';
-import {
-  initTagRegistryWithHtmlTagsFromServerRender,
-  appendTagsToDOMIfNotAlreadyPresent,
-} from 'rainier-view/html-tag-manager';
 import queryString from 'query-string';
+import { useStore } from 'rainier-store/useStore';
+import { ServerContextStore } from 'rainier-store/server-context-store';
+import type { PageWrapperProps } from './types';
 
 const { default: AppShell } = require(__APP_SHELL__);
 
-export const PageWrapper: FunctionComponent = ({ children }) => {
+export const PageWrapper: FC<PageWrapperProps> = ({
+  children,
+  controllerRegistry,
+  htmlTagManager,
+}: PageWrapperProps) => {
   const serverContextStore = useStore(ServerContextStore);
   const location = useLocation();
 
@@ -35,10 +36,10 @@ export const PageWrapper: FunctionComponent = ({ children }) => {
         noScriptElement.innerHTML = noScriptText;
       }
 
-      appendTagsToDOMIfNotAlreadyPresent(bodyTags, 'body');
-      appendTagsToDOMIfNotAlreadyPresent(headTags, 'head');
+      htmlTagManager?.appendTagsToDOMIfNotAlreadyPresent(bodyTags, 'body');
+      htmlTagManager?.appendTagsToDOMIfNotAlreadyPresent(headTags, 'head');
     } else {
-      initTagRegistryWithHtmlTagsFromServerRender(window.__HTML_TAGS__);
+      htmlTagManager?.initTagRegistryWithHtmlTagsFromServerRender(window.__HTML_TAGS__);
     }
 
     serverContextStore.state.isServerLoad = false;

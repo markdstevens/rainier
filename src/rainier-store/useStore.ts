@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { AllStoreContext } from './all-store-context';
-import { StoreConstructorFunction } from './internal-types';
-import { PrivateStoreMembers } from './types';
+import type { StoreConstructorFunction } from './internal-types';
+import type { PrivateStoreMembers } from './types';
 
 /**
  * A hook that returns a reactive, application-state store. This

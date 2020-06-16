@@ -1,4 +1,4 @@
-import { RainierRC } from '../rainier-rc';
+import type { RainierRC } from '../types';
 
 export function transform<T extends keyof RainierRC>(
   rainierRC: RainierRC | null,

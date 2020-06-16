@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import { RainierRC } from './rainier-rc';
 import {
   PublicAssetsDirConfig,
   ControllerConfiguration,
@@ -8,6 +7,7 @@ import {
   AppShellConfig,
   RainierHooksConfiguration,
 } from './transformers';
+import type { RainierRC } from './types';
 
 export const getRainierRc = (): RainierRC => {
   const cwd = process.cwd();

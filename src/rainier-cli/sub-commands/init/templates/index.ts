@@ -55,6 +55,4 @@ const tsTemplates: TemplateFiles = {
   todos: todosTs,
 };
 
-const getTemplates = (isJs: boolean): TemplateFiles => (isJs ? jsTemplates : tsTemplates);
-
-export default getTemplates;
+export const getTemplates = (isJs: boolean): TemplateFiles => (isJs ? jsTemplates : tsTemplates);

@@ -1,5 +1,5 @@
-import { StoreMap, Stores } from './types';
-import { StoreConstructorFunction } from './internal-types';
+import type { StoreMap, Stores } from './types';
+import type { StoreConstructorFunction } from './internal-types';
 
 export function wrapStoresWithGetter(stores: StoreMap): Stores {
   return Object.assign(

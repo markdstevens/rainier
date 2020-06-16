@@ -1,9 +1,9 @@
 import webpack from 'webpack';
 import merge from 'webpack-merge';
-import { CustomWebpackOptions } from '../custom-webpack-options';
+import { CustomWebpackOptions } from '../types';
 import { webpackCommon } from './webpack-common';
 import { entry, target, output, plugins } from '../config-partials';
-import { RainierRC } from 'rainier-rc';
+import type { RainierRC } from 'rainier-rc/types';
 
 export const webpackServer = (
   options: CustomWebpackOptions,

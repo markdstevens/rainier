@@ -1,10 +1,10 @@
 import path from 'path';
-import { CustomWebpackOptions } from '../custom-webpack-options';
+import { existsSync } from 'fs';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
-import { RainierRC } from 'rainier-rc';
-import { existsSync } from 'fs';
 import convertPathsToAliases from 'convert-tsconfig-paths-to-webpack-aliases';
+import { CustomWebpackOptions } from '../types';
+import type { RainierRC } from 'rainier-rc/types';
 
 const aliasesFromClientTsconfig = function (): any {
   const tsconfigPath = `${process.env.ORIGINAL_DIR}/tsconfig.json`;

@@ -1,8 +1,8 @@
 import path from 'path';
-import { RainierRCConfiguration } from '../rainierrc-configuration';
-import { RainierRC } from '../rainier-rc';
-import { fileOrDirExists } from '../helpers/file-or-dir-exists';
 import { existsSync } from 'fs';
+import { RainierRCConfiguration } from '../rainierrc-configuration';
+import { fileOrDirExists } from '../helpers/file-or-dir-exists';
+import type { RainierRC } from '../types';
 
 export class PublicAssetsDirConfig extends RainierRCConfiguration {
   public readonly configName: keyof RainierRC = 'publicAssetsDir';

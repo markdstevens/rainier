@@ -1,16 +1,11 @@
 import { ParsedQuery } from 'query-string';
-import { trimSlashes, getMatchFromRoute } from 'rainier-util';
-import { RegisteredController, RegisteredControllerViewRoute } from 'rainier-controller/types';
-import ControllerConstants from './constants';
-import { match } from 'react-router-dom';
+import { trimSlashes } from 'rainier-util/remove-slashes';
+import { getMatchFromRoute } from 'rainier-util/get-match-from-route';
+import { ControllerConstants } from './constants';
+import type { RegisteredController } from 'rainier-controller/types';
+import type { DataForMatchedRoute } from './types';
 
-interface DataForMatchedRoute {
-  route: RegisteredControllerViewRoute;
-  match: match<{}> | null | undefined;
-  queryParams: ParsedQuery;
-}
-
-const controllerRegistryUtils = {
+export const controllerRegistryUtils = {
   isHomeController(basePath?: string): basePath is undefined {
     return (
       !basePath ||
@@ -36,15 +31,18 @@ const controllerRegistryUtils = {
   },
 
   getNormalizedRoutePaths(
-    basePath: string,
+    normalizedBasePath: string,
     paths?: string[]
   ): { paths: string[]; fullPaths: string[] } {
-    const normalizedPaths = paths?.map(
-      (path) => ControllerConstants.ROOT_PATH + trimSlashes(path)
-    ) ?? ['/*'];
+    const defaultRoutePaths = [
+      ControllerConstants.ROOT_PATH + ControllerConstants.DEFAULT_CONTROLLER_PATH,
+    ];
 
-    const normalizedFullPaths = normalizedPaths?.map(
-      (normalizedRoutePath) => basePath + normalizedRoutePath
+    const normalizedPaths =
+      paths?.map((path) => ControllerConstants.ROOT_PATH + trimSlashes(path)) ?? defaultRoutePaths;
+
+    const normalizedFullPaths = normalizedPaths.map(
+      (normalizedRoutePath) => normalizedBasePath + normalizedRoutePath
     );
 
     return {
@@ -97,13 +95,11 @@ const controllerRegistryUtils = {
     controller?: RegisteredController
   ): DataForMatchedRoute | undefined {
     return controller?.routes
-      ?.map((route) => ({
+      .map((route) => ({
         route,
         match: getMatchFromRoute(route, path),
         queryParams,
       }))
-      .find(({ match }) => match?.isExact);
+      .find(({ match }) => match?.isExact) as DataForMatchedRoute | undefined;
   },
 };
-
-export default controllerRegistryUtils;

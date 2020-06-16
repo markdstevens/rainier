@@ -1,4 +1,5 @@
-import { matchPath, match } from 'react-router-dom';
+import { matchPath } from 'react-router-dom';
+import type { match } from 'react-router-dom';
 
 export const getMatchFromRoute = (
   route: { fullPaths: string[]; paths: string[] },

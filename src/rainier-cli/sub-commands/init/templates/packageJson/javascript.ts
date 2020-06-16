@@ -5,7 +5,7 @@ export const packageJsonJs = `{
   "main": "./dist/server.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn clean && yarn rainier build"
+    "build": "npm run clean && rainier build"
   },
   "keywords": [
     "rainier"

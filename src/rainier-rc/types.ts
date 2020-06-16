@@ -1,18 +1,18 @@
-export interface ControllerConfig {
+interface ControllerConfig {
   manifest: string;
 }
 
-export interface StoreConfig {
+interface StoreConfig {
   initClientStores: string;
   initServerStores: string;
 }
 
-export interface RainierHooks {
+interface RainierHooks {
   server?: string;
   client?: string;
 }
 
-export interface RainierRC {
+interface RainierRC {
   publicAssetsDir?: string;
   controller: ControllerConfig;
   store?: StoreConfig;
@@ -20,3 +20,5 @@ export interface RainierRC {
   appShell?: string;
   rainierHooks?: RainierHooks;
 }
+
+export type { ControllerConfig, StoreConfig, RainierHooks, RainierRC };

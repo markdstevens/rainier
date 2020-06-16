@@ -1,8 +1,8 @@
-import path from 'path';
-import { program } from 'commander';
 import { writeFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
-import getTemplates from './templates';
+import { getTemplates } from './templates';
+import { program } from 'commander';
 import chalk from 'chalk';
+import path from 'path';
 
 const resolveOutDir = (relativeOutDirPath: string): string =>
   path.join(`${process.cwd()}/${relativeOutDirPath}`);

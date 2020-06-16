@@ -1,4 +1,4 @@
-import { RainierClientConfig, RainierServerConfig } from './types';
+import type { RainierClientConfig, RainierServerConfig } from './types';
 
 export function initServerHooks(): RainierServerConfig | undefined {
   return __SERVER_HOOKS__ && require(__SERVER_HOOKS__)?.default;

@@ -1,4 +1,4 @@
-import { RainierRC } from '../rainier-rc';
+import type { RainierRC } from '../types';
 
 export interface RainierRcTransformer {
   (rainierRc: RainierRC): string;

@@ -1,6 +1,6 @@
-import { ServerContextStore, ServerContextState } from 'rainier-store/server-context-store';
-import { StoreMap } from 'rainier-store/types';
-import { Request } from 'express';
+import { ServerContextStore } from 'rainier-store/server-context-store';
+import type { StoreMap, ServerContextState } from 'rainier-store/types';
+import type { Request } from 'express';
 
 interface ExpressLocale {
   locale: {

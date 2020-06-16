@@ -7,9 +7,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 import { existsSync } from 'fs';
-import { ParsedQuery } from 'query-string';
-import { controllerRegistry } from 'rainier-controller/registry';
-import { registerControllers } from 'rainier-controller/register-controllers';
+import { initControllerRegistry } from 'rainier-controller/registry';
 import { logger } from 'rainier-logger/logger';
 import { App } from 'rainier-components/App';
 import { toRouteMatchHookParams } from 'rainier-lifecycle/to-route-match-hook-params';
@@ -17,8 +15,10 @@ import { initServerHooks } from 'rainier-lifecycle/init-hooks';
 import { configureServerStores } from './configure-server-stores';
 import { fetchInitialRouteData } from './fetch-initial-route-data';
 import { adaptViewDataForServer } from './adapt-view-data-for-server';
+import { getControllers } from 'rainier-controller/get-controllers';
+import type { ParsedQuery } from 'query-string';
 
-registerControllers();
+const controllerRegistry = initControllerRegistry(getControllers());
 
 const statsFile = `${__APP_ROOT__}/dist/loadable-stats.json`;
 const hasManifest = existsSync(`${__APP_ROOT__}/dist/manifest.json`);
@@ -59,7 +59,7 @@ server.get('*', async (req, res) => {
   const html = renderToString(
     extractor.collectChunks(
       <StaticRouter location={req.url}>
-        <App stores={stores} />
+        <App stores={stores} controllerRegistry={controllerRegistry} />
       </StaticRouter>
     )
   );

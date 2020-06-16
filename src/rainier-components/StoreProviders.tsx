@@ -1,17 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
+import { debounce } from 'rainier-util/debounce';
 import { AllStoreContext } from 'rainier-store/all-store-context';
-import { debounce } from 'rainier-util';
-import { Stores, IStore } from 'rainier-store';
-
-type StoreProvidersProps = React.PropsWithChildren<{
-  stores: Stores;
-}>;
-
-interface StoreData {
-  store: IStore;
-  reducer: [any, React.Dispatch<any>];
-  Provider: React.Provider<any>;
-}
+import type { StoreData, StoreProvidersProps } from './types';
 
 export const StoreProviders: React.FC<StoreProvidersProps> = ({
   children,
