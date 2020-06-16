@@ -38,5 +38,5 @@
       "rainier-test/*": ["rainier-test/*"]
     }
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*", "./test/**/*"]
 }
