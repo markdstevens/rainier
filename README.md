@@ -1,5 +1,6 @@
 # 🚠 Rainier
 
+[![Rainier build](https://circleci.com/gh/markdstevens/rainier.svg?style=shield)](https://circleci.com/gh/markdstevens/rainier)
 [![Rainier version](https://img.shields.io/github/package-json/v/markdstevens/rainier)]()
 [![Licence](https://img.shields.io/github/license/markdstevens/rainier)](https://github.com/markdstevens/rainier/blob/master/LICENSE)
 [![Typescript version](https://img.shields.io/github/package-json/dependency-version/markdstevens/rainier/dev/typescript)]()
