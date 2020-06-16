@@ -36,6 +36,6 @@ $ npx rainier init todo-app --js
 After the rainier project has been scaffolded, install the dependencies and start the development server with npm:
 
 ```
-$ npm i
+$ npm ci
 $ npm run build
 ```
