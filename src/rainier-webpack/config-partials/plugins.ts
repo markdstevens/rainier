@@ -1,4 +1,3 @@
-import { CustomWebpackOptions } from '../custom-webpack-options';
 import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -8,7 +7,8 @@ import NodemonPlugin from 'nodemon-webpack-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import { RainierRC } from 'rainier-rc';
+import type { RainierRC } from 'rainier-rc/types';
+import type { CustomWebpackOptions } from '../types';
 
 export const plugins = {
   client: (options: CustomWebpackOptions, rainierRc: RainierRC): webpack.Plugin[] => {

@@ -1,6 +1,6 @@
-import { NormalizedViewData } from 'rainier-view';
 import { buildHtmlTags } from './html-tag-builder';
-import { ChunkExtractor } from '@loadable/server';
+import type { ChunkExtractor } from '@loadable/server';
+import type { NormalizedViewData } from 'rainier-view/types';
 
 export interface ServerViewData {
   pageTitle: string;

@@ -1,6 +1,4 @@
-type StringIndexable = {
-  [key: string]: any;
-};
+import type { StringIndexable } from './types';
 
 const getProxyHandler = <T extends StringIndexable>(
   state: T,

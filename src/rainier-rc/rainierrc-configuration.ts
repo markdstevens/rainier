@@ -1,4 +1,4 @@
-import { RainierRC } from './rainier-rc';
+import { RainierRC } from './types';
 import chalk from 'chalk';
 
 type RainierRCValues = RainierRC[keyof RainierRC];

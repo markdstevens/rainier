@@ -1,4 +1,4 @@
-import { CustomWebpackOptions } from '../custom-webpack-options';
+import type { CustomWebpackOptions } from '../types';
 
 interface Output {
   filename: string;

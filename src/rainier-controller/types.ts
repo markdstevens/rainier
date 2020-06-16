@@ -1,13 +1,13 @@
-import { FC } from 'react';
-import { LoadableComponent } from '@loadable/component';
-import { Stores } from '../rainier-store/types';
-import { ParsedQuery } from 'query-string';
-import { NormalizedViewData } from 'rainier-view';
+import type { FC } from 'react';
+import type { ParsedQuery } from 'query-string';
+import type { LoadableComponent } from '@loadable/component';
+import type { Stores } from 'rainier-store/types';
+import type { NormalizedViewData } from 'rainier-view/types';
 
 /**
  * This object gets passed to every controller route's "fetch" function
  */
-export interface FetchOptions {
+interface FetchOptions {
   /**
    * The URL query params from the request; distinct from
    * the URL path parameters. Note that all query params
@@ -39,11 +39,11 @@ export interface FetchOptions {
    */
   stores: Stores;
 }
-export interface Params {
+interface Params {
   [key: string]: string | number | boolean;
 }
 
-export type HtmlAttributes = {
+type HtmlAttributes = {
   [key: string]: string | boolean;
 };
 
@@ -56,7 +56,7 @@ export type HtmlAttributes = {
  *     }
  *   }
  */
-export interface HtmlTag {
+interface HtmlTag {
   /**
    * The type of tag to append to the DOM
    */
@@ -72,7 +72,7 @@ export interface HtmlTag {
   attributes?: HtmlAttributes;
 }
 
-export interface ViewData {
+interface ViewData {
   /**
    * The title of the page that will be used in the header's
    * <title> tag.
@@ -93,7 +93,7 @@ export interface ViewData {
    */
   bodyTags?: HtmlTag[] | (() => HtmlTag[]);
 }
-export interface ControllerViewRoute {
+interface ControllerViewRoute {
   /**
    * The actual URL mappings. More than 1 path can be defined, but
    * all paths will map to a single View and fetch function.
@@ -126,7 +126,7 @@ export interface ControllerViewRoute {
  * obvious reasons, have a view. However, api routes must specify a "fetch"
  * function which returns a JSON-serializable object.
  */
-export declare type ControllerRoute = ControllerViewRoute;
+type ControllerRoute = ControllerViewRoute;
 /**
  * Controllers are the backbone of the rainier framework. At their simplest,
  * controllers map URLs to react components (views). Controllers can also:
@@ -134,7 +134,7 @@ export declare type ControllerRoute = ControllerViewRoute;
  *   1. Associate related URL mappings into a single configuration
  *   2. Fetch initial page data
  */
-export interface Controller {
+interface Controller {
   /**
    * The base path will be prepended to each path that's defined in the controller's
    * routes. This configuration will match /todos/show:
@@ -159,7 +159,7 @@ export interface Controller {
    */
   viewData?: ViewData;
 }
-export interface RegisteredControllerViewRoute {
+interface RegisteredControllerViewRoute {
   /**
    * All of the relative paths for the route
    */
@@ -180,20 +180,13 @@ export interface RegisteredControllerViewRoute {
    */
   fetch?: ((fetchOptions: FetchOptions) => Promise<void>) | undefined;
   /**
-   * A flag that indicates if the controller route is the default
-   * route or not. The default route is the route that will be used
-   * when a request matches the controller but doesn't match any of
-   * the other routes.
-   */
-  isDefault: boolean;
-  /**
    * Data that is specific to the route's page like the page title and
    * any custom script/style tags.
    */
   viewData?: ViewData;
 }
 
-export interface ControllerMatchResponse {
+interface ControllerMatchResponse {
   /**
    * The controller that matched the request URL
    */
@@ -234,7 +227,7 @@ export interface ControllerMatchResponse {
    */
   viewData: NormalizedViewData;
 }
-export interface RegisteredController {
+interface RegisteredController {
   /**
    * The base path of the controller
    */
@@ -261,7 +254,22 @@ export interface RegisteredController {
    */
   viewData?: ViewData;
 }
-export interface ReactRouterControllerData {
+interface ReactRouterControllerData {
   fullPath: string;
   View: LoadableComponent<{}> | FC | undefined;
 }
+
+export type {
+  FetchOptions,
+  Params,
+  HtmlAttributes,
+  HtmlTag,
+  ViewData,
+  ControllerViewRoute,
+  ControllerRoute,
+  Controller,
+  RegisteredControllerViewRoute,
+  ControllerMatchResponse,
+  RegisteredController,
+  ReactRouterControllerData,
+};

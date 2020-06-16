@@ -1,7 +1,7 @@
 import path from 'path';
 import { RainierRCConfiguration } from '../rainierrc-configuration';
-import { RainierRC, StoreConfig } from '../rainier-rc';
 import { fileOrDirExists } from '../helpers/file-or-dir-exists';
+import type { RainierRC, StoreConfig } from '../types';
 
 export class StoreConfiguration extends RainierRCConfiguration {
   public readonly configName: keyof RainierRC = 'store';

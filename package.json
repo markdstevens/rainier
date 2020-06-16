@@ -8,16 +8,18 @@
     "rainier": "dist/rainier-cli/index.js"
   },
   "scripts": {
-    "build": "yarn clean && yarn tsc && cp -R src/rainier-server/views dist/rainier-server",
-    "clean": "rimraf dist",
+    "build": "npm run clean && npm run tsc && cp -R src/rainier-server/views dist/rainier-server",
+    "clean": "rimraf dist && rimraf coverage",
     "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}' --quiet --fix",
-    "nuke": "yarn clean && rimraf node_modules && rm yarn.lock && yarn",
+    "nuke": "npm run clean && rimraf node_modules && rm package-lock.json",
     "ts-check": "tsc --noEmit",
-    "tsc": "ttsc && tsc -p tsconfig-cli.json"
+    "tsc": "ttsc",
+    "test": "BABEL_ENV=test jest",
+    "pre:publish": "npm run build && rimraf node_modules && npm i --prod"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && yarn ts-check && yarn lint"
+      "pre-commit": "pretty-quick --staged && npm run ts-check && npm run lint"
     }
   },
   "dependencies": {
@@ -67,6 +69,8 @@
     "workbox-webpack-plugin": "^5.1.3"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.10.0",
+    "@testing-library/react": "^10.2.1",
     "@types/chalk": "^2.2.0",
     "@types/clean-webpack-plugin": "^0.1.3",
     "@types/clear": "^0.1.0",
@@ -76,6 +80,7 @@
     "@types/figlet": "^1.2.0",
     "@types/fs-extra": "^8.1.0",
     "@types/html-webpack-plugin": "^3.2.2",
+    "@types/jest": "^26.0.0",
     "@types/loadable__component": "^5.10.0",
     "@types/loadable__server": "^5.12.1",
     "@types/loadable__webpack-plugin": "^5.7.0",
@@ -102,9 +107,14 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "husky": "^4.2.5",
+    "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "rimraf": "^3.0.2",
+    "ts-jest": "^26.1.0",
     "ttypescript": "^1.5.10",
     "typescript": "3.8.3"
   },

@@ -1,13 +1,6 @@
-import { ViewData, HtmlTag } from 'rainier-controller';
+import type { ViewData, HtmlTag } from 'rainier-controller/types';
+import type { FieldFunction, NormalizedViewData } from './types';
 
-export interface NormalizedViewData {
-  pageTitle: string;
-  noScriptText: string;
-  headTags: HtmlTag[];
-  bodyTags: HtmlTag[];
-}
-
-type FieldFunction<T> = () => T;
 function isFieldFunction<T>(field: any): field is FieldFunction<T> {
   return typeof field === 'function';
 }

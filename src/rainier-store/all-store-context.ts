@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Stores } from './types';
+import type { Stores } from './types';
 
 /**
  * This provides an easy hook into retrieving all the stores

@@ -1,2 +1,2 @@
 export * from './types';
-export * from './split';
+export * from './loadable';

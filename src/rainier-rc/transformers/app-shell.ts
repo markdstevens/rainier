@@ -1,7 +1,7 @@
 import path from 'path';
 import { RainierRCConfiguration } from '../rainierrc-configuration';
-import { RainierRC } from '../rainier-rc';
 import { fileOrDirExists } from '../helpers/file-or-dir-exists';
+import type { RainierRC } from '../types';
 
 export class AppShellConfig extends RainierRCConfiguration {
   public readonly configName: keyof RainierRC = 'appShell';

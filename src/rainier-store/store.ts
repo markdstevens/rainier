@@ -1,6 +1,6 @@
 import React from 'react';
-import { IStore, StoreKeys } from './types';
-import { bindProxyHandler } from 'rainier-util';
+import { bindProxyHandler } from 'rainier-util/store-state-proxy';
+import type { IStore, StoreKeys } from './types';
 
 /**
  * This is the base class that all other stores must extend from.

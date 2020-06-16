@@ -1,3 +1,6 @@
-import { IStore } from './types';
+import type { IStore } from './types';
 
-export type StoreConstructorFunction = new (...args: any) => IStore;
+export type StoreConstructorFunction<T = any> = {
+  new (...args: any): IStore<T>;
+  getDefaultState?: () => T;
+};

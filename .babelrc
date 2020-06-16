@@ -1,0 +1,17 @@
+{
+  "plugins": [
+    "@babel/plugin-syntax-top-level-await",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-optional-chaining",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "@loadable/babel-plugin"
+  ],
+  "presets": [["@babel/env"], ["@babel/preset-react"], ["@babel/preset-typescript"]],
+  "env": {
+    "test": {
+      "plugins": ["dynamic-import-node"],
+      "presets": [["@babel/env", { "modules": "commonjs" }]]
+    }
+  }
+}

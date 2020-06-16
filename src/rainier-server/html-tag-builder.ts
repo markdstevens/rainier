@@ -1,4 +1,4 @@
-import { HtmlTag } from 'rainier-controller';
+import type { HtmlTag } from 'rainier-controller/types';
 
 function buildHtmlTag({ type, content, attributes = {} }: HtmlTag): string {
   const attrs = Object.entries(attributes)

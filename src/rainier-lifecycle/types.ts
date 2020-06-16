@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import { ControllerMatchResponse, ViewData, Params } from 'rainier-controller';
-import { Stores } from 'rainier-store';
-import { ParsedQuery } from 'query-string';
+import type { Request, Response, NextFunction } from 'express';
+import type { ParsedQuery } from 'query-string';
+import type { ControllerMatchResponse, ViewData, Params } from 'rainier-controller/types';
+import type { Stores } from 'rainier-store/types';
 
 type ExpressMiddleware = (req: Request, res: Response, next: NextFunction) => void;
 

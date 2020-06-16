@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import { webpackServer, webpackClient } from './config-templates';
-import { CustomWebpackOptions } from './custom-webpack-options';
-import { RainierRC } from 'rainier-rc';
+import type { CustomWebpackOptions } from './types';
+import type { RainierRC } from 'rainier-rc/types';
 
 export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC): void => {
   console.info('running webpack with 👇');

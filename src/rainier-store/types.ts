@@ -1,7 +1,7 @@
-import { Dispatch } from 'react';
-import { StoreConstructorFunction } from './internal-types';
+import type { Dispatch } from 'react';
+import type { StoreConstructorFunction } from './internal-types';
 
-export interface IStore<T = any> {
+interface IStore<T = any> {
   /**
    * The object that contains each store's data. Every field
    * declared inside "state" will be automatically reactive.
@@ -36,7 +36,7 @@ export interface IStore<T = any> {
  * to clients of the rainier project. These are internal details of the store
  * class.
  */
-export type PrivateStoreMembers = 'updateState' | 'dispatch' | 'context' | 'isPlatformStore';
+type PrivateStoreMembers = 'updateState' | 'dispatch' | 'context' | 'isPlatformStore';
 
 /**
  * Only the "get" function should be used directly. Stores can be retrieved
@@ -45,15 +45,25 @@ export type PrivateStoreMembers = 'updateState' | 'dispatch' | 'context' | 'isPl
  *   const allStores = React.useContext(ServerContextStore);
  *   const todoStore = allStores.get(TodoStore);
  */
-export interface Stores {
+interface Stores {
   stores: StoreMap;
   get<T extends StoreConstructorFunction>(
     storeName: T
   ): Omit<InstanceType<T>, PrivateStoreMembers> | never;
 }
 
-export interface StoreMap {
+interface StoreMap {
   [key: string]: IStore;
 }
 
-export type StoreKeys = keyof IStore;
+type StoreKeys = keyof IStore;
+
+interface ServerContextState {
+  location: string;
+  language: string;
+  region: string;
+  locale: string;
+  isServerLoad: boolean;
+}
+
+export type { IStore, PrivateStoreMembers, Stores, StoreMap, StoreKeys, ServerContextState };

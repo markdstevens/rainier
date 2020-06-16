@@ -39,10 +39,3 @@ After the rainier project has been scaffolded, install the dependencies and star
 $ npm i
 $ npm run build
 ```
-
-or with yarn:
-
-```
-$ yarn
-$ yarn build
-```

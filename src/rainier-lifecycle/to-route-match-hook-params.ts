@@ -1,5 +1,5 @@
-import { ControllerMatchResponse } from 'rainier-controller';
-import { RouteMatchData } from './types';
+import type { ControllerMatchResponse } from 'rainier-controller/types';
+import type { RouteMatchData } from './types';
 
 export function toRouteMatchHookParams(
   controllerAndMatch: ControllerMatchResponse

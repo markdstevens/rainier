@@ -1,12 +1,6 @@
 import { Store } from './store';
+import type { ServerContextState } from './types';
 
-export interface ServerContextState {
-  location: string;
-  language: string;
-  region: string;
-  locale: string;
-  isServerLoad: boolean;
-}
 /**
  * A simple store that contains basic information about the original
  * server request.

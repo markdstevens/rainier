@@ -1,6 +1,6 @@
 import { initPlatformClientStores } from './init-platform-stores';
 import { wrapStoresWithGetter } from 'rainier-store/to-stores-obj';
-import { Stores, StoreMap } from 'rainier-store/types';
+import type { Stores, StoreMap } from 'rainier-store/types';
 
 const { default: initCustomClientStores } = require(__INIT_CLIENT_STORES__);
 

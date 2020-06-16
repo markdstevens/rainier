@@ -1,5 +1,5 @@
-import { Event } from 'rainier-event';
-import { FetchOptions } from 'rainier-controller';
+import { Event } from 'rainier-event/event';
+import type { FetchOptions } from 'rainier-controller/types';
 
 interface SchedulerInteraction {
   id: number;
