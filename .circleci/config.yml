@@ -32,3 +32,6 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test
+  code-quality:
+    jobs:
+      - code-quality
