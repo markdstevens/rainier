@@ -13,7 +13,7 @@
     "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}' --quiet --fix",
     "nuke": "npm run clean && rimraf node_modules && rm package-lock.json",
     "ts-check": "tsc --noEmit",
-    "tsc": "ttsc",
+    "tsc": "ttsc -p tsconfig-non-cli.json && tsc -p tsconfig-cli.json",
     "test": "BABEL_ENV=test jest",
     "pre:publish": "npm run build && rimraf node_modules && npm i --prod"
   },

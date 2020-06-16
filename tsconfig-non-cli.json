@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["./src/**/*"],
+  "exclude": ["./src/rainier-cli", "./src/rainier-webpack", "./src/rainier-rc"]
+}
