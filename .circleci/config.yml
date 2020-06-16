@@ -6,11 +6,12 @@ jobs:
     executor:
       name: node/default
     steps:
-      - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm run test
+      - install:
+        run: npm ci
+      - build:
+        run: npm run build
+      - test:
+        run: npm run test
 workflows:
   build-and-test:
     jobs:
