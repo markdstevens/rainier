@@ -1,11 +1,8 @@
-export const initClientStoresJs = `import { TodoStore } from "stores/todo-store";
+export const initClientStoresJs = `import { todoStore } from "stores/todo-store";
 
-export default (serializedStores) => {
+export default () => {
   return {
-    todoStore: new TodoStore(
-      serializedStores.todoStore.state,
-      TodoStore.getDefaultState()
-    ),
+    todoStore: todoStore(),
   };
 };
 `;

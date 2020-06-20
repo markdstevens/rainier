@@ -2,27 +2,27 @@ export const todoStoreTs = `import { Store } from "rainier";
 
 export interface TodoStoreState {
   todos?: string[];
+  populateTodos: () => Promise<void>;
 }
 
-export class TodoStore extends Store<TodoStoreState> {
-  static getDefaultState() {
-    return {
-      todos: [],
-    };
-  }
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  async populateTodos() {
-    this.state.todos?.push("wake up");
+export function todoStore(): Store<TodoStoreState> {
+  const todoStore = {
+    todos: [],
 
-    await this.sleep(2000);
-    this.state.todos?.push("take shower");
-    await this.sleep(2000);
+    async populateTodos(this: TodoStoreState) {
+      this.todos = this.todos ?? [];
+      this.todos.push("wake up!");
+      await sleep(2000);
+      this.todos.push("drink coffee!");
+      await sleep(2000);
+      this.todos.push("start coding!");
+    },
+  };
 
-    this.state.todos?.push("write code!");
-  }
-
-  sleep(milliseconds: number) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  }
+  return todoStore;
 }
 `;

@@ -1,5 +1,4 @@
 export const todoControllerJs = `import { loadable } from "rainier";
-import { TodoStore } from "stores/todo-store";
 
 const TodoController = {
   basePath: "/todos",
@@ -12,7 +11,7 @@ const TodoController = {
       paths: ["/show/:id"],
       View: loadable(() => import("views/show-todos")),
       async fetch(fetchOptions) {
-        const todoStore = fetchOptions.stores.get(TodoStore);
+        const todoStore = fetchOptions.stores.get('todoStore');
         await todoStore.populateTodos();
       },
     },

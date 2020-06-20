@@ -6,9 +6,8 @@ import { todoControllerJs, todoControllerTs } from './todo-controller';
 import { controllerManifest } from './controller-manifest/index';
 import { showTodosJs, showTodosTs } from './show-todos';
 import { todoStoreJs, todoStoreTs } from './todo-store';
-import { todoStoreIndex } from './todo-store-index/index';
 import { initClientStoresJs, initClientStoresTs } from './init-client-stores';
-import { initServerStores } from './init-server-stores';
+import { initServerStoresJs, initServerStoresTs } from './init-server-stores';
 import { todosJs, todosTs } from './todos';
 
 interface TemplateFiles {
@@ -20,7 +19,6 @@ interface TemplateFiles {
   controllerManifest: string;
   showTodos: string;
   todoStore: string;
-  todoStoreIndex: string;
   initClientStores: string;
   initServerStores: string;
   todos: string;
@@ -34,9 +32,8 @@ const jsTemplates: TemplateFiles = {
   controllerManifest,
   showTodos: showTodosJs,
   todoStore: todoStoreJs,
-  todoStoreIndex,
   initClientStores: initClientStoresJs,
-  initServerStores: initServerStores,
+  initServerStores: initServerStoresJs,
   todos: todosJs,
 };
 
@@ -49,9 +46,8 @@ const tsTemplates: TemplateFiles = {
   controllerManifest,
   showTodos: showTodosTs,
   todoStore: todoStoreTs,
-  todoStoreIndex,
   initClientStores: initClientStoresTs,
-  initServerStores: initServerStores,
+  initServerStores: initServerStoresTs,
   todos: todosTs,
 };
 
