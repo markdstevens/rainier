@@ -1,69 +1,73 @@
-import type { Dispatch } from 'react';
-import type { StoreConstructorFunction } from './internal-types';
-
-interface IStore<T = any> {
+/**
+ * Data stores are integral to the rainier ecosystem. Stores
+ * are simply functions that return an object which matches
+ * this schema. Under the hood, the properties and functions
+ * of the store are made reactive through the use of mobx and
+ * mobx-react-lite.
+ *
+ * Stores can be accessed in two contexts:
+ *   1. Any controller's "fetch" method through fetchOptions.stores
+ *   2. Any functional component through the useStore hook
+ *
+ * When you want a component to react to state changes in the data
+ * store, you need to wrap the component in the useObserver hook
+ * which can be imported from rainier. This useObserver hook is 100%
+ * identical to mobx's useObserver hook, and it's only wrapped so that
+ * future backwards compatible changes can be made to the store API without
+ * breaking everyone's applications.
+ */
+interface Store<T = any> {
+  [key: string]: any;
   /**
-   * The object that contains each store's data. Every field
-   * declared inside "state" will be automatically reactive.
+   * A default toJSON function is automatically applied to the store which
+   * should be sufficient in the vast majority of cases. If this is not
+   * sufficient for your use case, then you can elect to override it by
+   * supplying your own implementation.
    */
-  state: T;
-  /**
-   * Returns true if the store is defined by the rainier framework. Will
-   * always return false if the store is an application, user-defined store.
-   */
-  isPlatformStore?: boolean;
-  /**
-   * An internal of the base store. Don't touch.
-   */
-  updateState(prevState: T, nextState: T): T;
-  /**
-   * An internal of the base store. Don't touch.
-   */
-  dispatch: Dispatch<T>;
-  /**
-   * An internal of the base store. Don't touch.
-   */
-  context: React.Context<T>;
-  /**
-   * Any keys specified in this list will be excluded from
-   * the serialized stores that get passed to the client.
-   */
-  keysToExcludeFromSerializedStores: string[];
+  toJSON?: () => Partial<T>;
 }
 
 /**
- * These are the fields that exist on the store class but should not be exposed
- * to clients of the rainier project. These are internal details of the store
- * class.
- */
-type PrivateStoreMembers = 'updateState' | 'dispatch' | 'context' | 'isPlatformStore';
-
-/**
- * Only the "get" function should be used directly. Stores can be retrieved
- * like this:
- *
- *   const allStores = React.useContext(ServerContextStore);
- *   const todoStore = allStores.get(TodoStore);
+ * A map of storeName -> store instance. The store name is identical to the
+ * name of the store in the init files (e.g stores/init/*.ts)
  */
 interface Stores {
-  stores: StoreMap;
-  get<T extends StoreConstructorFunction>(
-    storeName: T
-  ): Omit<InstanceType<T>, PrivateStoreMembers> | never;
+  [key: string]: Store;
 }
-
-interface StoreMap {
-  [key: string]: IStore;
-}
-
-type StoreKeys = keyof IStore;
-
-interface ServerContextState {
+/**
+ * A rainier store that is automatically provided and can be accessed
+ * via any of the normal means.
+ *
+ * For example:
+ *   const serverContextStore = useStore<ServerContextStore>('serverContextStore');
+ *   console.log(serverContextStore.location); // server URL location
+ */
+interface ServerContextStore {
+  /**
+   * The URL that triggered the original server side render. This field will never
+   * be updated, even if react-router's route has changed.
+   */
   location: string;
-  language: string;
-  region: string;
-  locale: string;
+  /**
+   * Will be true on the SSR, otherwise false
+   */
   isServerLoad: boolean;
+  /**
+   * This is an internal function of the rainier framework. No touchy unless you
+   * want your application to explode.
+   *
+   * @param isServerLoad The new value to set.
+   */
+  setIsServerLoad(isServerLoad: boolean): void;
 }
 
-export type { IStore, PrivateStoreMembers, Stores, StoreMap, StoreKeys, ServerContextState };
+/**
+ *
+ */
+interface StoresWithRetriever {
+  [key: string]: Store;
+  stores: Stores;
+  get<T extends Store>(name: string): T;
+}
+
+export type { Store, Stores, ServerContextStore, StoresWithRetriever };

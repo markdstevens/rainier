@@ -260,7 +260,7 @@ describe('controllerRegistryUtils', () => {
     const showRoute = {
       paths: ['/show'],
       fullPaths: ['/todos/show'],
-      isDefault: false,
+      isDefaultRoute: false,
       View: jest.fn(),
     };
 

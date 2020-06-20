@@ -67,6 +67,33 @@ describe('controller registry', () => {
       expect(routeData[2].fullPath).toBe('*/*');
     });
 
+    it('returns default route last when one exists', () => {
+      const defaultRouteView = jest.fn();
+      const nonDefaultRouteView = jest.fn();
+      const testController: Controller = {
+        basePath: '/todos',
+        routes: [
+          {
+            View: defaultRouteView,
+          },
+          {
+            paths: ['/show'],
+            View: nonDefaultRouteView,
+          },
+        ],
+      };
+      const controllerRegistry = initControllerRegistry([testController]);
+      const routeData = controllerRegistry.getReactRouterControllerData();
+
+      expect(routeData).toHaveLength(2);
+
+      expect(routeData[0].View).toBe(nonDefaultRouteView);
+      expect(routeData[0].fullPath).toBe('/todos/show');
+
+      expect(routeData[1].View).toBe(defaultRouteView);
+      expect(routeData[1].fullPath).toBe('/todos/*');
+    });
+
     it('correctly returns controller data when no default controller is present', () => {
       const controllerRegistry = initControllerRegistry([todosController]);
       const routeData = controllerRegistry.getReactRouterControllerData();
@@ -299,6 +326,63 @@ describe('controller registry', () => {
 
       expect(response.viewData.pageTitle).toBe('foo');
       expect(response.viewData.noScriptText).toBe('bar');
+    });
+
+    it("correctly matches the root route when one exists, the URL is the controller's base path, and a home controller exists", () => {
+      const homeController: Controller = {
+        basePath: '/',
+      };
+
+      const testController: Controller = {
+        basePath: '/todos',
+        routes: [
+          {
+            paths: ['/'],
+            View: jest.fn(),
+            fetch: jest.fn(),
+          },
+          {
+            paths: ['/show'],
+            View: jest.fn(),
+          },
+        ],
+      };
+
+      const controllerRegistry = initControllerRegistry([homeController, testController]);
+      const routeData = controllerRegistry.findControllerAndRoute('/todos', {});
+
+      expect(routeData.fetch).toBeDefined();
+    });
+
+    it("correctly matches the home controller when one exists, the URL is the controller's base path, and no regular controller route matches", () => {
+      const homeController: Controller = {
+        basePath: '/',
+        routes: [
+          {
+            paths: ['/todos'],
+            View: jest.fn(),
+          },
+        ],
+      };
+
+      const testController: Controller = {
+        basePath: '/todos',
+        routes: [
+          {
+            View: jest.fn(),
+            fetch: jest.fn(),
+          },
+          {
+            paths: ['/show'],
+            View: jest.fn(),
+          },
+        ],
+      };
+
+      const controllerRegistry = initControllerRegistry([homeController, testController]);
+      const routeData = controllerRegistry.findControllerAndRoute('/todos', {});
+
+      expect(routeData.fetch).toBe(homeController.routes?.[0].fetch);
     });
   });
 });

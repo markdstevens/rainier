@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { ParsedQuery } from 'query-string';
 import type { LoadableComponent } from '@loadable/component';
-import type { Stores } from 'rainier-store/types';
+import type { StoresWithRetriever } from 'rainier-store/types';
 import type { NormalizedViewData } from 'rainier-view/types';
 
 /**
@@ -37,7 +37,7 @@ interface FetchOptions {
    * All of the platform and user-defined stores. Stores can be retrieved
    * by using the stores.get(...) function.
    */
-  stores: Stores;
+  stores: StoresWithRetriever;
 }
 interface Params {
   [key: string]: string | number | boolean;
@@ -184,6 +184,10 @@ interface RegisteredControllerViewRoute {
    * any custom script/style tags.
    */
   viewData?: ViewData;
+  /**
+   * Will be true if the route is the "catch-all" route for the controller
+   */
+  isDefaultRoute: boolean;
 }
 
 interface ControllerMatchResponse {

@@ -1,11 +1,11 @@
-import React, { useContext, useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useContext } from 'react';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { LoadableComponent } from '@loadable/component';
-import { AllStoreContext } from 'rainier-store/all-store-context';
-import { useStore } from 'rainier-store/useStore';
-import { ServerContextStore } from 'rainier-store/server-context-store';
 import { toRouteMatchHookParams } from 'rainier-lifecycle/to-route-match-hook-params';
+import { useStore } from 'rainier-store/useStore';
+import { StoresContext } from 'rainier-components/StoreProviders';
+import { ServerContextStore } from 'rainier-store/types';
 import type { FC } from 'react';
 import type { ControllerRegistry } from 'rainier-controller/registry/types';
 
@@ -15,15 +15,15 @@ export const dataView = (
 ): FC => {
   const DataView = (): JSX.Element => {
     const location = useLocation();
-    const stores = useContext(AllStoreContext);
-    const serverContextStore = useStore(ServerContextStore);
+    const stores = useContext(StoresContext);
+    const serverContextStore = useStore<ServerContextStore>('serverContextStore');
 
     const controllerMatch = controllerRegistry.findControllerAndRoute(
       location.pathname,
       queryString.parse(location.search)
     );
 
-    if (!serverContextStore.state.isServerLoad) {
+    if (!serverContextStore.isServerLoad) {
       window.__CLIENT_CONFIG__?.hooks?.onRouteMatch?.(toRouteMatchHookParams(controllerMatch));
     }
 
@@ -38,7 +38,7 @@ export const dataView = (
 
     useEffect(() => {
       (async function (): Promise<void> {
-        if (controllerMatch.fetch && !serverContextStore.state.isServerLoad) {
+        if (controllerMatch.fetch && !serverContextStore.isServerLoad) {
           await controllerMatch.fetch(clientFetchParams);
           await window.__CLIENT_CONFIG__?.hooks?.onAfterClientDataFetch?.(stores);
         }

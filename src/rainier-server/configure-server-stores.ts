@@ -1,15 +1,21 @@
-import { wrapStoresWithGetter } from 'rainier-store/to-stores-obj';
 import { initPlatformStores } from './init-platform-stores';
 import type { Request } from 'express';
-import type { Stores, StoreMap } from 'rainier-store/types';
+import type { Stores } from 'rainier-store/types';
+import { toJSON } from 'rainier-util/to-json-safe';
 
 const { default: initCustomServerStores } = require(__INIT_SERVER_STORES__);
 
 export function configureServerStores(req: Request): Stores {
-  const stores: StoreMap = {
+  const stores: Stores = {
     ...initCustomServerStores(),
     ...initPlatformStores(req),
   };
 
-  return wrapStoresWithGetter(stores);
+  Object.values(stores)
+    .filter((store) => typeof store.toJSON === 'undefined')
+    .forEach((store) => {
+      store.toJSON = toJSON;
+    });
+
+  return stores;
 }

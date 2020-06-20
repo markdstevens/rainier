@@ -2,7 +2,7 @@ import React, { FC, useEffect, StrictMode } from 'react';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { useStore } from 'rainier-store/useStore';
-import { ServerContextStore } from 'rainier-store/server-context-store';
+import type { ServerContextStore } from 'rainier-store/types';
 import type { PageWrapperProps } from './types';
 
 const { default: AppShell } = require(__APP_SHELL__);
@@ -12,11 +12,11 @@ export const PageWrapper: FC<PageWrapperProps> = ({
   controllerRegistry,
   htmlTagManager,
 }: PageWrapperProps) => {
-  const serverContextStore = useStore(ServerContextStore);
+  const serverContextStore = useStore<ServerContextStore>('serverContextStore');
   const location = useLocation();
 
   useEffect(() => {
-    if (!serverContextStore.state.isServerLoad) {
+    if (!serverContextStore.isServerLoad) {
       const {
         bodyTags,
         headTags,
@@ -40,9 +40,8 @@ export const PageWrapper: FC<PageWrapperProps> = ({
       htmlTagManager?.appendTagsToDOMIfNotAlreadyPresent(headTags, 'head');
     } else {
       htmlTagManager?.initTagRegistryWithHtmlTagsFromServerRender(window.__HTML_TAGS__);
+      serverContextStore.setIsServerLoad(false);
     }
-
-    serverContextStore.state.isServerLoad = false;
   }, [location]);
 
   return (

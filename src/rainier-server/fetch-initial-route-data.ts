@@ -1,11 +1,11 @@
 import { logger } from 'rainier-logger/logger';
 import { Event } from 'rainier-event/event';
 import type { ControllerMatchResponse } from 'rainier-controller/types';
-import type { Stores } from 'rainier-store/types';
+import type { StoresWithRetriever } from 'rainier-store/types';
 
 export async function fetchInitialRouteData(
   { controller, fetch, pathParams, queryParams }: ControllerMatchResponse,
-  stores: Stores,
+  stores: StoresWithRetriever,
   pathname: string
 ): Promise<any> {
   if (controller) {

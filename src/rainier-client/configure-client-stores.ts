@@ -1,14 +1,17 @@
-import { initPlatformClientStores } from './init-platform-stores';
-import { wrapStoresWithGetter } from 'rainier-store/to-stores-obj';
-import type { Stores, StoreMap } from 'rainier-store/types';
+import type { Stores } from 'rainier-store/types';
+import { serverContextStore } from 'rainier-store/server-context-store';
 
 const { default: initCustomClientStores } = require(__INIT_CLIENT_STORES__);
 
-export function configureClientStores(serializedStores: { stores: StoreMap }): Stores {
-  const stores: StoreMap = {
-    ...initCustomClientStores(serializedStores.stores),
-    ...initPlatformClientStores(serializedStores.stores),
+export function configureClientStores(serializedStores: Stores): Stores {
+  const stores: Stores = {
+    ...initCustomClientStores(),
+    serverContextStore: serverContextStore(),
   };
 
-  return wrapStoresWithGetter(stores);
+  for (const storeName of Object.keys(stores)) {
+    stores[storeName] = Object.assign({}, stores[storeName], serializedStores[storeName]);
+  }
+
+  return stores;
 }

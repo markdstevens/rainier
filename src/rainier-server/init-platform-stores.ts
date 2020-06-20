@@ -1,5 +1,5 @@
-import { ServerContextStore } from 'rainier-store/server-context-store';
-import type { StoreMap, ServerContextState } from 'rainier-store/types';
+import { serverContextStore } from 'rainier-store/server-context-store';
+import type { Stores, ServerContextStore } from 'rainier-store/types';
 import type { Request } from 'express';
 
 interface ExpressLocale {
@@ -9,17 +9,17 @@ interface ExpressLocale {
   };
 }
 
-export function initPlatformStores(request: Request): StoreMap {
+export function initPlatformStores(request: Request): Stores {
   const req = request as Request & ExpressLocale;
-  const serverContextStoreState: ServerContextState = {
+  const serverContextStoreState: ServerContextStore = {
     location: req.path,
-    language: req.locale.language,
-    region: req.locale.region,
-    locale: `${req.locale.language}-${req.locale.region}`,
     isServerLoad: true,
+    setIsServerLoad: (isServerLoad: boolean) => {
+      serverContextStoreState.isServerLoad = isServerLoad;
+    },
   };
 
   return {
-    serverContextStore: new ServerContextStore({ ...serverContextStoreState }),
+    serverContextStore: Object.assign({}, serverContextStore(), serverContextStoreState),
   };
 }

@@ -1,6 +1,7 @@
 import { ParsedQuery } from 'query-string';
 import { dataView } from 'rainier-view/DataView';
 import { getAggregateViewData } from 'rainier-view/view-data-retriever';
+import { collectionUtils } from 'rainier-util/collection-utils';
 import { controllerRegistryUtils } from './utils';
 import type { ControllerRegistry } from './types';
 import type {
@@ -16,7 +17,11 @@ export function initControllerRegistry(controllers: Controller[] = []): Controll
   const registeredControllers: RegisteredController[] = [];
 
   function getControllerViewRoutes(controller: RegisteredController): ReactRouterControllerData[] {
-    return controller.routes
+    const defaultRoute = controller.routes.find((route) => route.isDefaultRoute);
+    const nonDefaultRoutes = controller.routes.filter((route) => !route.isDefaultRoute);
+
+    return [...nonDefaultRoutes, defaultRoute]
+      .filter(collectionUtils.isNotNullOrUndefined)
       .map(({ fullPaths, View }) =>
         fullPaths.map((fullPath) => ({
           fullPath,
@@ -91,6 +96,7 @@ export function initControllerRegistry(controllers: Controller[] = []): Controll
         fetch,
         View: fetch ? dataView(View, controllerRegistry) : View,
         viewData,
+        isDefaultRoute: !rawPaths || !rawPaths.length,
       });
     });
 

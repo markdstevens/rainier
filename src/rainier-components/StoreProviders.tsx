@@ -1,35 +1,25 @@
-import React, { useReducer, useEffect } from 'react';
-import { debounce } from 'rainier-util/debounce';
-import { AllStoreContext } from 'rainier-store/all-store-context';
-import type { StoreData, StoreProvidersProps } from './types';
+import React from 'react';
+import { useLocalStore } from 'mobx-react-lite';
+import { wrapStoresWithRetriever } from 'rainier-store/wrap-stores-with-retriever';
+import type { StoreProvidersProps } from './types';
+import type { Stores, StoresWithRetriever } from 'rainier-store/types';
+
+export const StoresContext = React.createContext({} as StoresWithRetriever);
 
 export const StoreProviders: React.FC<StoreProvidersProps> = ({
   children,
   stores,
 }: StoreProvidersProps) => {
-  const storeData: StoreData[] = [];
+  const reactiveStores = {} as Stores;
 
-  for (const store of Object.values(stores.stores)) {
-    storeData.push({
-      // eslint-disable-next-line
-      reducer: useReducer(store.updateState, store),
-      Provider: store.context.Provider,
-      store,
-    });
+  for (const [storeName, store] of Object.entries(stores)) {
+    // eslint-disable-next-line
+    reactiveStores[storeName] = useLocalStore(() => store);
   }
 
-  useEffect(() => {
-    storeData.forEach(({ store, reducer }) => {
-      store.dispatch = debounce(reducer[1], 10);
-    });
-  }, []);
-
-  const tree = storeData
-    .reverse()
-    .reduce(
-      (ChildrenTree, { Provider, reducer }) => <Provider value={reducer}>{ChildrenTree}</Provider>,
-      children
-    );
-
-  return <AllStoreContext.Provider value={stores}>{tree}</AllStoreContext.Provider>;
+  return (
+    <StoresContext.Provider value={wrapStoresWithRetriever(reactiveStores)}>
+      {children}
+    </StoresContext.Provider>
+  );
 };
