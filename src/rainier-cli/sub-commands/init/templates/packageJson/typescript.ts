@@ -5,7 +5,7 @@ export const packageJsonTs = `{
   "main": "./dist/server.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && npm rainier build"
+    "build": "npm run clean && rainier build"
   },
   "keywords": [
     "rainier"

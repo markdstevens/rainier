@@ -1,6 +1,6 @@
 {
   "name": "rainier",
-  "version": "0.0.26",
+  "version": "0.0.28",
   "license": "MIT",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "main": "./dist/index",

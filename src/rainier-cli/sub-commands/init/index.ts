@@ -57,12 +57,11 @@ writeFileSync(
   templates.todoController
 );
 writeFileSync(`${outDir}/src/stores/todo-store.${baseExtension}`, templates.todoStore);
-writeFileSync(`${outDir}/src/stores/index.${baseExtension}`, templates.todoStoreIndex);
 writeFileSync(`${outDir}/src/stores/init/client.${baseExtension}`, templates.initClientStores);
 writeFileSync(`${outDir}/src/stores/init/server.${baseExtension}`, templates.initServerStores);
 writeFileSync(`${outDir}/src/controllers/manifest.${baseExtension}`, templates.controllerManifest);
 writeFileSync(`${outDir}/src/components/app-shell.${reactBaseExtension}`, templates.appShell);
 writeFileSync(`${outDir}/src/views/show-todos.${reactBaseExtension}`, templates.showTodos);
-writeFileSync(`${outDir}/src/views/todoss.${reactBaseExtension}`, templates.todos);
+writeFileSync(`${outDir}/src/views/todos.${reactBaseExtension}`, templates.todos);
 
 console.info(chalk.green(`Rainier application successfully scaffolded in ${outDir}`));

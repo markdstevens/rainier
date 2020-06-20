@@ -3,7 +3,7 @@ export const appShellJs = `import React from "react";
 const AppShell = ({ children }) => (
   <>
     <div>Header</div>
-    {children}
+      {children}
     <div>Footer</div>
   </>
 );

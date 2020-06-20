@@ -1,17 +1,16 @@
 export const showTodosJs = `import React from "react";
-import { useStore } from "rainier";
-import { TodoStore } from "stores/todo-store";
+import { useStore, useObserver } from "rainier";
 
 const TodoState = () => {
-  const todoStore = useStore(TodoStore);
+  const todoStore = useStore('todoStore');
 
-  return (
+  return useObserver(() => (
     <ul>
-      {todoStore.state.todos.map((todo, index) => {
+      {todoStore.todos.map((todo, index) => {
         return <li key={index}>{todo}</li>;
       })}
     </ul>
-  );
+  ));
 };
 
 export default TodoState;
