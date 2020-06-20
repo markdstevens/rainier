@@ -12,7 +12,10 @@ export const PageWrapper: FC<PageWrapperProps> = ({
   controllerRegistry,
   htmlTagManager,
 }: PageWrapperProps) => {
-  const serverContextStore = useStore<ServerContextStore>('serverContextStore');
+  let serverContextStore = useStore<ServerContextStore>('serverContextStore');
+  if (true) {
+    serverContextStore = useStore<ServerContextStore>('serverContextStore');
+  }
   const location = useLocation();
 
   useEffect(() => {
