@@ -4,7 +4,7 @@ import { render, waitFor } from '@testing-library/react';
 import { dataView } from 'rainier-view/DataView';
 import { initControllerRegistry } from 'rainier-controller/registry';
 import { setupStores } from 'rainier-test/store-utils';
-import { ServerContextStore } from 'rainier-store/server-context-store';
+import { serverContextStore } from 'rainier-store/server-context-store';
 import type { ControllerRegistry } from 'rainier-controller/registry/types';
 
 describe('dataView HOC', () => {
@@ -50,7 +50,7 @@ describe('dataView HOC', () => {
     const { fetchMock, controllerRegistry } = getControllerRegistryAndFetchMock(true);
 
     const DataView = setupStores(dataView(View, controllerRegistry))
-      .with(ServerContextStore, {
+      .with(serverContextStore, {
         isServerLoad: true,
       })
       .provide();
@@ -72,7 +72,7 @@ describe('dataView HOC', () => {
     const { controllerRegistry } = getControllerRegistryAndFetchMock(false);
 
     const DataView = setupStores(dataView(View, controllerRegistry))
-      .with(ServerContextStore, {
+      .with(serverContextStore, {
         isServerLoad: false,
       })
       .provide();
@@ -86,7 +86,7 @@ describe('dataView HOC', () => {
     const { fetchMock, controllerRegistry } = getControllerRegistryAndFetchMock(true);
 
     const DataView = setupStores(dataView(View, controllerRegistry))
-      .with(ServerContextStore, {
+      .with(serverContextStore, {
         isServerLoad: false,
       })
       .provide();
@@ -108,7 +108,7 @@ describe('dataView HOC', () => {
     const { controllerRegistry } = getControllerRegistryAndFetchMock(true);
 
     const DataView = setupStores(dataView(View, controllerRegistry))
-      .with(ServerContextStore, {
+      .with(serverContextStore, {
         isServerLoad: false,
       })
       .provide();
@@ -129,7 +129,7 @@ describe('dataView HOC', () => {
     const { controllerRegistry } = getControllerRegistryAndFetchMock(false);
 
     const DataView = setupStores(dataView(View, controllerRegistry))
-      .with(ServerContextStore, {
+      .with(serverContextStore, {
         isServerLoad: false,
       })
       .provide();

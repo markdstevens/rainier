@@ -1,12 +1,12 @@
 import React from 'react';
 import path from 'path';
 import express from 'express';
-import createLocaleMiddleware from 'express-locale';
 import hbs from 'express-hbs';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 import { existsSync } from 'fs';
+import { useStaticRendering as usingStaticRendering } from 'mobx-react-lite';
 import { initControllerRegistry } from 'rainier-controller/registry';
 import { logger } from 'rainier-logger/logger';
 import { App } from 'rainier-components/App';
@@ -16,7 +16,10 @@ import { configureServerStores } from './configure-server-stores';
 import { fetchInitialRouteData } from './fetch-initial-route-data';
 import { adaptViewDataForServer } from './adapt-view-data-for-server';
 import { getControllers } from 'rainier-controller/get-controllers';
+import { wrapStoresWithRetriever } from 'rainier-store/wrap-stores-with-retriever';
 import type { ParsedQuery } from 'query-string';
+
+usingStaticRendering(true);
 
 const controllerRegistry = initControllerRegistry(getControllers());
 
@@ -32,7 +35,6 @@ server.set('view engine', 'hbs');
 server.set('views', path.join(__RAINIER_ROOT__, 'dist/rainier-server/views'));
 
 server.use('/public', express.static(`${__APP_ROOT__}/dist`));
-server.use(createLocaleMiddleware());
 
 serverHooks?.middleware?.map((middlewareFunction) => {
   server.use(middlewareFunction);
@@ -53,7 +55,7 @@ server.get('*', async (req, res) => {
     await serverHooks?.hooks?.onRouteMatch?.(toRouteMatchHookParams(controllerMatch));
   }
 
-  await fetchInitialRouteData(controllerMatch, stores, req.path);
+  await fetchInitialRouteData(controllerMatch, wrapStoresWithRetriever(stores), req.path);
   await serverHooks?.hooks?.onAfterServerDataFetch?.(stores);
 
   const html = renderToString(

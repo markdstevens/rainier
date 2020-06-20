@@ -1,14 +1,22 @@
-import { Store } from './store';
-import type { ServerContextState } from './types';
+import type { ServerContextStore, Store } from './types';
 
 /**
  * A simple store that contains basic information about the original
  * server request.
  */
-export class ServerContextStore extends Store<ServerContextState> {
-  public isPlatformStore = true;
+export function serverContextStore(): Store<ServerContextStore> {
+  const store = {
+    location: '',
+    language: '',
+    region: '',
+    locale: '',
+    isServerLoad: true,
+    todos: [],
 
-  public async fetch(): Promise<void> {
-    return Promise.resolve();
-  }
+    setIsServerLoad(isServerLoad: boolean): void {
+      this.isServerLoad = isServerLoad;
+    },
+  };
+
+  return store;
 }

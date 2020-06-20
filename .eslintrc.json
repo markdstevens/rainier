@@ -45,7 +45,8 @@
     "valid-jsdoc": "off",
     "object-curly-spacing": "off",
     "no-restricted-imports": ["off"],
-    "import/no-relative-parent-imports": "error"
+    "import/no-relative-parent-imports": "error",
+    "no-invalid-this": "off"
   },
   "settings": {
     "import/resolver": "webpack",

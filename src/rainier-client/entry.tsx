@@ -9,6 +9,7 @@ import { initControllerRegistry } from 'rainier-controller/registry';
 import { initHtmlTagManager } from 'rainier-view/html-tag-manager';
 import { configureClientStores } from './configure-client-stores';
 import type { Stores } from 'rainier-store/types';
+import 'mobx-react-lite/batchingForReactDom';
 
 __CSS_GLOBAL_FILE__ && require(__CSS_GLOBAL_FILE__);
 
@@ -18,7 +19,7 @@ window.__CLIENT_CONFIG__ = clientConfig;
 const controllerRegistry = initControllerRegistry(getControllers());
 const htmlTagManager = initHtmlTagManager();
 
-(async function initClientStores(): Promise<Stores> {
+(async function (): Promise<Stores> {
   const stores = configureClientStores(window.__INITIAL_STATE__);
   await clientConfig?.hooks?.onAfterStoreInit?.(stores);
   return stores;

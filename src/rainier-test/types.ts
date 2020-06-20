@@ -1,9 +1,9 @@
 import type { FC } from 'react';
-import type { StoreConstructorFunction } from 'rainier-store/internal-types';
+import type { Store } from 'rainier-store/types';
 
 interface StoreProviderBuilder {
   /**
-   * This function adds @param{StoreConstructor} to the stores that should be
+   * This function adds the result of "initStore" to the stores that should be
    * provided and consumable via the useStore hook.
    *
    * @param StoreConstructor The store class you want to be available via useStore
@@ -11,10 +11,7 @@ interface StoreProviderBuilder {
    *
    * @returns An instance of itself to you can chain together multiple ".with" calls.
    */
-  with<T>(
-    StoreConstructor: StoreConstructorFunction<T>,
-    initialData: Partial<T>
-  ): StoreProviderBuilder;
+  with<T>(initStore: () => Store, initialData?: Partial<T>): StoreProviderBuilder;
   /**
    * Should be called after all ".with" calls. This function will actually render
    * out the store providers and return a new component to the test.

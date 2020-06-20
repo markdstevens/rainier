@@ -71,22 +71,20 @@ export const controllerRegistryUtils = {
     // (e.g. /about or /blah)
     const isHomeRoute = (path.match(/\//g) || []).length === 1;
 
-    const homeController = controllerRegistryUtils.getHomeController(registeredControllers);
+    const homeController = isHomeRoute
+      ? controllerRegistryUtils.getHomeController(registeredControllers)
+      : undefined;
     const defaultController = controllerRegistryUtils.getDefaultController(registeredControllers);
 
-    if (isHomeRoute && homeController) {
-      return homeController;
-    } else {
-      return (
-        registeredControllers
-          .filter(({ isDefault }) => !isDefault)
-          .find(({ basePath }) => {
-            const route = path.replace(basePath, '');
+    const controller = registeredControllers
+      .filter(({ isDefault, isHome }) => !isDefault && !isHome)
+      .find(({ basePath }) => {
+        const route = path.replace(basePath, '');
 
-            return basePath + route === path && (route === '' || route.startsWith('/'));
-          }) ?? defaultController
-      );
-    }
+        return basePath + route === path && (route === '' || route.startsWith('/'));
+      });
+
+    return controller ?? homeController ?? defaultController;
   },
 
   getDataForMatchedRoute(
