@@ -10,10 +10,10 @@ interface ExpressLocale {
 }
 
 export function initPlatformStores(request: Request): Stores {
-  const req = request as Request & ExpressLocale;
   const serverContextStoreState: ServerContextStore = {
-    location: req.path,
+    location: request.path,
     isServerLoad: true,
+    isAppShellRequest: request.query.appShell === 'true',
     setIsServerLoad: (isServerLoad: boolean) => {
       serverContextStoreState.isServerLoad = isServerLoad;
     },

@@ -12,14 +12,11 @@ export const PageWrapper: FC<PageWrapperProps> = ({
   controllerRegistry,
   htmlTagManager,
 }: PageWrapperProps) => {
-  let serverContextStore = useStore<ServerContextStore>('serverContextStore');
-  if (true) {
-    serverContextStore = useStore<ServerContextStore>('serverContextStore');
-  }
+  const serverContextStore = useStore<ServerContextStore>('serverContextStore');
   const location = useLocation();
 
   useEffect(() => {
-    if (!serverContextStore.isServerLoad) {
+    if (!serverContextStore.isServerLoad || serverContextStore.isAppShellRequest) {
       const {
         bodyTags,
         headTags,
@@ -44,6 +41,17 @@ export const PageWrapper: FC<PageWrapperProps> = ({
     } else {
       htmlTagManager?.initTagRegistryWithHtmlTagsFromServerRender(window.__HTML_TAGS__);
       serverContextStore.setIsServerLoad(false);
+
+      if (!__DEV__ && 'serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js').then(
+          (registration) => {
+            console.log(`ServiceWorker registration successful with scope: ${registration.scope}`);
+          },
+          (err) => {
+            console.log(`ServiceWorker registration failed: ${err}`);
+          }
+        );
+      }
     }
   }, [location]);
 

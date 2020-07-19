@@ -2,7 +2,6 @@ import { ParsedQuery } from 'query-string';
 import { dataView } from 'rainier-view/DataView';
 import { getAggregateViewData } from 'rainier-view/view-data-retriever';
 import { collectionUtils } from 'rainier-util/collection-utils';
-import { controllerRegistryUtils } from './utils';
 import type { ControllerRegistry } from './types';
 import type {
   ControllerViewRoute,
@@ -11,7 +10,9 @@ import type {
   ControllerMatchResponse,
   ReactRouterControllerData,
   Controller,
+  FetchOptions,
 } from '../types';
+import { controllerRegistryUtils } from './utils';
 
 export function initControllerRegistry(controllers: Controller[] = []): ControllerRegistry {
   const registeredControllers: RegisteredController[] = [];
@@ -51,7 +52,7 @@ export function initControllerRegistry(controllers: Controller[] = []): Controll
 
     findControllerAndRoute: (
       fullPath: string,
-      queryParams: ParsedQuery
+      rawQueryParams: ParsedQuery
     ): ControllerMatchResponse => {
       // remove trailing slash (e.g. /todos/ becomes /todos)
       const normalizedFullPath = fullPath.replace('/$', '');
@@ -63,9 +64,17 @@ export function initControllerRegistry(controllers: Controller[] = []): Controll
 
       const dataForMatchedRoute = controllerRegistryUtils.getDataForMatchedRoute(
         normalizedFullPath,
-        queryParams,
+        rawQueryParams,
         controller
       );
+
+      const pathParams = dataForMatchedRoute?.match.params ?? {};
+      const queryParams = dataForMatchedRoute?.queryParams ?? {};
+
+      const fetchOptions: Pick<FetchOptions, 'queryParams' | 'pathParams'> = {
+        queryParams,
+        pathParams,
+      };
 
       return {
         controller,
@@ -74,7 +83,8 @@ export function initControllerRegistry(controllers: Controller[] = []): Controll
         queryParams: dataForMatchedRoute?.queryParams ?? {},
         viewData: getAggregateViewData(
           controller?.viewData ?? {},
-          (dataForMatchedRoute?.route as ControllerViewRoute)?.viewData ?? {}
+          (dataForMatchedRoute?.route as ControllerViewRoute)?.viewData ?? {},
+          fetchOptions
         ),
       };
     },

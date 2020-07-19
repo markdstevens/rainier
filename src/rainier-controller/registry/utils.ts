@@ -1,9 +1,9 @@
 import { ParsedQuery } from 'query-string';
 import { trimSlashes } from 'rainier-util/remove-slashes';
 import { getMatchFromRoute } from 'rainier-util/get-match-from-route';
-import { ControllerConstants } from './constants';
 import type { RegisteredController } from 'rainier-controller/types';
-import type { DataForMatchedRoute } from './types';
+import type { DataForMatchedRoute } from 'rainier-controller/registry/types';
+import { ControllerConstants } from './constants';
 
 export const controllerRegistryUtils = {
   isHomeController(basePath?: string): basePath is undefined {

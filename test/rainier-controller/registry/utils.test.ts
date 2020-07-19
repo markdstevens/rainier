@@ -1,5 +1,4 @@
-import { controllerRegistryUtils } from 'rainier-controller/registry';
-import { ControllerConstants } from 'rainier-controller/registry/constants';
+import { controllerRegistryUtils } from 'rainier-util/controller-utils';
 import type { RegisteredController } from 'rainier-controller/types';
 
 describe('controllerRegistryUtils', () => {
@@ -50,16 +49,12 @@ describe('controllerRegistryUtils', () => {
       const homeControllerPaths = [undefined, null, '', '/'];
 
       homeControllerPaths.forEach((path) => {
-        expect(controllerRegistryUtils.getNormalizedBasePath(path as string)).toBe(
-          ControllerConstants.HOME_CONTROLLER_PATH
-        );
+        expect(controllerRegistryUtils.getNormalizedBasePath(path as string)).toBe('');
       });
     });
 
     it('returns default controller path when base path is the default path', () => {
-      expect(
-        controllerRegistryUtils.getNormalizedBasePath(ControllerConstants.DEFAULT_CONTROLLER_PATH)
-      ).toBe(ControllerConstants.DEFAULT_CONTROLLER_PATH);
+      expect(controllerRegistryUtils.getNormalizedBasePath('*')).toBe('*');
     });
 
     it('returns a path that begins with a "/" if base path is not home or default', () => {

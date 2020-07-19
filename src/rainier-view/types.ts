@@ -1,4 +1,4 @@
-import type { HtmlTag } from 'rainier-controller/types';
+import type { HtmlTag, FetchOptions } from 'rainier-controller/types';
 
 interface HtmlTagsFromServerRender {
   headTags: HtmlTag[];
@@ -17,6 +17,6 @@ interface NormalizedViewData {
   bodyTags: HtmlTag[];
 }
 
-type FieldFunction<T> = () => T;
+type FieldFunction<T> = (fetchOptions: Pick<FetchOptions, 'queryParams' | 'pathParams'>) => T;
 
 export type { HtmlTagsFromServerRender, HtmlTagManager, NormalizedViewData, FieldFunction };

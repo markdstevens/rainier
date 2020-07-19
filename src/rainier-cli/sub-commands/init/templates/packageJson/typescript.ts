@@ -13,7 +13,7 @@ export const packageJsonTs = `{
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "rainier": "0.x.x",
+    "rainier": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"

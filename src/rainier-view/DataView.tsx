@@ -38,7 +38,10 @@ export const dataView = (
 
     useEffect(() => {
       (async function (): Promise<void> {
-        if (controllerMatch.fetch && !serverContextStore.isServerLoad) {
+        if (
+          controllerMatch.fetch &&
+          (!serverContextStore.isServerLoad || serverContextStore.isAppShellRequest)
+        ) {
           await controllerMatch.fetch(clientFetchParams);
           await window.__CLIENT_CONFIG__?.hooks?.onAfterClientDataFetch?.(stores);
         }

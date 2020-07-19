@@ -6,7 +6,6 @@ import type { RainierRC } from 'rainier-rc/types';
 export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC): void => {
   console.info('running webpack with 👇');
   console.table(options);
-
   process.chdir(__dirname);
 
   options.isDev = options.mode === 'development';

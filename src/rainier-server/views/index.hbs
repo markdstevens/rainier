@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{{ viewData.title }}}</title>
+    <title>{{{ viewData.pageTitle }}}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:," />
@@ -18,15 +18,6 @@
     {{/unless}}
     <script>window.__INITIAL_STATE__= {{{ stores }}}</script>
     {{{ viewData.bodyTags }}}
-    {{#if includeServiceWorker }}
-      <script>
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js');
-          });
-        }
-      </script>
-    {{/if}}
     <script>window.__HTML_TAGS__= {{{ viewData.htmlTags }}}</script>
   </body>
 </html>

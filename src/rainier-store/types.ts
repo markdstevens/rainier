@@ -59,6 +59,10 @@ interface ServerContextStore {
    * @param isServerLoad The new value to set.
    */
   setIsServerLoad(isServerLoad: boolean): void;
+  /**
+   *
+   */
+  isAppShellRequest: boolean;
 }
 
 /**

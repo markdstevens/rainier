@@ -22,20 +22,35 @@ export const webpackCommon = (
   rainierRc: RainierRC
 ): webpack.Configuration => {
   const appRoot = process.env.ORIGINAL_DIR ?? process.cwd();
+  const outputPath = `${appRoot}/dist`;
 
   return {
     mode: options.mode,
     output: {
-      path: `${appRoot}/dist`,
+      path: outputPath,
       publicPath: '/public/',
+      pathinfo: options.isDev,
     },
-    devtool: options.isDev ? 'inline-cheap-module-source-map' : false,
+    devtool: options.isDev ? 'inline-cheap-module-source-map' : 'source-map',
+    bail: options.isProd,
     watchOptions: {
       ignored: /rainier-(.*)/,
       aggregateTimeout: 300,
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css', '.scss', '.png'],
+      extensions: [
+        '.ts',
+        '.tsx',
+        '.js',
+        '.jsx',
+        '.json',
+        '.css',
+        '.scss',
+        '.png',
+        '.jpg',
+        '.jpeg',
+        '.gif',
+      ],
       alias: Object.assign(
         {
           'rainier-cli': path.join(__dirname, '../../rainier-cli/'),
@@ -114,7 +129,7 @@ export const webpackCommon = (
     plugins: [
       new webpack.DefinePlugin({
         __DEV__: options.isDev,
-        __CONTROLLERS_MANIFEST__: JSON.stringify(rainierRc.controller.manifest),
+        __CONTROLLERS__: JSON.stringify(rainierRc.controller.manifest),
         __RAINIER_ROOT__: JSON.stringify(path.join(__dirname, '../../../')),
         __APP_ROOT__: JSON.stringify(appRoot),
         __APP_SHELL__: JSON.stringify(rainierRc.appShell),
@@ -122,6 +137,7 @@ export const webpackCommon = (
         __INIT_SERVER_STORES__: JSON.stringify(rainierRc?.store?.initServerStores),
         __SERVER_HOOKS__: JSON.stringify(rainierRc?.rainierHooks?.server),
         __CLIENT_HOOKS__: JSON.stringify(rainierRc?.rainierHooks?.client),
+        __WEBPACK_OUTDIR__: JSON.stringify(outputPath),
       }),
       new MiniCssExtractPlugin({
         filename: options.isDev ? '[name].css' : '[name]-[contenthash].css',

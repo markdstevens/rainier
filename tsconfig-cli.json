@@ -4,9 +4,6 @@
   "compilerOptions": {
     "module": "CommonJS",
     "target": "ES2015",
-    "plugins": [
-      { "transform": "typescript-transform-paths" },
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
-    ]
+    "plugins": [{ "transform": "typescript-transform-paths" }]
   }
 }

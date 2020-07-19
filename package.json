@@ -1,6 +1,6 @@
 {
   "name": "rainier",
-  "version": "0.0.28",
+  "version": "0.0.31-alpha.61",
   "license": "MIT",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "main": "./dist/index",
@@ -13,10 +13,13 @@
     "eslint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
     "eslint:fix": "npm run eslint -- --quiet --fix",
     "nuke": "npm run clean && rimraf node_modules && rm package-lock.json",
-    "tsc": "ttsc -p tsconfig-non-cli.json && tsc -p tsconfig-cli.json",
+    "tsc": "npm run ts:main && npm run ts:cli && npm run ts:sw",
     "test": "BABEL_ENV=test jest",
-    "pre:publish": "npm i && npm run build && rimraf node_modules && npm i --prod",
-    "check:ts": "tsc --noEmit",
+    "publish:alpha": "npm run build && npm version --no-git-tag-version prerelease --preid=alpha && npm publish",
+    "ts:sw": "tsc -p tsconfig-sw.json",
+    "ts:cli": "ttsc -p tsconfig-cli.json",
+    "ts:main": "ttsc -p tsconfig-non-cli.json",
+    "check:ts": "npm run ts:sw --noEmit && npm run ts:cli --noEmit && npm run ts:main --noEmit",
     "check:prettier": "prettier --check 'src/**/*.{js,jsx,ts,tsx}' 'test/**/*.{js,jsx,ts,tsx}'",
     "check:eslint": "eslint 'src/**/*.{js,ts,jsx,tsx}' 'test/**/*.{js,jsx,ts,tsx}' --quiet",
     "code-checks": "npm run check:prettier && npm run check:eslint"
@@ -66,11 +69,18 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "query-string": "^6.13.0",
     "sass-loader": "^8.0.2",
+    "typescript": "^3.9.6",
     "typescript-transform-paths": "^1.1.14",
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-merge": "^4.2.2",
+    "workbox-core": "^5.1.3",
+    "workbox-expiration": "^5.1.3",
+    "workbox-navigation-preload": "^5.1.3",
+    "workbox-precaching": "^5.1.3",
+    "workbox-routing": "^5.1.3",
+    "workbox-strategies": "^5.1.3",
     "workbox-webpack-plugin": "^5.1.3"
   },
   "devDependencies": {
@@ -120,8 +130,7 @@
     "react-router-dom": "^5.2.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.0",
-    "ttypescript": "^1.5.10",
-    "typescript": "3.8.3"
+    "ttypescript": "^1.5.10"
   },
   "peerDependencies": {
     "react": "16.x",

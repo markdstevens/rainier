@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-// import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import NodemonPlugin from 'nodemon-webpack-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
@@ -41,16 +41,15 @@ export const plugins = {
       );
     }
 
-    if (options.isProd) {
-      // plugins.push(
-      //   ...[
-      //     new WorkboxWebpackPlugin.InjectManifest({
-      //       swSrc: '../../rainier-public/service-worker.js',
-      //       swDest: 'service-worker.js',
-      //     }),
-      //   ]
-      // );
-    }
+    plugins.push(
+      ...[
+        new WorkboxWebpackPlugin.InjectManifest({
+          swSrc: '../rainier-public/service-worker.js',
+          swDest: 'service-worker.js',
+          exclude: ['loadable-stats.json', 'index.html'],
+        }),
+      ]
+    );
 
     return plugins;
   },
@@ -63,7 +62,7 @@ export const plugins = {
     ];
 
     if (rainierRc.publicAssetsDir) {
-      plugins.push(new CopyWebpackPlugin([{ from: rainierRc.publicAssetsDir }]));
+      plugins.push(new CopyWebpackPlugin([{ from: rainierRc.publicAssetsDir }, { from: '' }]));
     }
 
     if (options.profileServer) {

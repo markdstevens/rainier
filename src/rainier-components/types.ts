@@ -6,6 +6,7 @@ interface AppProps {
   stores: Stores;
   controllerRegistry: ControllerRegistry;
   htmlTagManager?: HtmlTagManager;
+  renderShellOnly: boolean;
 }
 
 type PageWrapperProps = React.PropsWithChildren<{

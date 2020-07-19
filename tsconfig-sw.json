@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["./src/rainier-public/**/*"],
+  "compilerOptions": {
+    "module": "esnext",
+    "esModuleInterop": false,
+    "target": "esnext",
+    "lib": ["WebWorker", "ESNext"],
+    "declaration": false,
+    "resolveJsonModule": false
+  }
+}

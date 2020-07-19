@@ -14,8 +14,9 @@
     "isolatedModules": true,
     "declaration": true,
     "outDir": "dist",
-    "types": ["./src/rainier-webpack/webpack-define-plugin-globals", "jest"],
+    "types": ["./src/rainier-webpack/webpack-define-plugin-globals", "jest", "node"],
     "typeRoots": ["./node_modules/@types"],
+    "rootDir": "src",
     "plugins": [
       { "transform": "typescript-transform-paths" },
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
@@ -28,7 +29,6 @@
       "rainier-event/*": ["rainier-event/*"],
       "rainier-lifecycle/*": ["rainier-lifecycle/*"],
       "rainier-logger/*": ["rainier-logger/*"],
-      "rainier-public/*": ["rainier-public/*"],
       "rainier-rc/*": ["rainier-rc/*"],
       "rainier-server/*": ["rainier-server/*"],
       "rainier-store/*": ["rainier-store/*"],
@@ -38,5 +38,5 @@
       "rainier-test/*": ["rainier-test/*"]
     }
   },
-  "include": ["./src/**/*", "./test/**/*"]
+  "include": ["./src/**/*", "../test/**/*"]
 }

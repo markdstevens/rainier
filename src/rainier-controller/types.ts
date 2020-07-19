@@ -4,6 +4,9 @@ import type { LoadableComponent } from '@loadable/component';
 import type { StoresWithRetriever } from 'rainier-store/types';
 import type { NormalizedViewData } from 'rainier-view/types';
 
+export type ViewDataFetchOptions = Pick<FetchOptions, 'pathParams' | 'queryParams'>;
+export type ViewDataOption = ViewData | ((fetchOptions: ViewDataFetchOptions) => ViewData);
+
 /**
  * This object gets passed to every controller route's "fetch" function
  */
@@ -40,7 +43,7 @@ interface FetchOptions {
   stores: StoresWithRetriever;
 }
 interface Params {
-  [key: string]: string | number | boolean;
+  [key: string]: string;
 }
 
 type HtmlAttributes = {
@@ -66,8 +69,7 @@ interface HtmlTag {
    */
   content?: string;
   /**
-   * A map of key-value attributes to add to the tag
-   * element.
+   * A map of key-value attributes to add to the tag element.
    */
   attributes?: HtmlAttributes;
 }
@@ -77,21 +79,21 @@ interface ViewData {
    * The title of the page that will be used in the header's
    * <title> tag.
    */
-  pageTitle?: string | (() => string);
+  pageTitle?: string;
   /**
    * The text that will be displayed in the event that the user
    * has disabled javascript on the page. The text will be displayed
    * in the <noscript> tag.
    */
-  noScriptText?: string | (() => string);
+  noScriptText?: string;
   /**
    * A list of html tags to append to the <head>
    */
-  headTags?: HtmlTag[] | (() => HtmlTag[]);
+  headTags?: HtmlTag[];
   /**
    * A list of html tags to append to the <body>
    */
-  bodyTags?: HtmlTag[] | (() => HtmlTag[]);
+  bodyTags?: HtmlTag[];
 }
 interface ControllerViewRoute {
   /**
@@ -116,7 +118,7 @@ interface ControllerViewRoute {
    * Data that is specific to the route's page like the page title and
    * any custom script/style tags.
    */
-  viewData?: ViewData;
+  viewData?: ViewDataOption;
 }
 /**
  * There various types of routes. Currently, there are view routes and
@@ -157,7 +159,7 @@ interface Controller {
    * Data that is specific to the route's page like the page title and
    * any custom script/style tags.
    */
-  viewData?: ViewData;
+  viewData?: ViewDataOption;
 }
 interface RegisteredControllerViewRoute {
   /**
@@ -183,7 +185,7 @@ interface RegisteredControllerViewRoute {
    * Data that is specific to the route's page like the page title and
    * any custom script/style tags.
    */
-  viewData?: ViewData;
+  viewData?: ViewDataOption;
   /**
    * Will be true if the route is the "catch-all" route for the controller
    */
@@ -256,7 +258,7 @@ interface RegisteredController {
    * Data that is specific to the route's page like the page title and
    * any custom script/style tags.
    */
-  viewData?: ViewData;
+  viewData?: ViewDataOption;
 }
 interface ReactRouterControllerData {
   fullPath: string;

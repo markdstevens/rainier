@@ -7,7 +7,6 @@ import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 import { existsSync } from 'fs';
 import { useStaticRendering as usingStaticRendering } from 'mobx-react-lite';
-import { initControllerRegistry } from 'rainier-controller/registry';
 import { logger } from 'rainier-logger/logger';
 import { App } from 'rainier-components/App';
 import { toRouteMatchHookParams } from 'rainier-lifecycle/to-route-match-hook-params';
@@ -16,12 +15,17 @@ import { configureServerStores } from './configure-server-stores';
 import { fetchInitialRouteData } from './fetch-initial-route-data';
 import { adaptViewDataForServer } from './adapt-view-data-for-server';
 import { getControllers } from 'rainier-controller/get-controllers';
+import { initControllerRegistry } from 'rainier-controller/registry';
 import { wrapStoresWithRetriever } from 'rainier-store/wrap-stores-with-retriever';
 import type { ParsedQuery } from 'query-string';
+import { initControllerManifest } from './init-controller-manifest';
+import { ServerContextStore } from 'rainier-store/types';
 
 usingStaticRendering(true);
 
-const controllerRegistry = initControllerRegistry(getControllers());
+const controllers = getControllers();
+const controllerRegistry = initControllerRegistry(controllers);
+initControllerManifest(controllers);
 
 const statsFile = `${__APP_ROOT__}/dist/loadable-stats.json`;
 const hasManifest = existsSync(`${__APP_ROOT__}/dist/manifest.json`);
@@ -40,10 +44,16 @@ serverHooks?.middleware?.map((middlewareFunction) => {
   server.use(middlewareFunction);
 });
 
+server.get('/service-worker.js', (req, res) => {
+  res.sendFile(path.join(`${__APP_ROOT__}/dist/service-worker.js`));
+});
+
 server.get('*', async (req, res) => {
   const extractor = new ChunkExtractor({ statsFile });
 
   const stores = configureServerStores(req);
+  const storesWithRetriever = wrapStoresWithRetriever(stores);
+  const serverContextStore = storesWithRetriever.get<ServerContextStore>('serverContextStore');
   await serverHooks?.hooks?.onAfterStoreInit?.(stores);
 
   const controllerMatch = controllerRegistry.findControllerAndRoute(
@@ -55,13 +65,17 @@ server.get('*', async (req, res) => {
     await serverHooks?.hooks?.onRouteMatch?.(toRouteMatchHookParams(controllerMatch));
   }
 
-  await fetchInitialRouteData(controllerMatch, wrapStoresWithRetriever(stores), req.path);
+  await fetchInitialRouteData(controllerMatch, storesWithRetriever, req.path);
   await serverHooks?.hooks?.onAfterServerDataFetch?.(stores);
 
   const html = renderToString(
     extractor.collectChunks(
       <StaticRouter location={req.url}>
-        <App stores={stores} controllerRegistry={controllerRegistry} />
+        <App
+          stores={stores}
+          controllerRegistry={controllerRegistry}
+          renderShellOnly={serverContextStore.isAppShellRequest}
+        />
       </StaticRouter>
     )
   );
