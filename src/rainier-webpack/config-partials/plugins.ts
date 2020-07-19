@@ -62,7 +62,7 @@ export const plugins = {
     ];
 
     if (rainierRc.publicAssetsDir) {
-      plugins.push(new CopyWebpackPlugin([{ from: rainierRc.publicAssetsDir }, { from: '' }]));
+      plugins.push(new CopyWebpackPlugin([{ from: rainierRc.publicAssetsDir }]));
     }
 
     if (options.profileServer) {
