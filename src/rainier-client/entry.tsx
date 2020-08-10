@@ -11,6 +11,9 @@ import { configureClientStores } from './configure-client-stores';
 import { wrapStoresWithRetriever } from 'rainier-store/wrap-stores-with-retriever';
 import 'mobx-react-lite/batchingForReactDom';
 import type { Stores, ServerContextStore } from 'rainier-store/types';
+import { logger } from 'rainier-logger/logger';
+import { Event } from 'rainier-event';
+import { RainierLogLevel } from 'rainier-logger/log-level';
 
 __CSS_GLOBAL_FILE__ && require(__CSS_GLOBAL_FILE__);
 
@@ -34,8 +37,15 @@ const htmlTagManager = initHtmlTagManager();
     rendererName: isAppShellRequest ? 'render' : 'hydrate',
   };
 })().then(({ stores, renderer, rendererName }) => {
-  console.log(`using renderer: ${rendererName}`);
-  loadableReady(() => {
+  logger.log({
+    event: Event.RENDERER_METHOD,
+    type: RainierLogLevel.DEBUG,
+    fields: {
+      renderer: rendererName,
+    },
+  });
+
+  const render = (): void =>
     renderer(
       <BrowserRouter>
         <App
@@ -47,5 +57,6 @@ const htmlTagManager = initHtmlTagManager();
       </BrowserRouter>,
       document.getElementById('app')
     );
-  });
+
+  rendererName === 'hydrate' ? loadableReady(render) : render();
 });

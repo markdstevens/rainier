@@ -29,7 +29,7 @@ export const runWebpack = (options: CustomWebpackOptions, rainierRC: RainierRC):
         const info = stats.toJson();
 
         if (stats.hasErrors()) {
-          console.error(info.errors);
+          console.log(info.errors);
         }
       }
     );

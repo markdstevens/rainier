@@ -1,4 +1,4 @@
-import { controllerRegistryUtils } from 'rainier-util/controller-utils';
+import { controllerRegistryUtils } from 'rainier-controller/registry';
 import type { RegisteredController } from 'rainier-controller/types';
 
 describe('controllerRegistryUtils', () => {

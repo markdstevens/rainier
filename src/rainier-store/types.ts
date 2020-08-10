@@ -60,7 +60,9 @@ interface ServerContextStore {
    */
   setIsServerLoad(isServerLoad: boolean): void;
   /**
-   *
+   * Is true when the request contains an "appShell=true" URL param. App
+   * shell requests will only render the app shell so that it can be
+   * efficiently cached in the service worker script.
    */
   isAppShellRequest: boolean;
 }
