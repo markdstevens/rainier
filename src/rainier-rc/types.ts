@@ -1,3 +1,5 @@
+import { RainierLogger } from 'rainier-logger/types';
+
 interface ControllerConfig {
   manifest: string;
 }
@@ -19,6 +21,7 @@ interface RainierRC {
   cssGlobalFile?: string;
   appShell?: string;
   rainierHooks?: RainierHooks;
+  logger?: RainierLogger;
 }
 
 export type { ControllerConfig, StoreConfig, RainierHooks, RainierRC };

@@ -2,6 +2,7 @@ import { logger } from 'rainier-logger/logger';
 import { Event } from 'rainier-event/event';
 import type { ControllerMatchResponse } from 'rainier-controller/types';
 import type { StoresWithRetriever } from 'rainier-store/types';
+import { RainierLogLevel } from 'rainier-logger/log-level';
 
 export async function fetchInitialRouteData(
   { controller, fetch, pathParams, queryParams }: ControllerMatchResponse,
@@ -10,13 +11,14 @@ export async function fetchInitialRouteData(
 ): Promise<any> {
   if (controller) {
     if (controller.isDefault) {
-      logger.event(
-        Event.NO_CONTROLLER_FOUND,
-        `no controller mapping exists found for ${pathname}. Falling back to default controller.`,
-        {
+      logger.log({
+        event: Event.NO_CONTROLLER_FOUND,
+        type: RainierLogLevel.WARN,
+        fields: {
+          message: `no controller mapping exists found for ${pathname}. Falling back to default controller.`,
           path: pathname,
-        }
-      );
+        },
+      });
     }
 
     return await fetch?.({
@@ -25,8 +27,13 @@ export async function fetchInitialRouteData(
       stores,
     });
   } else {
-    logger.event(Event.NO_CONTROLLER_FOUND, `No controller found for request`, {
-      path: pathname,
+    logger.log({
+      event: Event.NO_CONTROLLER_FOUND,
+      type: RainierLogLevel.WARN,
+      fields: {
+        message: 'No controller found for request',
+        path: pathname,
+      },
     });
   }
 }

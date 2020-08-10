@@ -5,3 +5,4 @@ export * from './rainier-rc-transformer';
 export * from './css-global-file';
 export * from './app-shell';
 export * from './rainier-hooks';
+export * from './logger';

@@ -4,6 +4,9 @@ import queryString from 'query-string';
 import { useStore } from 'rainier-store/useStore';
 import type { ServerContextStore } from 'rainier-store/types';
 import type { PageWrapperProps } from './types';
+import { logger } from 'rainier-logger/logger';
+import { Event } from 'rainier-event';
+import { RainierLogLevel } from 'rainier-logger/log-level';
 
 const { default: AppShell } = require(__APP_SHELL__);
 
@@ -45,10 +48,22 @@ export const PageWrapper: FC<PageWrapperProps> = ({
       if (!__DEV__ && 'serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js').then(
           (registration) => {
-            console.log(`ServiceWorker registration successful with scope: ${registration.scope}`);
+            logger.log({
+              event: Event.SERVICE_WORKER_INIT_SUCCESS,
+              type: RainierLogLevel.INFO,
+              fields: {
+                message: `ServiceWorker registration successful with scope: ${registration.scope}`,
+              },
+            });
           },
           (err) => {
-            console.log(`ServiceWorker registration failed: ${err}`);
+            logger.log({
+              event: Event.SERVICE_WORKER_INIT_FAILURE,
+              type: RainierLogLevel.ERROR,
+              fields: {
+                message: `ServiceWorker registration failed: ${err}`,
+              },
+            });
           }
         );
       }

@@ -53,20 +53,16 @@ export const webpackCommon = (
       ],
       alias: Object.assign(
         {
-          'rainier-cli': path.join(__dirname, '../../rainier-cli/'),
           'rainier-client': path.join(__dirname, '../../rainier-client/'),
           'rainier-components': path.join(__dirname, '../../rainier-components/'),
           'rainier-controller': path.join(__dirname, '../../rainier-controller/'),
           'rainier-event': path.join(__dirname, '../../rainier-event/'),
           'rainier-lifecycle': path.join(__dirname, '../../rainier-lifecycle/'),
           'rainier-logger': path.join(__dirname, '../../rainier-logger/'),
-          'rainier-public': path.join(__dirname, '../../rainier-public/'),
-          'rainier-rc': path.join(__dirname, '../../rainier-rc/'),
           'rainier-server': path.join(__dirname, '../../rainier-server/'),
           'rainier-store': path.join(__dirname, '../../rainier-store/'),
           'rainier-util': path.join(__dirname, '../../rainier-util/'),
           'rainier-view': path.join(__dirname, '../../rainier-view/'),
-          'rainier-webpack': path.join(__dirname, '../../rainier-webpack/'),
         },
         aliasesFromClientTsconfig()
       ),
@@ -137,7 +133,7 @@ export const webpackCommon = (
         __INIT_SERVER_STORES__: JSON.stringify(rainierRc?.store?.initServerStores),
         __SERVER_HOOKS__: JSON.stringify(rainierRc?.rainierHooks?.server),
         __CLIENT_HOOKS__: JSON.stringify(rainierRc?.rainierHooks?.client),
-        __WEBPACK_OUTDIR__: JSON.stringify(outputPath),
+        __CUSTOM_LOGGER__: JSON.stringify(rainierRc?.logger),
       }),
       new MiniCssExtractPlugin({
         filename: options.isDev ? '[name].css' : '[name]-[contenthash].css',
