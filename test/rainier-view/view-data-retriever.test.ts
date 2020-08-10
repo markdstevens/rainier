@@ -79,25 +79,25 @@ describe('getAggregateViewData()', () => {
   });
 
   it('correctly retrieves viewData from functions if supplied', () => {
-    const controllerViewData: ViewData = {
-      pageTitle: () => 'foo',
-      noScriptText: () => 'bar',
-      headTags: () => [
+    const controllerViewData = (): ViewData => ({
+      pageTitle: 'foo',
+      noScriptText: 'bar',
+      headTags: [
         {
           type: 'script',
         },
       ],
-      bodyTags: () => [
+      bodyTags: [
         {
           type: 'link',
         },
       ],
-    };
+    });
 
-    const routeViewData: ViewData = {
-      pageTitle: () => 'overridden page title',
-      headTags: () => [],
-    };
+    const routeViewData = (): ViewData => ({
+      pageTitle: 'overridden page title',
+      headTags: [],
+    });
 
     expect(getAggregateViewData(controllerViewData, routeViewData)).toStrictEqual({
       pageTitle: 'overridden page title',
