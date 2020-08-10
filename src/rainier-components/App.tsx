@@ -12,41 +12,39 @@ export const App: FC<AppProps> = ({
   controllerRegistry,
   htmlTagManager,
   renderShellOnly,
-}: AppProps) => {
-  return (
-    <StoreProviders stores={stores}>
-      <PageWrapper controllerRegistry={controllerRegistry} htmlTagManager={htmlTagManager}>
-        {!renderShellOnly && (
-          <Switch>
-            {controllerRegistry.getReactRouterControllerData().map(
-              ({ fullPath: path, View }) =>
-                View && (
-                  <Route
-                    key={path}
-                    path={path}
-                    exact={true}
-                    render={(): JSX.Element => (
-                      <Profiler
-                        id={path}
-                        onRender={(...args: any[]): void =>
-                          logger.log({
-                            event: Event.REACT_ROUTE_RENDER,
-                            type: RainierLogLevel.DEBUG,
-                            fields: args,
-                          })
-                        }
-                      >
-                        <View />
-                      </Profiler>
-                    )}
-                  />
-                )
-            )}
-            );
-          </Switch>
-        )}
-      </PageWrapper>
-    </StoreProviders>
-  );
-};
+}: AppProps) => (
+  <StoreProviders stores={stores}>
+    <PageWrapper controllerRegistry={controllerRegistry} htmlTagManager={htmlTagManager}>
+      {!renderShellOnly && (
+        <Switch>
+          {controllerRegistry.getReactRouterControllerData().map(
+            ({ fullPath: path, View }) =>
+              View && (
+                <Route
+                  key={path}
+                  path={path}
+                  exact={true}
+                  render={(): JSX.Element => (
+                    <Profiler
+                      id={path}
+                      onRender={(...args: any[]): void =>
+                        logger.log({
+                          event: Event.REACT_ROUTE_RENDER,
+                          type: RainierLogLevel.DEBUG,
+                          fields: args,
+                        })
+                      }
+                    >
+                      <View />
+                    </Profiler>
+                  )}
+                />
+              )
+          )}
+        </Switch>
+      )}
+    </PageWrapper>
+  </StoreProviders>
+);
+
 App.displayName = 'App';

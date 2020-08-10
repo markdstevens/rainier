@@ -129,11 +129,14 @@ export const webpackCommon = (
         __RAINIER_ROOT__: JSON.stringify(path.join(__dirname, '../../../')),
         __APP_ROOT__: JSON.stringify(appRoot),
         __APP_SHELL__: JSON.stringify(rainierRc.appShell),
-        __INIT_CLIENT_STORES__: JSON.stringify(rainierRc?.store?.initClientStores),
-        __INIT_SERVER_STORES__: JSON.stringify(rainierRc?.store?.initServerStores),
-        __SERVER_HOOKS__: JSON.stringify(rainierRc?.rainierHooks?.server),
-        __CLIENT_HOOKS__: JSON.stringify(rainierRc?.rainierHooks?.client),
-        __CUSTOM_LOGGER__: JSON.stringify(rainierRc?.logger),
+        __INIT_CLIENT_STORES__: JSON.stringify(rainierRc.store?.initClientStores),
+        __INIT_SERVER_STORES__: JSON.stringify(rainierRc.store?.initServerStores),
+        __SERVER_HOOKS__: JSON.stringify(rainierRc.rainierHooks?.server),
+        __CLIENT_HOOKS__: JSON.stringify(rainierRc.rainierHooks?.client),
+        __CUSTOM_LOGGER__: JSON.stringify(rainierRc.logger),
+        __SERVER_CONFIG__: JSON.stringify(
+          options.isDev ? rainierRc.server?.dev : rainierRc.server?.prod
+        ),
       }),
       new MiniCssExtractPlugin({
         filename: options.isDev ? '[name].css' : '[name]-[contenthash].css',
