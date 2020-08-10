@@ -1,3 +1,4 @@
+import 'mobx-react-lite/batchingForReactDom';
 import React from 'react';
 import { hydrate, render, Renderer } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -9,11 +10,10 @@ import { initControllerRegistry } from 'rainier-controller/registry';
 import { initHtmlTagManager } from 'rainier-view/html-tag-manager';
 import { configureClientStores } from './configure-client-stores';
 import { wrapStoresWithRetriever } from 'rainier-store/wrap-stores-with-retriever';
-import 'mobx-react-lite/batchingForReactDom';
-import type { Stores, ServerContextStore } from 'rainier-store/types';
 import { logger } from 'rainier-logger/logger';
 import { Event } from 'rainier-event';
 import { RainierLogLevel } from 'rainier-logger/log-level';
+import type { Stores, ServerContextStore } from 'rainier-store/types';
 
 __CSS_GLOBAL_FILE__ && require(__CSS_GLOBAL_FILE__);
 
@@ -41,11 +41,11 @@ const htmlTagManager = initHtmlTagManager();
     event: Event.RENDERER_METHOD,
     type: RainierLogLevel.DEBUG,
     fields: {
-      renderer: rendererName,
+      rendererName,
     },
   });
 
-  const render = (): void =>
+  const renderApp = (): void =>
     renderer(
       <BrowserRouter>
         <App
@@ -58,5 +58,5 @@ const htmlTagManager = initHtmlTagManager();
       document.getElementById('app')
     );
 
-  rendererName === 'hydrate' ? loadableReady(render) : render();
+  rendererName === 'hydrate' ? loadableReady(renderApp) : renderApp();
 });

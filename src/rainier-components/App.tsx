@@ -18,9 +18,8 @@ export const App: FC<AppProps> = ({
       <PageWrapper controllerRegistry={controllerRegistry} htmlTagManager={htmlTagManager}>
         {!renderShellOnly && (
           <Switch>
-            {controllerRegistry.getReactRouterControllerData().map(({ fullPath: path, View }) => {
-              console.log(View);
-              return (
+            {controllerRegistry.getReactRouterControllerData().map(
+              ({ fullPath: path, View }) =>
                 View && (
                   <Route
                     key={path}
@@ -42,8 +41,8 @@ export const App: FC<AppProps> = ({
                     )}
                   />
                 )
-              );
-            })}
+            )}
+            );
           </Switch>
         )}
       </PageWrapper>
