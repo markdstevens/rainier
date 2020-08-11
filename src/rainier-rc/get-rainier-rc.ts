@@ -10,6 +10,7 @@ import {
 } from './transformers';
 import type { RainierRC } from './types';
 import chalk from 'chalk';
+import { ServerConfiguration } from './transformers/server';
 
 export const getRainierRc = (): RainierRC => {
   const cwd = process.cwd();
@@ -40,6 +41,7 @@ export const getRainierRc = (): RainierRC => {
     AppShellConfig,
     RainierHooksConfiguration,
     LoggerConfig,
+    ServerConfiguration,
   ]
     .map((Config) => new Config(rainierConfig))
     .map(({ configName, getOrDefault, validate }) => ({

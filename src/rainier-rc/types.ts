@@ -1,5 +1,17 @@
 import { RainierLogger } from 'rainier-logger/types';
 
+interface RainierServerConfigEnv {
+  httpPort: number;
+  httpsPort: number;
+  certFilePath: string;
+  keyFilePath: string;
+}
+
+interface RainierServerConfig {
+  dev: RainierServerConfigEnv;
+  prod: RainierServerConfigEnv;
+}
+
 interface ControllerConfig {
   manifest: string;
 }
@@ -22,6 +34,14 @@ interface RainierRC {
   appShell?: string;
   rainierHooks?: RainierHooks;
   logger?: RainierLogger;
+  server?: RainierServerConfig;
 }
 
-export type { ControllerConfig, StoreConfig, RainierHooks, RainierRC };
+export type {
+  ControllerConfig,
+  StoreConfig,
+  RainierHooks,
+  RainierRC,
+  RainierServerConfigEnv,
+  RainierServerConfig,
+};

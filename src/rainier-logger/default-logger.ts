@@ -1,91 +1,45 @@
-import { RainierLogger, LogOptions } from './types';
-import { RainierLogLevel } from './log-level';
 import chalk from 'chalk';
-import { Event } from 'rainier-event';
-import { collectionUtils } from 'rainier-util/collection-utils';
+import { RainierLogger, LogFields } from './types';
+import { RainierLogLevel } from './log-level';
 
-function recordToStringConverter(record: Record<string, any>): string {
-  const strings: string[] = [];
-  Object.entries(record).forEach(([key, val]) => strings.push(`${key}=${val}`));
-  return strings.join(' ');
-}
-
-function toLogString(
-  color: chalk.Chalk,
-  fields: Record<string, any>,
-  logOptions?: LogOptions
-): void {
-  const logFields: string[] = [];
-
-  if (logOptions?.event) {
-    logFields.push(`event=${Event[logOptions.event]}`);
+function toLogString(color: chalk.Chalk, fields: Record<string, any>): void {
+  if (fields.event) {
+    fields.event = fields.event.toString();
   }
 
-  if (logOptions?.type) {
-    logFields.push(`type=${logOptions?.type}`);
-  }
-
-  logFields.push(recordToStringConverter(fields));
-
-  console.log(color(logFields.join(' ')));
+  console.log(chalk.cyanBright(`=== Rainier Log ===`));
+  console.log(color(JSON.stringify(fields, null, 2)));
 }
 
-function logDebug(fields: Record<string, any>, event?: Event): void {
-  toLogString(chalk.black, fields, {
-    type: RainierLogLevel.DEBUG,
-    event,
-  });
+function logDebug(fields: LogFields): void {
+  toLogString(chalk.black, fields);
 }
 
-function logInfo(fields: Record<string, any>, event?: Event): void {
-  toLogString(chalk.blue, fields, {
-    type: RainierLogLevel.INFO,
-    event,
-  });
+function logInfo(fields: LogFields): void {
+  toLogString(chalk.blue, fields);
 }
 
-function logWarn(fields: Record<string, any>, event?: Event): void {
-  toLogString(chalk.yellow, fields, {
-    type: RainierLogLevel.WARN,
-    event,
-  });
+function logWarn(fields: LogFields): void {
+  toLogString(chalk.yellow, fields);
 }
 
-function logError(fields: Record<string, any>, event?: Event): void {
-  toLogString(chalk.red, fields, {
-    type: RainierLogLevel.ERROR,
-    event,
-  });
+function logError(fields: LogFields): void {
+  toLogString(chalk.red, fields);
 }
+
+const logTypeToLogFunctionMap: Record<keyof typeof RainierLogLevel, (fields: LogFields) => void> = {
+  [RainierLogLevel.DEBUG]: logDebug,
+  [RainierLogLevel.INFO]: logInfo,
+  [RainierLogLevel.WARN]: logWarn,
+  [RainierLogLevel.ERROR]: logError,
+};
 
 const logger: RainierLogger = {
-  log(options) {
-    if (
-      collectionUtils.isNotNullOrUndefined(options) &&
-      collectionUtils.isNotNullOrUndefined(options.type)
-    ) {
-      const { type, event, fields } = options;
-      switch (type) {
-        case RainierLogLevel.DEBUG:
-          logDebug(fields, event);
-          break;
-        case RainierLogLevel.INFO:
-          logInfo(fields, event);
-          break;
-        case RainierLogLevel.WARN:
-          logWarn(fields, event);
-          break;
-        case RainierLogLevel.ERROR:
-          logError(fields, event);
-          break;
-      }
-    } else if (options?.event) {
-      toLogString(chalk.black, options.fields, {
-        event: options.event,
-      });
-    } else {
-      toLogString(chalk.black, options?.fields);
-    }
+  log(logObject) {
+    const { type } = logObject;
+    const logFunction = type ? logTypeToLogFunctionMap[type] : logInfo;
+
+    logFunction(logObject);
   },
 };
 

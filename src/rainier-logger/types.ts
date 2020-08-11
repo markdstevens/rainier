@@ -1,19 +1,14 @@
 import { Event } from 'rainier-event';
 import { RainierLogLevel } from './log-level';
 
-type Fields = {
+type LogFields = {
   event?: Event;
   type?: keyof typeof RainierLogLevel;
   fields: Record<string, any>;
 };
 
 interface RainierLogger {
-  log(options: Fields): void;
+  log(options: LogFields): void;
 }
 
-interface LogOptions {
-  event?: Event;
-  type?: keyof typeof RainierLogLevel;
-}
-
-export type { RainierLogger, LogOptions };
+export type { RainierLogger, LogFields };

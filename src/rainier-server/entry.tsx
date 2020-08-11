@@ -1,11 +1,13 @@
 import React from 'react';
 import path from 'path';
 import express from 'express';
+import https from 'https';
+import http from 'http';
 import hbs from 'express-hbs';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { useStaticRendering as usingStaticRendering } from 'mobx-react-lite';
 import { App } from 'rainier-components/App';
 import { toRouteMatchHookParams } from 'rainier-lifecycle/to-route-match-hook-params';
@@ -19,8 +21,14 @@ import { wrapStoresWithRetriever } from 'rainier-store/wrap-stores-with-retrieve
 import { ServerContextStore } from 'rainier-store/types';
 import { Event } from 'rainier-event';
 import { RainierLogLevel } from 'rainier-logger/log-level';
-import type { ParsedQuery } from 'query-string';
 import { logger } from 'rainier-logger/logger';
+import type { ParsedQuery } from 'query-string';
+import type { RainierServerConfigEnv } from 'rainier-rc/types';
+
+const serverConfig: RainierServerConfigEnv = __SERVER_CONFIG__;
+const key = readFileSync(serverConfig.keyFilePath);
+const cert = readFileSync(serverConfig.certFilePath);
+const { httpPort, httpsPort } = serverConfig;
 
 usingStaticRendering(true);
 
@@ -31,28 +39,28 @@ const statsFile = `${__APP_ROOT__}/dist/loadable-stats.json`;
 const hasManifest = existsSync(`${__APP_ROOT__}/dist/manifest.json`);
 const hasServiceWorker = existsSync(`${__APP_ROOT__}/dist/service-worker.js`);
 
-const server = express();
+const app = express();
 const serverHooks = initServerHooks();
 
-server.engine('hbs', hbs.express4());
-server.set('view engine', 'hbs');
-server.set('views', path.join(__RAINIER_ROOT__, 'dist/rainier-server/views'));
+app.engine('hbs', hbs.express4());
+app.set('view engine', 'hbs');
+app.set('views', path.join(__RAINIER_ROOT__, 'dist/rainier-server/views'));
 
 hbs.express4({
   beautify: false,
 });
 
-server.use('/public', express.static(`${__APP_ROOT__}/dist`));
+app.use('/public', express.static(`${__APP_ROOT__}/dist`));
 
 serverHooks?.middleware?.map((middlewareFunction) => {
-  server.use(middlewareFunction);
+  app.use(middlewareFunction);
 });
 
-server.get('/service-worker.js', (req, res) => {
+app.get('/service-worker.js', (req, res) => {
   res.sendFile(path.join(`${__APP_ROOT__}/dist/service-worker.js`));
 });
 
-server.get('*', async (req, res) => {
+app.get('*', async (req, res) => {
   const extractor = new ChunkExtractor({ statsFile });
 
   const stores = configureServerStores(req);
@@ -96,12 +104,31 @@ server.get('*', async (req, res) => {
   });
 });
 
-server.listen(3000, () =>
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer({ key: key, cert: cert }, app);
+
+httpServer.listen(httpPort, () =>
   logger.log({
     event: Event.APPLICATION_STARTUP,
     type: RainierLogLevel.INFO,
     fields: {
+      protocol: 'http',
+      port: httpPort,
       startupTime: Date.now(),
+      message: `Started http server on port ${httpPort}`,
+    },
+  })
+);
+
+httpsServer.listen(httpsPort, () =>
+  logger.log({
+    event: Event.APPLICATION_STARTUP,
+    type: RainierLogLevel.INFO,
+    fields: {
+      protocol: 'https',
+      port: httpsPort,
+      startupTime: Date.now(),
+      message: `Started https server on port ${httpsPort}`,
     },
   })
 );

@@ -13,6 +13,7 @@ declare global {
   const __SERVER_HOOKS__: string;
   const __CLIENT_HOOKS__: string;
   const __CUSTOM_LOGGER__: string;
+  const __SERVER_CONFIG__: any;
 
   interface Window {
     __INITIAL_STATE__: any;
