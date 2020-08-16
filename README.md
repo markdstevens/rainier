@@ -26,17 +26,11 @@ $ npx rainier init todo-app
 $ cd todo-app
 ```
 
-💡Pro tip! By default, the `init` command will create a rainier project with typescript as the default langugage. If you want to use vanilla javascript, then you can run this instead:
-
-```
-$ npx rainier init todo-app --js
-```
-
 #### Installing and running
 
 After the rainier project has been scaffolded, install the dependencies and start the development server with npm:
 
 ```
-$ npm ci
+$ npm i
 $ npm run build
 ```
