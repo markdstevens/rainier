@@ -3,7 +3,7 @@
 [![Rainier build](https://circleci.com/gh/markdstevens/rainier/tree/master.svg?style=shield)](https://circleci.com/gh/markdstevens/rainier)
 [![Rainier version](https://img.shields.io/github/package-json/v/markdstevens/rainier)]()
 [![Licence](https://img.shields.io/github/license/markdstevens/rainier)](https://github.com/markdstevens/rainier/blob/master/LICENSE)
-[![Typescript version](https://img.shields.io/github/package-json/dependency-version/markdstevens/rainier/dev/typescript)]()
+[![Typescript version](https://img.shields.io/github/package-json/dependency-version/markdstevens/rainier/typescript)]()
 
 Rainier is a lightweight javascript framework for building isomorphic react applications. It's sole purpose is to allow developers to focus on writing application code rather than spending endless hours writing configurations for webpack, server-side rendering, babel, typsescript, etc. Out of the box, rainier supports:
 
