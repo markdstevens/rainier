@@ -1,6 +1,6 @@
 {
   "name": "rainier",
-  "version": "0.0.31-alpha.102",
+  "version": "0.1.0",
   "license": "MIT",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "main": "./dist/index",
@@ -16,6 +16,7 @@
     "tsc": "npm run ts:main && npm run ts:cli && npm run ts:sw",
     "test": "BABEL_ENV=test jest",
     "publish:alpha": "npm run build && npm version --no-git-tag-version prerelease --preid=alpha && npm publish",
+    "publish:minor": "npm run build && npm version --no-git-tag-version minor && npm publish",
     "ts:sw": "tsc -p tsconfig-sw.json",
     "ts:cli": "ttsc -p tsconfig-cli.json",
     "ts:main": "ttsc -p tsconfig-non-cli.json",
