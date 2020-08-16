@@ -1,6 +1,6 @@
 {
   "name": "rainier",
-  "version": "0.0.31-alpha.89",
+  "version": "0.0.31-alpha.102",
   "license": "MIT",
   "author": "Mark Stevens <mdstevens94@gmail.com>",
   "main": "./dist/index",
@@ -8,7 +8,7 @@
     "rainier": "dist/rainier-cli/index.js"
   },
   "scripts": {
-    "build": "npm run clean && npm run tsc && cp -R src/rainier-server/views dist/rainier-server && cp -R src/rainier-server/https dist/rainier-server",
+    "build": "npm run clean && npm run tsc && cp -R src/rainier-server/views dist/rainier-server && cp -R src/rainier-server/https dist/rainier-server && cp -R src/rainier-cli/sub-commands/init/templates dist/rainier-cli/sub-commands/init/templates",
     "clean": "rimraf dist && rimraf coverage",
     "eslint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
     "eslint:fix": "npm run eslint -- --quiet --fix",
@@ -67,6 +67,7 @@
     "node-sass": "4.14.1",
     "nodemon-webpack-plugin": "^4.3.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "plop": "^2.7.4",
     "query-string": "^6.13.0",
     "sass-loader": "^8.0.2",
     "typescript": "^3.9.6",
