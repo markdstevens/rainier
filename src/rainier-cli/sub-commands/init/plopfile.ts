@@ -24,7 +24,6 @@ export default function (plop: NodePlopAPI): void {
           destination: path.join(process.cwd(), `./${data?.appName}/`),
           base: `./templates/${data?.language}`,
           templateFiles: `./templates/${data?.language}/**/*.hbs`,
-          stripExtensions: ['hbs'],
           globOptions: {
             dot: true,
           },
