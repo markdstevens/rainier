@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import chalk from 'chalk';
 import {
   PublicAssetsDirConfig,
   ControllerConfiguration,
@@ -9,7 +10,6 @@ import {
   LoggerConfig,
 } from './transformers';
 import type { RainierRC } from './types';
-import chalk from 'chalk';
 import { ServerConfiguration } from './transformers/server';
 
 export const getRainierRc = (): RainierRC => {
